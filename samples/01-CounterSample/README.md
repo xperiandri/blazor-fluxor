@@ -6,6 +6,12 @@ This sample shows how to take the standard Visual Studio Blazor template and Flu
 2. Name the project `CounterSample`.
 3. Add the Blazor-Fluxor nuget package to your Client project. Note that you might have to tick the checkbox `Include prerelease`.
  
+### Initializing the store
+Fluxor has the ability to write your own middleware libraries or use existing 3rd party libraries. As these libraries may require Javascript inserted into the hosting html you must first call `@Store.Initialize()` in your main layout page.
+1. In the Client project open the file `Shared\MainLayout.cshtml`
+2. Beneath the `@inherits BlazorLayoutComponent` line add `@inject Blazor.Fluxor.IStore Store`
+3. Beneath that add `@Store.Initialize()` - This will initialize the store and inject any required Javascript
+
 ### Automatic discovery of store features
 1. In the Client project find the `Program.cs` file. 
 2. Add `using Blazor.Fluxor;`

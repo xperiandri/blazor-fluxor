@@ -1,4 +1,4 @@
-﻿using Blazor.Fluxor.DevTools;
+﻿using Blazor.Fluxor.ReduxDevTools;
 using Microsoft.AspNetCore.Blazor.Components;
 using System;
 
@@ -10,12 +10,12 @@ namespace Blazor.Fluxor.Temporary
 	{
 		public FluxorComponent()
 		{
-			ReduxDevTools.AfterJumpToState += ReduxDevTools_AfterJumpToState;
+			ReduxDevToolsInterop.AfterJumpToState += ReduxDevTools_AfterJumpToState;
 		}
 
 		public void Dispose()
 		{
-			ReduxDevTools.AfterJumpToState -= ReduxDevTools_AfterJumpToState;
+			ReduxDevToolsInterop.AfterJumpToState -= ReduxDevTools_AfterJumpToState;
 		}
 
 		private void ReduxDevTools_AfterJumpToState(object sender, EventArgs e)

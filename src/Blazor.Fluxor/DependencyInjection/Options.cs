@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -7,43 +8,50 @@ namespace Blazor.Fluxor.DependencyInjection
 {
 	public class Options
 	{
-
-		internal bool DebugToolsEnabled { get; private set; }
-		internal bool DependencyInjectionEnabled { get; private set; }
-		internal Assembly[] DependencyInjectionAssembliesToScan { get; private set; } = new Assembly[0];
-		internal Type[] MiddlewareTypes { get; private set; } = new Type[0];
-
-		public Options UseDebugTools()
-		{
-			DebugToolsEnabled = true;
-			return this;
-		}
+		internal static bool DependencyInjectionEnabled { get; private set; }
+		internal static AssemblyScanSettings[] DependencyInjectionAssembliesToScan { get; private set; } = new AssemblyScanSettings[0];
+		internal static Type[] MiddlewareTypes = new Type[0];
 
 		public Options UseDependencyInjection(params Assembly[] assembliesToScan)
 		{
 			if (assembliesToScan == null || assembliesToScan.Length == 0)
 				throw new ArgumentNullException(nameof(assembliesToScan));
 
+			var newAssembliesToScan = assembliesToScan.Select(x => new AssemblyScanSettings(x)).ToList();
+			newAssembliesToScan.AddRange(DependencyInjectionAssembliesToScan);
 			DependencyInjectionEnabled = true;
-			DependencyInjectionAssembliesToScan = DependencyInjectionAssembliesToScan
-				.Union(assembliesToScan)
-				.Distinct()
-				.ToArray();
+			DependencyInjectionAssembliesToScan = newAssembliesToScan.ToArray();
 
 			return this;
 		}
 
 		public Options AddMiddleware<TMiddleware>()
-			where TMiddleware : IStoreMiddleware
+			where TMiddleware : IMiddleware
 		{
+			if (Array.IndexOf(MiddlewareTypes, typeof(TMiddleware)) > -1)
+				return this;
+
+			Assembly assembly = typeof(TMiddleware).Assembly;
+			string @namespace = string.Join(".", typeof(TMiddleware)
+				.FullName
+				.Split('.')
+				.Reverse()
+				.Skip(1)
+				.Reverse());
+
+			DependencyInjectionAssembliesToScan = new List<AssemblyScanSettings>(DependencyInjectionAssembliesToScan)
+			{
+				new AssemblyScanSettings(assembly, @namespace)
+			}
+			.ToArray();
+
 			MiddlewareTypes = new List<Type>(MiddlewareTypes)
 			{
 				typeof(TMiddleware)
 			}
-			.Distinct()
 			.ToArray();
-
 			return this;
 		}
+
 	}
 }

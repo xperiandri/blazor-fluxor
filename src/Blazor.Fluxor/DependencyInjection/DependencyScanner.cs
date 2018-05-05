@@ -1,26 +1,51 @@
-﻿using Blazor.Fluxor.DependencyInjection;
-using Blazor.Fluxor.DependencyInjection.DependencyScanners;
+﻿using Blazor.Fluxor.DependencyInjection.DependencyScanners;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace Blazor.Fluxor.DependencyInjection
 {
 	internal static class DependencyScanner
 	{
-		public static void Scan(this IServiceCollection serviceCollection, params Assembly[] assembliesToScan)
+		internal static void Scan(this IServiceCollection serviceCollection,
+			IEnumerable<AssemblyScanSettings> assembliesToScan, IEnumerable<AssemblyScanSettings> scanWhitelist)
 		{
-			if (assembliesToScan == null || assembliesToScan.Length == 0)
+			if (assembliesToScan == null || assembliesToScan.Count() == 0)
 				throw new ArgumentNullException(nameof(assembliesToScan));
+			scanWhitelist = scanWhitelist ?? new List<AssemblyScanSettings>();
 
-			IEnumerable<DiscoveredReducerInfo> discoveredReducerInfos = ReducersRegistration.DiscoverReducers(serviceCollection, assembliesToScan);
-			IEnumerable<DiscoveredEffectInfo> discoveredEffectInfos = EffectsRegistration.DiscoverEffects(serviceCollection, assembliesToScan);
-			FeaturesRegistration.DiscoverFeatures(serviceCollection, assembliesToScan, discoveredReducerInfos);
-			RegisterStore(serviceCollection, discoveredEffectInfos);
+			IEnumerable<Type> allCandidateTypes = assembliesToScan.SelectMany(x => x.Assembly.GetTypes())
+				.Union(scanWhitelist.SelectMany(x => x.Assembly.GetTypes()))
+				.Distinct();
+			IEnumerable<Assembly> allCandidateAssemblies = assembliesToScan.Select(x => x.Assembly)
+				.Union(scanWhitelist.Select(x => x.Assembly))
+				.Distinct();
+
+			IEnumerable<AssemblyScanSettings> scanBlacklist =
+				MiddlewareScanner.FindMiddlewareLocations(allCandidateAssemblies);
+			allCandidateTypes = AssemblyScanSettings.Filter(
+				types: allCandidateTypes,
+				scanBlacklist: scanBlacklist,
+				scanWhitelist: scanWhitelist);
+
+
+			IEnumerable<DiscoveredReducerInfo> discoveredReducerInfos =
+				ReducersRegistration.DiscoverReducers(serviceCollection, allCandidateTypes);
+
+			IEnumerable<DiscoveredEffectInfo> discoveredEffectInfos =
+				EffectsRegistration.DiscoverEffects(serviceCollection, allCandidateTypes);
+
+			IEnumerable<DiscoveredFeatureInfo> discoveredFeatureInfos =
+				FeaturesRegistration.DiscoverFeatures(serviceCollection, allCandidateTypes, discoveredReducerInfos);
+
+			RegisterStore(serviceCollection, discoveredFeatureInfos, discoveredEffectInfos);
 		}
 
-		private static void RegisterStore(IServiceCollection serviceCollection, IEnumerable<DiscoveredEffectInfo> discoveredEffectInfos)
+		private static void RegisterStore(IServiceCollection serviceCollection, 
+			IEnumerable<DiscoveredFeatureInfo> discoveredFeatureInfos,
+			IEnumerable<DiscoveredEffectInfo> discoveredEffectInfos)
 		{
 			// Register the Store class so we can request it from the service provider
 			serviceCollection.AddScoped<Store>();
@@ -30,15 +55,21 @@ namespace Blazor.Fluxor.DependencyInjection
 			{
 				IStore store = serviceProvider.GetService<Store>();
 
+				foreach(DiscoveredFeatureInfo discoveredFeatureInfo in discoveredFeatureInfos)
+				{
+					IFeature feature = (IFeature)serviceProvider.GetService(discoveredFeatureInfo.FeatureInterfaceGenericType);
+					store.AddFeature(feature);
+				}
+
 				foreach(DiscoveredEffectInfo discoveredEffectInfo in discoveredEffectInfos)
 				{
 					IEffect effect = (IEffect)serviceProvider.GetService(discoveredEffectInfo.EffectInterfaceGenericType);
 					store.AddEffect(discoveredEffectInfo.ActionType, effect);
 				}
 
-				foreach(Type middlewareType in ClientOptions.MiddlewareTypes)
+				foreach (Type middlewareType in Options.MiddlewareTypes)
 				{
-					IStoreMiddleware middleware = (IStoreMiddleware)serviceProvider.GetService(middlewareType);
+					IMiddleware middleware = (IMiddleware)serviceProvider.GetService(middlewareType);
 					store.AddMiddleware(middleware);
 				}
 

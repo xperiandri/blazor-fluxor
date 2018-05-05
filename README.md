@@ -17,6 +17,15 @@ More sample projects will be added as the framework develops.
   - [Effects sample] - Fluxorizes `FetchData` page in the standard Visual Studio Blazor sample in order to demonstrate asynchronous reactions to actions that are dispatched.
   - [Redux dev tools integration] - Demonstrates how to enable debugger integration for the [Redux dev tools] Chrome plugin.
 
+  
+### New in 0.0.7
+  - Renamed IStoreMiddleware to IMiddleware
+  - Allow middleware to veto the dispatching of actions
+  - Allow middleware to declare Javascript it needs to be added into the site's html page
+  - Add routing middleware
+  - Exclude auto-discovery of features / reducers / effects in namespaces that contain a class that implements IMiddleware
+  - Auto register features / reducers / effects for classes in the same namespace (or below) of any class added with Options.AddMiddleware
+
 ### New in 0.0.6
   - Changed the signature of IStore.Dispatch to IStore.DispatchAsync
   - Upgraded to latest version of Blazor (0.3.0)

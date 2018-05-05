@@ -12,8 +12,9 @@ namespace ReduxDevToolsIntegration.Client
 			{
 				services.AddFluxor(options => options
 					.UseDependencyInjection(typeof(Program).Assembly)
-					.UseDebugTools()
-				);
+					.AddMiddleware<Blazor.Fluxor.ReduxDevTools.ReduxDevToolsMiddleware>()
+					.AddMiddleware<Blazor.Fluxor.Routing.RoutingMiddleware>()
+					);
 			});
 
 			new BrowserRenderer(serviceProvider).AddComponent<App>("app");

@@ -6,17 +6,16 @@ using System.Reflection;
 
 namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 {
-    internal static class FeaturesRegistration
-    {
+	internal static class FeaturesRegistration
+	{
 		internal static IEnumerable<DiscoveredFeatureInfo> DiscoverFeatures(IServiceCollection serviceCollection, 
-			Assembly[] assembliesToScan, IEnumerable<DiscoveredReducerInfo> discoveredReducerInfos)
+			IEnumerable<Type> allCandidateTypes, IEnumerable<DiscoveredReducerInfo> discoveredReducerInfos)
 		{
 			Dictionary<Type, IGrouping<Type, DiscoveredReducerInfo>> discoveredReducerInfosByStateType = discoveredReducerInfos
 				.GroupBy(x => x.StateType)
 				.ToDictionary(x => x.Key);
 
-			IEnumerable<DiscoveredFeatureInfo> discoveredFeatureInfos = assembliesToScan
-				.SelectMany(asm => asm.GetTypes())
+			IEnumerable<DiscoveredFeatureInfo> discoveredFeatureInfos = allCandidateTypes
 				.Select(t => new
 				{
 					ImplementingType = t,
@@ -39,14 +38,14 @@ namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 				RegisterFeature(
 					serviceCollection,
 					discoveredFeatureInfo: discoveredFeatureInfo,
-					discoveredFeatureInfosForFeatureState: discoveredFeatureInfosForFeatureState);
+					discoveredReducerInfosForFeatureState: discoveredFeatureInfosForFeatureState);
 			}
 
 			return discoveredFeatureInfos;
 		}
 
 		private static void RegisterFeature(IServiceCollection serviceCollection,
-			DiscoveredFeatureInfo discoveredFeatureInfo, IEnumerable<DiscoveredReducerInfo> discoveredFeatureInfosForFeatureState)
+			DiscoveredFeatureInfo discoveredFeatureInfo, IEnumerable<DiscoveredReducerInfo> discoveredReducerInfosForFeatureState)
 		{
 			string addReducerMethodName = nameof(IFeature<object>.AddReducer);
 
@@ -59,9 +58,9 @@ namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 				// Create an instance of the implementing type
 				IFeature featureInstance = (IFeature)serviceProvider.GetService(discoveredFeatureInfo.ImplementingType);
 
-				if (discoveredFeatureInfosForFeatureState != null)
+				if (discoveredReducerInfosForFeatureState != null)
 				{
-					foreach (DiscoveredReducerInfo reducerInfo in discoveredFeatureInfosForFeatureState)
+					foreach (DiscoveredReducerInfo reducerInfo in discoveredReducerInfosForFeatureState)
 					{
 						MethodInfo featureAddreducerMethod = discoveredFeatureInfo.ImplementingType
 							.GetMethod(addReducerMethodName)
@@ -71,11 +70,6 @@ namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 						featureAddreducerMethod.Invoke(featureInstance, new object[] { reducerInstance });
 					}
 				}
-
-				// Automatically add this feature to the store
-				IStore store = serviceProvider.GetService<IStore>();
-				store.AddFeature(featureInstance);
-
 				return featureInstance;
 			});
 		}

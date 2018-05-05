@@ -1,4 +1,4 @@
-﻿namespace Blazor.Fluxor.DevTools.CallbackObjects
+﻿namespace Blazor.Fluxor.ReduxDevTools.CallbackObjects
 {
 	internal class BaseCallbackObject<TPayload>
 		where TPayload: BasePayload

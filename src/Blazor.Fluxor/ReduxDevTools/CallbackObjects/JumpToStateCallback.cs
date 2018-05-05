@@ -1,6 +1,6 @@
 ﻿using System.Dynamic;
 
-namespace Blazor.Fluxor.DevTools.CallbackObjects
+namespace Blazor.Fluxor.ReduxDevTools.CallbackObjects
 {
 	internal class JumpToStateCallback: BaseCallbackObject<JumpToStatePayload>
 	{

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Blazor;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -8,9 +9,10 @@ namespace Blazor.Fluxor
 	{
 		void AddEffect(Type actionType, IEffect effect);
 		void AddFeature(IFeature feature);
-		void AddMiddleware(IStoreMiddleware middleware);
-		Task DispatchAsync<TAction>(TAction action)
-			where TAction : IAction;
+		void AddMiddleware(IMiddleware middleware);
+		IDisposable BeginInternalMiddlewareChange();
+		Task DispatchAsync(IAction action);
 		IEnumerable<IFeature> Features { get; }
+		RenderFragment Initialize();
 	}
 }

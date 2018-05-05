@@ -1,16 +1,16 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 {
     internal class EffectsRegistration
     {
-		internal static IEnumerable<DiscoveredEffectInfo> DiscoverEffects(IServiceCollection serviceCollection, Assembly[] assembliesToScan)
+		internal static IEnumerable<DiscoveredEffectInfo> DiscoverEffects(
+			IServiceCollection serviceCollection, IEnumerable<Type> allCandidateTypes)
 		{
-			IEnumerable<DiscoveredEffectInfo> discoveredEffectInfos = assembliesToScan
-				.SelectMany(asm => asm.GetTypes())
+			IEnumerable<DiscoveredEffectInfo> discoveredEffectInfos = allCandidateTypes
 				.Select(t => new
 				{
 					ImplementingType = t,
@@ -34,6 +34,7 @@ namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 
 		private static void RegisterEffect(IServiceCollection serviceCollection, DiscoveredEffectInfo discoveredEffectInfo)
 		{
+			// Register the effect class against the generic IEffect<> interface
 			serviceCollection.AddScoped(
 				serviceType: discoveredEffectInfo.EffectInterfaceGenericType,
 				implementationType: discoveredEffectInfo.ImplementingType);

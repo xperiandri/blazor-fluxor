@@ -1,7 +1,9 @@
 ﻿using Blazor.Fluxor.DependencyInjection;
-using Blazor.Fluxor.DevTools;
+using Blazor.Fluxor.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Blazor.Fluxor
 {
@@ -12,25 +14,26 @@ namespace Blazor.Fluxor
 			if (configure == null)
 				throw new ArgumentNullException(nameof(configure));
 
+			// We only use an instance so middleware can create extensions to the Options
 			var options = new Options();
 			configure(options);
 
-			// Ensure ReduxToolsMiddleware is added to the middleware list
-			if (options.DebugToolsEnabled)
-			{
-				ClientOptions.DebugToolsEnabled = true;
-				ClientOptions.MiddlewareTypesList.Add(typeof(ReduxToolsMiddleware));
-			}
-
 			// Register all middleware types with dependency injection
-			foreach (Type middlewareType in ClientOptions.MiddlewareTypes)
+			foreach (Type middlewareType in Options.MiddlewareTypes)
 				serviceCollection.AddScoped(middlewareType);
 
+			IEnumerable<AssemblyScanSettings> scanWhitelist = Options.MiddlewareTypes
+				.Select(t => new AssemblyScanSettings(t.Assembly, t.GetNamespace()));
+
 			// Scan for features and effects
-			if (options.DependencyInjectionEnabled)
-				DependencyScanner.Scan(serviceCollection, options.DependencyInjectionAssembliesToScan);
+			if (Options.DependencyInjectionEnabled)
+				DependencyScanner.Scan(
+					serviceCollection: serviceCollection,
+					assembliesToScan: Options.DependencyInjectionAssembliesToScan,
+					scanWhitelist: scanWhitelist);
 
 			return serviceCollection;
 		}
+
 	}
 }

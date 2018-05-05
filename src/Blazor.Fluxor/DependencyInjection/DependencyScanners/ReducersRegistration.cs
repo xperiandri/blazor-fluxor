@@ -1,17 +1,16 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 {
     internal static class ReducersRegistration
     {
-		internal static IEnumerable<DiscoveredReducerInfo> DiscoverReducers(IServiceCollection serviceCollection, 
-			Assembly[] assembliesToScan)
+		internal static IEnumerable<DiscoveredReducerInfo> DiscoverReducers(
+			IServiceCollection serviceCollection, IEnumerable<Type> allCandidateTypes)
 		{
-			IEnumerable<DiscoveredReducerInfo> discoveredReducerInfos = assembliesToScan
-				.SelectMany(asm => asm.GetTypes())
+			IEnumerable<DiscoveredReducerInfo> discoveredReducerInfos = allCandidateTypes
 				.Select(t => new
 				{
 					ImplementingType = t,
@@ -34,6 +33,7 @@ namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 
 		private static void RegisterReducer(IServiceCollection serviceCollection, DiscoveredReducerInfo discoveredReducerInfo)
 		{
+			// Register the feature class against the generic IFeature<> interface
 			serviceCollection.AddScoped(
 				serviceType: discoveredReducerInfo.ReducerInterfaceGenericType,
 				implementationType: discoveredReducerInfo.ImplementingType);

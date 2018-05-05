@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Blazor.Fluxor.DevTools
+namespace Blazor.Fluxor.ReduxDevTools
 {
     internal class ActionInfo
     {

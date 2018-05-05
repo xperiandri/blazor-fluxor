@@ -1,7 +1,7 @@
 ﻿@inherits BlazorLayoutComponent
-@using Blazor.Fluxor.DevTools
+@inject Blazor.Fluxor.IStore Store
 
-@ReduxDevTools.Initialize()
+@Store.Initialize()
 
 <div class="sidebar">
     <NavMenu />
