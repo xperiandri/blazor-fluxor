@@ -23,20 +23,17 @@ namespace Blazor.Fluxor.ReduxDevTools
 
 		public override bool MayDispatchAction(IAction action)
 		{
-			Console.WriteLine($"MayDispatchAction = { SequenceNumberOfCurrentState} == {SequenceNumberOfLatestState}");
 			return SequenceNumberOfCurrentState == SequenceNumberOfLatestState;
 		}
 
 		public override void AfterDispatch(IAction action)
 		{
-			Console.WriteLine("ReduxTools.AfterDispatch: " + action.GetType().FullName);
 			IDictionary<string, object> state = GetState();
 			ReduxDevToolsInterop.Invoke<object>(ToJsDispatchId, new ActionInfo(action), state);
 			// As actions can only be executed if not in a historical state (yes, "a" historical, pronounce your H!)
 			// ensure the latest is incremented, and the current = latest
 			SequenceNumberOfLatestState++;
 			SequenceNumberOfCurrentState = SequenceNumberOfLatestState;
-			Console.WriteLine($"AfterDispatch {action.GetType().FullName } : { SequenceNumberOfCurrentState} = {SequenceNumberOfLatestState}");
 		}
 
 		private IDictionary<string, object> GetState()
@@ -50,7 +47,6 @@ namespace Blazor.Fluxor.ReduxDevTools
 		private void OnJumpToState(object sender, JumpToStateCallback e)
 		{
 			SequenceNumberOfCurrentState = e.payload.actionId;
-			Console.WriteLine($"State { SequenceNumberOfCurrentState} of {SequenceNumberOfLatestState}");
 			using (Store.BeginInternalMiddlewareChange())
 			{
 				Dictionary<string, IFeature> featuresByName = Store.Features.ToDictionary(x => x.GetName());
@@ -106,7 +102,6 @@ namespace Blazor.Fluxor.ReduxDevTools
 		if (fluxorDevTools !== undefined && fluxorDevTools !== null) {{
 			fluxorDevTools.subscribe((message) => {{ 
 				const messageAsJson = JSON.stringify(message);
-console.log('=============== Message: ' + messageAsJson);
 				const messageAsString = Blazor.platform.toDotNetString(messageAsJson);
 				Blazor.platform.callMethod(fluxorDevToolsCallback, null, [ messageAsString ]);
 			}});
@@ -114,7 +109,6 @@ console.log('=============== Message: ' + messageAsJson);
 		}}
 
 		Blazor.registerFunction('{ToJsDispatchId}', function(action, state) {{
-console.log('fluxorDevTools.send: ' + JSON.stringify(state));
 			fluxorDevTools.send(action, state);
 		}});
 
