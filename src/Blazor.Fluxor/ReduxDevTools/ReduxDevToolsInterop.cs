@@ -28,8 +28,7 @@ namespace Blazor.Fluxor.ReduxDevTools
 			Invoke<object>(ToJsDispatchId, new ActionInfo(action), state);
 		}
 
-		//TODO: Make private
-		internal static void DevToolsCallback(string messageAsJson)
+		private static void DevToolsCallback(string messageAsJson)
 		{
 			if (string.IsNullOrWhiteSpace(messageAsJson))
 				return;
