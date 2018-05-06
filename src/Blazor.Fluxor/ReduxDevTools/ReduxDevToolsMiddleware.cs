@@ -1,5 +1,4 @@
-﻿using Blazor.Fluxor.Extensions;
-using Blazor.Fluxor.ReduxDevTools.CallbackObjects;
+﻿using Blazor.Fluxor.ReduxDevTools.CallbackObjects;
 using Microsoft.AspNetCore.Blazor;
 using System;
 using System.Collections.Generic;
@@ -11,14 +10,19 @@ namespace Blazor.Fluxor.ReduxDevTools
 {
 	public class ReduxDevToolsMiddleware : Middleware 
 	{
-		private const string ToJsDispatchId = "fluxorDevTools/dispatch";
-
 		private int SequenceNumberOfCurrentState = -1; // First state is 0, so pre-first state is step -1
 		private int SequenceNumberOfLatestState = -1;
 
 		public ReduxDevToolsMiddleware()
 		{
 			ReduxDevToolsInterop.JumpToState += OnJumpToState;
+			ReduxDevToolsInterop.Commit += OnCommit;
+		}
+
+		public override void Initialize(IStore store)
+		{
+			base.Initialize(store);
+			ReduxDevToolsInterop.Init(GetState());
 		}
 
 		public override bool MayDispatchAction(IAction action)
@@ -28,8 +32,8 @@ namespace Blazor.Fluxor.ReduxDevTools
 
 		public override void AfterDispatch(IAction action)
 		{
-			IDictionary<string, object> state = GetState();
-			ReduxDevToolsInterop.Invoke<object>(ToJsDispatchId, new ActionInfo(action), state);
+			ReduxDevToolsInterop.Dispatch(action, GetState());
+			
 			// As actions can only be executed if not in a historical state (yes, "a" historical, pronounce your H!)
 			// ensure the latest is incremented, and the current = latest
 			SequenceNumberOfLatestState++;
@@ -42,6 +46,13 @@ namespace Blazor.Fluxor.ReduxDevTools
 			foreach (IFeature feature in Store.Features.OrderBy(x => x.GetName()))
 				state[feature.GetName()] = feature.GetState();
 			return state;
+		}
+
+		private void OnCommit(object sender, EventArgs e)
+		{
+			Console.WriteLine("Commit");
+			ReduxDevToolsInterop.Init(GetState());
+			SequenceNumberOfCurrentState = SequenceNumberOfLatestState;
 		}
 
 		private void OnJumpToState(object sender, JumpToStateCallback e)
@@ -82,48 +93,7 @@ namespace Blazor.Fluxor.ReduxDevTools
 
 		public override string GetClientScripts()
 		{
-			string assemblyName = typeof(ReduxDevToolsInterop).Assembly.GetName().Name;
-			string @namespace = typeof(ReduxDevToolsInterop).GetNamespace();
-			string className = typeof(ReduxDevToolsInterop).Name;
-			string callbackMethodName = nameof(ReduxDevToolsInterop.DevToolsCallback);
-
-			return $@"
-(function() {{
-	const reduxDevTools = window.__REDUX_DEVTOOLS_EXTENSION__;
-	if (reduxDevTools !== undefined && reduxDevTools !== null) {{
-		const fluxorDevToolsCallback = Blazor.platform.findMethod(
-			'{assemblyName}',
-			'{@namespace}',
-			'{className}',
-			'{callbackMethodName}'
-		);
-		
-		const fluxorDevTools = reduxDevTools.connect({{ name: 'Blazor-Fluxor' }});
-		if (fluxorDevTools !== undefined && fluxorDevTools !== null) {{
-			fluxorDevTools.subscribe((message) => {{ 
-				const messageAsJson = JSON.stringify(message);
-				const messageAsString = Blazor.platform.toDotNetString(messageAsJson);
-				Blazor.platform.callMethod(fluxorDevToolsCallback, null, [ messageAsString ]);
-			}});
-
-		}}
-
-		Blazor.registerFunction('{ToJsDispatchId}', function(action, state) {{
-			fluxorDevTools.send(action, state);
-		}});
-
-		// Notify Fluxor of the presence of the browser plugin
-		const detectedMessage = {{
-			payload: {{
-				type: '{ReduxDevToolsInterop.FromJsDevToolsDetectedId}'
-			}}
-		}};
-		const detectedMessageAsJson = JSON.stringify(detectedMessage);
-		const detectedMessageAsString = Blazor.platform.toDotNetString(detectedMessageAsJson);
-		Blazor.platform.callMethod(fluxorDevToolsCallback, null, [ detectedMessageAsString ]);
-	}}
-}})();
-";
+			return ReduxDevToolsInterop.GetClientScripts();
 		}
 	}
 }

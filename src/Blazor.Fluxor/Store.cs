@@ -31,6 +31,8 @@ namespace Blazor.Fluxor
 		{
 			if (feature == null)
 				throw new ArgumentNullException(nameof(feature));
+
+			Console.WriteLine("AddFeature: " + feature.GetName() + "----" + JsonUtil.Serialize(feature.GetState()));
 			FeaturesByName.Add(feature.GetName(), feature);
 		}
 
@@ -177,6 +179,7 @@ namespace Blazor.Fluxor
 
 		private void InitializeMiddlewares()
 		{
+			Console.WriteLine("InitializeMiddlewarez");
 			Middlewares.ForEach(x => x.Initialize(this));
 			Middlewares.ForEach(x => x.AfterInitializeAllMiddlewares());
 		}
@@ -207,6 +210,10 @@ namespace Blazor.Fluxor
 
 		private void ActivateStore()
 		{
+			if (HasActivatedStore)
+				return;
+
+			Console.WriteLine("Activate store");
 			HasActivatedStore = true;
 			InitializeMiddlewares();
 			DispatchAsync(new StoreInitializedAction()).Wait();
