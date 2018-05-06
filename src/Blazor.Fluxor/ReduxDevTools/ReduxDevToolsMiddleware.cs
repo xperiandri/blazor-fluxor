@@ -10,8 +10,8 @@ namespace Blazor.Fluxor.ReduxDevTools
 {
 	public class ReduxDevToolsMiddleware : Middleware 
 	{
-		private int SequenceNumberOfCurrentState = -1; // First state is 0, so pre-first state is step -1
-		private int SequenceNumberOfLatestState = -1;
+		private int SequenceNumberOfCurrentState = 0;
+		private int SequenceNumberOfLatestState = 0;
 
 		public ReduxDevToolsMiddleware()
 		{
@@ -27,6 +27,7 @@ namespace Blazor.Fluxor.ReduxDevTools
 
 		public override bool MayDispatchAction(IAction action)
 		{
+			Console.WriteLine($"MayDispatchAction: {SequenceNumberOfCurrentState} == {SequenceNumberOfLatestState}");
 			return SequenceNumberOfCurrentState == SequenceNumberOfLatestState;
 		}
 

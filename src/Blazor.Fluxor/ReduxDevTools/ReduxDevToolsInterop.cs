@@ -45,6 +45,7 @@ namespace Blazor.Fluxor.ReduxDevTools
 					break;
 
 				case "JUMP_TO_STATE":
+				case "JUMP_TO_ACTION":
 					OnJumpToState(JsonUtil.Deserialize<JumpToStateCallback>(messageAsJson));
 					break;
 			}
@@ -86,6 +87,7 @@ namespace Blazor.Fluxor.ReduxDevTools
 		if (fluxorDevTools !== undefined && fluxorDevTools !== null) {{
 			fluxorDevTools.subscribe((message) => {{ 
 				const messageAsJson = JSON.stringify(message);
+console.log('MESSAGE: ', message);
 				const messageAsString = Blazor.platform.toDotNetString(messageAsJson);
 				Blazor.platform.callMethod(fluxorDevToolsCallback, null, [ messageAsString ]);
 			}});
