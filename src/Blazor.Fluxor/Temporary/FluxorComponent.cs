@@ -1,6 +1,7 @@
 ﻿using Blazor.Fluxor.ReduxDevTools;
 using Microsoft.AspNetCore.Blazor.Components;
 using System;
+using System.Collections.Generic;
 
 namespace Blazor.Fluxor.Temporary
 {
@@ -8,19 +9,25 @@ namespace Blazor.Fluxor.Temporary
 	// See https://github.com/aspnet/Blazor/issues/704
 	public class FluxorComponent : BlazorComponent, IDisposable
 	{
+		private static HashSet<FluxorComponent> AllComponents = new HashSet<FluxorComponent>();
+
 		public FluxorComponent()
 		{
-			ReduxDevToolsInterop.AfterJumpToState += ReduxDevTools_AfterJumpToState;
+			AllComponents.Add(this);
 		}
 
 		public void Dispose()
 		{
-			ReduxDevToolsInterop.AfterJumpToState -= ReduxDevTools_AfterJumpToState;
+			AllComponents.Remove(this);
 		}
 
-		private void ReduxDevTools_AfterJumpToState(object sender, EventArgs e)
+		public static void AllStateHasChanged()
 		{
-			StateHasChanged();
+			foreach (FluxorComponent component in AllComponents)
+			{
+				component.StateHasChanged();
+				Console.WriteLine(component.GetType().Name + ".StateHasChanged()");
+			}
 		}
 
 	}

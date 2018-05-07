@@ -17,6 +17,9 @@ More sample projects will be added as the framework develops.
   - [Effects sample] - Fluxorizes `FetchData` page in the standard Visual Studio Blazor sample in order to demonstrate asynchronous reactions to actions that are dispatched.
   - [Redux dev tools integration] - Demonstrates how to enable debugger integration for the [Redux dev tools] Chrome plugin.
 
+### New in 0.0.8
+  - Added an example showing how to create Middleware modules for Fluxor
+  - Fixed a bug where components were not displaying state updates when actions effecting their state were dispatched from another component
   
 ### New in 0.0.7
   - Renamed IStoreMiddleware to IMiddleware

@@ -1,0 +1,28 @@
+﻿@inherits BlazorLayoutComponent
+@using Blazor.Fluxor
+@using Store.Counter
+@using Store.Counter.Increment
+@inject IStore Store
+@inject IFeature<CounterState> Feature
+
+@Store.Initialize()
+
+<div class="sidebar">
+    <button onclick="@IncrementCount">Click me!</button>
+</div>
+
+<div class="main">
+    <div class="top-row px-4">
+    </div>
+
+    <div class="content px-4">
+        @Body
+    </div>
+</div>
+
+@functions {
+async void IncrementCount()
+{
+    await Store.DispatchAsync(new IncrementAction());
+}
+}

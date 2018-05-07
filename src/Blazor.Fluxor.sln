@@ -31,6 +31,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReduxDevToolsIntegration.Cl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReduxDevToolsIntegration.Server", "..\samples\03-ReduxDevToolsIntegration\ReduxDevToolsIntegration\ReduxDevToolsIntegration.Server\ReduxDevToolsIntegration.Server.csproj", "{698BAE3F-6DCE-4F1A-B35A-F2D9D34D502D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04-MiddlewareSample", "04-MiddlewareSample", "{415FF6D9-06F9-44DD-BD46-5857F8B868C4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiddlewareSample.Shared", "..\samples\04-MiddlewareSample\MiddlewareSample\MiddlewareSample.Shared\MiddlewareSample.Shared.csproj", "{0E4AE0C6-EDFD-4193-ACDD-DB6BCB232780}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiddlewareSample.Client", "..\samples\04-MiddlewareSample\MiddlewareSample\MiddlewareSample.Client\MiddlewareSample.Client.csproj", "{BBE7FE59-B2DB-4F11-BD05-4237412FD9D9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiddlewareSample.Server", "..\samples\04-MiddlewareSample\MiddlewareSample\MiddlewareSample.Server\MiddlewareSample.Server.csproj", "{2A8555B7-32E9-4F74-AA21-8EF4CA72E661}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +85,18 @@ Global
 		{698BAE3F-6DCE-4F1A-B35A-F2D9D34D502D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{698BAE3F-6DCE-4F1A-B35A-F2D9D34D502D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{698BAE3F-6DCE-4F1A-B35A-F2D9D34D502D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E4AE0C6-EDFD-4193-ACDD-DB6BCB232780}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E4AE0C6-EDFD-4193-ACDD-DB6BCB232780}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E4AE0C6-EDFD-4193-ACDD-DB6BCB232780}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E4AE0C6-EDFD-4193-ACDD-DB6BCB232780}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBE7FE59-B2DB-4F11-BD05-4237412FD9D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBE7FE59-B2DB-4F11-BD05-4237412FD9D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBE7FE59-B2DB-4F11-BD05-4237412FD9D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBE7FE59-B2DB-4F11-BD05-4237412FD9D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A8555B7-32E9-4F74-AA21-8EF4CA72E661}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A8555B7-32E9-4F74-AA21-8EF4CA72E661}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A8555B7-32E9-4F74-AA21-8EF4CA72E661}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A8555B7-32E9-4F74-AA21-8EF4CA72E661}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -94,6 +114,10 @@ Global
 		{9CC8D132-8DB9-451A-9CF2-708A39F3E03F} = {E1FEF7FC-6871-43EA-8E58-AB019F4AEC58}
 		{D53754E9-ABF6-4392-894A-ECF45ECB8183} = {E1FEF7FC-6871-43EA-8E58-AB019F4AEC58}
 		{698BAE3F-6DCE-4F1A-B35A-F2D9D34D502D} = {E1FEF7FC-6871-43EA-8E58-AB019F4AEC58}
+		{415FF6D9-06F9-44DD-BD46-5857F8B868C4} = {1A6663AC-4F1F-40AD-8D03-0B0977ED466D}
+		{0E4AE0C6-EDFD-4193-ACDD-DB6BCB232780} = {415FF6D9-06F9-44DD-BD46-5857F8B868C4}
+		{BBE7FE59-B2DB-4F11-BD05-4237412FD9D9} = {415FF6D9-06F9-44DD-BD46-5857F8B868C4}
+		{2A8555B7-32E9-4F74-AA21-8EF4CA72E661} = {415FF6D9-06F9-44DD-BD46-5857F8B868C4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B1F2E0DF-C651-48A3-83E3-3B77D34EC3A2}

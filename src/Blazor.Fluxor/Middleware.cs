@@ -21,7 +21,7 @@ namespace Blazor.Fluxor
 			Store = store;
 		}
 
-		public virtual IDisposable BeginInternalMiddlewareChange()
+		IDisposable IMiddleware.BeginInternalMiddlewareChange()
 		{
 			BeginMiddlewareChangeCount++;
 			return new DisposableCallback(() =>

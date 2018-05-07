@@ -87,7 +87,6 @@ namespace Blazor.Fluxor.ReduxDevTools
 		if (fluxorDevTools !== undefined && fluxorDevTools !== null) {{
 			fluxorDevTools.subscribe((message) => {{ 
 				const messageAsJson = JSON.stringify(message);
-console.log('MESSAGE: ', message);
 				const messageAsString = Blazor.platform.toDotNetString(messageAsJson);
 				Blazor.platform.callMethod(fluxorDevToolsCallback, null, [ messageAsString ]);
 			}});

@@ -1,4 +1,5 @@
 ﻿using Blazor.Fluxor.ReduxDevTools.CallbackObjects;
+using Blazor.Fluxor.Temporary;
 using Microsoft.AspNetCore.Blazor;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,6 @@ namespace Blazor.Fluxor.ReduxDevTools
 
 		public override bool MayDispatchAction(IAction action)
 		{
-			Console.WriteLine($"MayDispatchAction: {SequenceNumberOfCurrentState} == {SequenceNumberOfLatestState}");
 			return SequenceNumberOfCurrentState == SequenceNumberOfLatestState;
 		}
 
@@ -51,7 +51,6 @@ namespace Blazor.Fluxor.ReduxDevTools
 
 		private void OnCommit(object sender, EventArgs e)
 		{
-			Console.WriteLine("Commit");
 			ReduxDevToolsInterop.Init(GetState());
 			SequenceNumberOfCurrentState = SequenceNumberOfLatestState;
 		}
@@ -89,7 +88,7 @@ namespace Blazor.Fluxor.ReduxDevTools
 					feature.RestoreState(stronglyTypedFeatureState);
 				}
 			}
-			//TODO: Force render
+			FluxorComponent.AllStateHasChanged();
 		}
 
 		public override string GetClientScripts()

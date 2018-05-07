@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Blazor.Fluxor.Temporary;
 using Microsoft.AspNetCore.Blazor;
 using Microsoft.AspNetCore.Blazor.RenderTree;
 
@@ -69,6 +70,7 @@ namespace Blazor.Fluxor
 				{
 					NotifyFeatureOfDispatch(featureInstance, currentActionToDispatch);
 				};
+				FluxorComponent.AllStateHasChanged();
 
 				ExecuteMiddlewareAfterDispatch(currentActionToDispatch);
 
