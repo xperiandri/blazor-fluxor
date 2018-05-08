@@ -9,6 +9,9 @@ using System.Reflection;
 
 namespace Blazor.Fluxor.ReduxDevTools
 {
+	/// <summary>
+	/// Middleware for interacting with the Redux Devtools extension for Chrome
+	/// </summary>
 	public class ReduxDevToolsMiddleware : Middleware 
 	{
 		private int SequenceNumberOfCurrentState = 0;

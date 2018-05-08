@@ -206,7 +206,7 @@ namespace WeatherForecastSample.Client.Store.FetchData.GetForecastData
 			HttpClient = httpClient;
 		}
 
-		public override async Task<IAction[]> Handle(GetForecastDataAction action)
+		public override async Task<IAction[]> HandleAsync(GetForecastDataAction action)
 		{
 			try
 			{

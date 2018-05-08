@@ -5,8 +5,13 @@ using System.Collections.Generic;
 
 namespace Blazor.Fluxor.Temporary
 {
-	// This class is temporary until Blazor has some kind of global StateHasChanged() call available
-	// See https://github.com/aspnet/Blazor/issues/704
+	/// <summary>
+	/// If using Middleware that alters state then all components in your site should
+	/// contain the line `@inherits Blazor.Fluxor.Temporary.FluxorComponent`
+	/// </summary>
+	/// <remarks>
+	/// This class is temporary until Blazor has some kind of global StateHasChanged() call available
+	/// </remarks>
 	public class FluxorComponent : BlazorComponent, IDisposable
 	{
 		private static HashSet<FluxorComponent> AllComponents = new HashSet<FluxorComponent>();
@@ -21,6 +26,9 @@ namespace Blazor.Fluxor.Temporary
 			AllComponents.Remove(this);
 		}
 
+		/// <summary>
+		/// Calls StateHasChanged on all instances of FluxorComponent
+		/// </summary>
 		public static void AllStateHasChanged()
 		{
 			foreach (FluxorComponent component in AllComponents)

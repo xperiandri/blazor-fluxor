@@ -2,6 +2,10 @@
 
 namespace Blazor.Fluxor.Routing
 {
+	/// <summary>
+	/// Adds support for routing <see cref="Microsoft.AspNetCore.Blazor.Services.IUriHelper"/>
+	/// via a Fluxor store.
+	/// </summary>
 	public class RoutingMiddleware : Middleware
 	{
 		private readonly IUriHelper UriHelper;

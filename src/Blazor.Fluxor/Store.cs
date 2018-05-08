@@ -163,7 +163,7 @@ namespace Blazor.Fluxor
 			{
 				foreach (var effect in effectsForAction)
 				{
-					IAction[] actionsFromSideEffect = await effect.Handle(action);
+					IAction[] actionsFromSideEffect = await effect.HandleAsync(action);
 					if (actionsFromSideEffect != null)
 					{
 						foreach (IAction actionFromSideEffect in actionsFromSideEffect)

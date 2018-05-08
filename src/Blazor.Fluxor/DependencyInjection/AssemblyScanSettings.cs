@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Blazor.Fluxor.DependencyInjection
 {
-	public class AssemblyScanSettings
+	internal class AssemblyScanSettings
 	{
 		public readonly Assembly Assembly;
 		public readonly string Namespace;

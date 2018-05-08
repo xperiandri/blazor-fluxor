@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Blazor.Fluxor.Extensions
 {
-    public static class TypeExtensions
+    internal static class TypeExtensions
     {
 		public static string GetNamespace(this Type type)
 		{

@@ -2,6 +2,9 @@
 
 namespace Blazor.Fluxor.Routing
 {
+	/// <summary>
+	/// The feature required by <see cref="RoutingMiddleware"/> to store URL state
+	/// </summary>
 	public class RoutingFeature : Feature<RoutingState>
 	{
 		private readonly string InitialUrl;

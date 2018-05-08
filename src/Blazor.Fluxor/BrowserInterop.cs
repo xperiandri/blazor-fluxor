@@ -1,13 +1,22 @@
 ﻿using Blazor.Fluxor.Extensions;
 using System;
-using System.Linq;
 
 namespace Blazor.Fluxor
 {
+	/// <summary>
+	/// Provides standard interactions with the browser via Javascript
+	/// </summary>
 	public static class BrowserInterop
 	{
+		/// <summary>
+		/// Executed when the browser finishes loading the page
+		/// </summary>
 		public static event EventHandler PageLoaded;
 
+		/// <summary>
+		/// Gets Javascripts required to support the features of this class
+		/// </summary>
+		/// <returns></returns>
 		public static string GetClientScripts()
 		{
 			string assemblyName = typeof(BrowserInterop).Assembly.GetName().Name;
@@ -17,16 +26,13 @@ namespace Blazor.Fluxor
 
 			return $@"
 	(function() {{ 
-		//TODO: PeteM - Remove setTimeout
-		setTimeout(function() {{
-			const fluxorBrowserHooksLoadedCallback = Blazor.platform.findMethod(
-				'{assemblyName}',
-				'{@namespace}',
-				'{className}',
-				'{callbackMethodName}'
-			);
-			Blazor.platform.callMethod(fluxorBrowserHooksLoadedCallback, null, []); 
-		}}, 1000);
+		const fluxorBrowserHooksLoadedCallback = Blazor.platform.findMethod(
+			'{assemblyName}',
+			'{@namespace}',
+			'{className}',
+			'{callbackMethodName}'
+		);
+		Blazor.platform.callMethod(fluxorBrowserHooksLoadedCallback, null, []); 
 	}})();
 ";
 		}

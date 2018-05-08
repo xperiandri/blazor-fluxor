@@ -13,7 +13,7 @@ namespace Blazor.Fluxor.Routing
 			UriHelper = uriHelper;
 		}
 
-		public override Task<IAction[]> Handle(Go action)
+		public override Task<IAction[]> HandleAsync(Go action)
 		{
 			Uri fullUri = UriHelper.ToAbsoluteUri(action.NewUri);
 			if (fullUri.ToString() != UriHelper.GetAbsoluteUri())
