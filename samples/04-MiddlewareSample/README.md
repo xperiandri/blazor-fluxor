@@ -1,6 +1,8 @@
 # 01-MiddlewareSample
 This sample shows how to write Middleware for Fluxor
 
+[Run this sample online]
+
 ## Creating your middleware
 1. In the Client project create a new folder `Store\Middlewares\AnExample`
 2. Create a new class `AnExampleMiddleware` and descend it from the `Blaxor.Fluxor.Middleware` class
@@ -25,4 +27,4 @@ When you call `options.AddMiddleware<T>()` then classes in the same assembly + n
 
 For a more comprehensive example of writing middleware for Fluxor look at the [Redux Devtools Middleware] classes.
 
-[Redux Devtools Middleware]: <https://github.com/mrpmorris/blazor-fluxor/tree/master/src/Blazor.Fluxor/ReduxDevTools>
+[Run this sample online]: <http://fluxorsample04.azurewebsites.net/>
