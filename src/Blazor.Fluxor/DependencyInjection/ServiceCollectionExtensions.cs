@@ -34,17 +34,20 @@ namespace Blazor.Fluxor
 
 			// Register all middleware types with dependency injection
 			foreach (Type middlewareType in Options.MiddlewareTypes)
-				serviceCollection.AddScoped(middlewareType);
+				serviceCollection.AddSingleton(middlewareType);
 
 			IEnumerable<AssemblyScanSettings> scanWhitelist = Options.MiddlewareTypes
 				.Select(t => new AssemblyScanSettings(t.Assembly, t.GetNamespace()));
 
 			// Scan for features and effects
 			if (Options.DependencyInjectionEnabled)
+			{
 				DependencyScanner.Scan(
 					serviceCollection: serviceCollection,
 					assembliesToScan: Options.DependencyInjectionAssembliesToScan,
 					scanWhitelist: scanWhitelist);
+				serviceCollection.AddSingleton(typeof(IState<>), typeof(State<>));
+			}
 
 			return serviceCollection;
 		}

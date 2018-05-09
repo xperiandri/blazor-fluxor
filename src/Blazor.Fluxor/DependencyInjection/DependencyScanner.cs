@@ -48,13 +48,12 @@ namespace Blazor.Fluxor.DependencyInjection
 			IEnumerable<DiscoveredEffectInfo> discoveredEffectInfos)
 		{
 			// Register the Store class so we can request it from the service provider
-			serviceCollection.AddScoped<Store>();
+			var store = new Store();
+			serviceCollection.AddSingleton<IDispatcher>(store);
 
 			// Register a custom factory for building IStore that will inject all effects
-			serviceCollection.AddScoped(typeof(IStore), serviceProvider =>
+			serviceCollection.AddSingleton(typeof(IStore), serviceProvider =>
 			{
-				IStore store = serviceProvider.GetService<Store>();
-
 				foreach(DiscoveredFeatureInfo discoveredFeatureInfo in discoveredFeatureInfos)
 				{
 					IFeature feature = (IFeature)serviceProvider.GetService(discoveredFeatureInfo.FeatureInterfaceGenericType);

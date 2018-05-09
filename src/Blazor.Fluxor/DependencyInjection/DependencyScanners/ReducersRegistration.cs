@@ -34,7 +34,7 @@ namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 		private static void RegisterReducer(IServiceCollection serviceCollection, DiscoveredReducerInfo discoveredReducerInfo)
 		{
 			// Register the feature class against the generic IFeature<> interface
-			serviceCollection.AddScoped(
+			serviceCollection.AddSingleton(
 				serviceType: discoveredReducerInfo.ReducerInterfaceGenericType,
 				implementationType: discoveredReducerInfo.ImplementingType);
 		}

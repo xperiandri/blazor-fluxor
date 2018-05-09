@@ -51,7 +51,7 @@ namespace WeatherForecastSample.Client.Store.FetchData
 ## Creating the action that triggers a data request to the HTTP server
 1. Create a folder `Store\FetchData\GetForecastData`. 
 2. Create a class in that folder named `GetForecastDataAction.cs`. This class can remain empty, but it must implement the interface `IAction`.
-3. When this action is dispatched to the store we want to clear out any previous state and set IsLoading to true. To do this create a class `GetForecastDataActionReducer.cs` with the following code
+3. When this action is dispatched through the store we want to clear out any previous state and set IsLoading to true. To do this create a class `GetForecastDataActionReducer.cs` with the following code
 ```
 using Blazor.Fluxor;
 
@@ -71,7 +71,7 @@ namespace WeatherForecastSample.Client.Store.FetchData.GetForecastData
 ```
 
 ## Databinding to the feature state
-We need this action to be dispatched to the store when the FetchData page is loaded.
+We need this action to be dispatched through the store when the FetchData page is loaded.
 1. Edit `Pages\FetchData.cshtml`
 2. Set the code at the top of the page to the following
 ```
@@ -80,8 +80,8 @@ We need this action to be dispatched to the store when the FetchData page is loa
 @using Blazor.Fluxor
 @using Store.FetchData
 @using Store.FetchData.GetForecastData
-@inject IStore Store
-@inject IFeature<FetchDataState> Feature
+@inject IDispatcher Dispatcher
+@inject IState<FetchDataState> State
 ```
 We now need to change the rest of the page in the following ways
    * We show the ErrorMessage if it is set in the state.
@@ -90,21 +90,21 @@ We now need to change the rest of the page in the following ways
 
 3. At the following code at the top of the page, beneath the *h1* tag
 ```
-@if (Feature.State.ErrorMessage != null)
+@if (State.Current.ErrorMessage != null)
 {
     <h1>Error</h1>
-    <p>@Feature.State.ErrorMessage</p>
+    <p>@State.Current.ErrorMessage</p>
 }
 ```
 4. Replace the section of code that shows the text `Loading...` with the following
 ```
-@if (Feature.State.IsLoading)
+@if (State.Current.IsLoading)
 {
     <p>Loading...</p>
 }
 ```
-5. Change any occurrences of `forecasts` to `Feature.State.Forecasts`. There are two of them, one in an `@if` statement which shows/hides the table, and one in a `@foreach` statement that loops through the data.
-6. Remove the `else` statement and change it to `if (Feature.State.Forecasts != null)`.
+5. Change any occurrences of `forecasts` to `State.Current.Forecasts`. There are two of them, one in an `@if` statement which shows/hides the table, and one in a `@foreach` statement that loops through the data.
+6. Remove the `else` statement and change it to `if (State.Current.Forecasts != null)`.
 
 ## Dispatching the action when the page loads
 The code at the bottom of the `FetchData.cshtml` page calls out to a server. We want to move this code out to an effect that is triggered by the `GetForecastDataAction`. So we need to change the code in the `OnInitAsync` method to the following
@@ -112,7 +112,7 @@ The code at the bottom of the `FetchData.cshtml` page calls out to a server. We 
 @functions {
     protected override async Task OnInitAsync()
     {
-        await Store.Dispatch(new GetForecastDataAction());
+        await Dispatcher.DispatchAsync(new GetForecastDataAction());
     }
 }
 ```
@@ -124,26 +124,26 @@ The entirety of the `FetchData.cshtml` file should look like this
 @using Blazor.Fluxor
 @using Store.FetchData
 @using Store.FetchData.GetForecastData
-@inject IStore Store
-@inject IFeature<FetchDataState> Feature
+@inject IDispatcher Dispatcher
+@inject IState<FetchDataState> State
 
 <h1>Weather forecast</h1>
 
-@if (Feature.State.ErrorMessage != null)
+@if (State.Current.ErrorMessage != null)
 {
     <h1>Error</h1>
-    <p>@Feature.State.ErrorMessage</p>
+    <p>@State.Current.ErrorMessage</p>
 }
 
 <p>This page <strong>has</strong> been Fluxorized</p>
 
 <p>This component demonstrates fetching data from the server.</p>
 
-@if (Feature.State.IsLoading)
+@if (State.Current.IsLoading)
 {
     <p>Loading...</p>
 }
-@if (Feature.State.Forecasts != null)
+@if (State.Current.Forecasts != null)
 {
     <table class="table">
         <thead>
@@ -155,7 +155,7 @@ The entirety of the `FetchData.cshtml` file should look like this
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in Feature.State.Forecasts)
+            @foreach (var forecast in State.Current.Forecasts)
             {
                 <tr>
                     <td>@forecast.Date.ToShortDateString()</td>
@@ -172,7 +172,7 @@ The entirety of the `FetchData.cshtml` file should look like this
 @functions {
 protected override async Task OnInitAsync()
 {
-    await Store.Dispatch(new GetForecastDataAction());
+    await Dispatcher.DispatchAsyc(new GetForecastDataAction());
 }
 }
 ```
@@ -225,7 +225,7 @@ namespace WeatherForecastSample.Client.Store.FetchData.GetForecastData
 
    * This effect executes a HTTP request to the URL `api/SampleData/WeatherForecasts`
    * It will `await` the response from the server before continuing
-   * It will then dispatch a new action to the store depending on whether the request was a success or a failure.
+   * It will then dispatch a new action through the store depending on whether the request was a success or a failure.
    * Note that the return type is a `Task<>` that returns an array of `IAction`. This is so the effect can return zero to many actions to be dispatched by the store as a side-effect of the action it was triggered by, which in this case is `GetForecastDataAction`.
 
 ## Adding the final actions and reducers

@@ -11,9 +11,15 @@
     <PackageProjectUrl>https://github.com/mrpmorris/blazor-fluxor</PackageProjectUrl>
     <PackageTags>blazor redux flux state</PackageTags>
     <RepositoryUrl>https://github.com/mrpmorris/blazor-fluxor</RepositoryUrl>
+<<<<<<< HEAD
     <AssemblyVersion>0.0.10.0</AssemblyVersion>
     <FileVersion>0.0.10.0</FileVersion>
     <Version>0.0.10</Version>
+=======
+    <AssemblyVersion>0.0.9.0</AssemblyVersion>
+    <FileVersion>0.0.9.0</FileVersion>
+    <Version>0.0.9</Version>
+>>>>>>> 85fb8f0345a9c749029ae5705e045b658b62fd16
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

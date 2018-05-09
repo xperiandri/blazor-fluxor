@@ -3,26 +3,26 @@
 @using Blazor.Fluxor
 @using Store.FetchData
 @using Store.FetchData.GetForecastData
-@inject IStore Store
-@inject IFeature<FetchDataState> Feature
+@inject IDispatcher Dispatcher
+@inject IState<FetchDataState> State
 
 <h1>Weather forecast</h1>
 
-@if (Feature.State.ErrorMessage != null)
+@if (State.Current.ErrorMessage != null)
 {
     <h1>Error</h1>
-    <p>@Feature.State.ErrorMessage</p>
+    <p>@State.Current.ErrorMessage</p>
 }
 
 <p>This page <strong>has</strong> been Fluxorized</p>
 
 <p>This component demonstrates fetching data from the server.</p>
 
-@if (Feature.State.IsLoading)
+@if (State.Current.IsLoading)
 {
     <p>Loading...(2 second delay on server side)</p>
 }
-@if (Feature.State.Forecasts != null)
+@if (State.Current.Forecasts != null)
 {
     <table class="table">
         <thead>
@@ -34,7 +34,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in Feature.State.Forecasts)
+            @foreach (var forecast in State.Current.Forecasts)
             {
                 <tr>
                     <td>@forecast.Date.ToShortDateString()</td>
@@ -51,6 +51,6 @@
 @functions {
 protected override async Task OnInitAsync()
 {
-    await Store.DispatchAsync(new GetForecastDataAction());
+    await Dispatcher.DispatchAsync(new GetForecastDataAction());
 }
 }

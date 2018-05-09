@@ -10,7 +10,7 @@ This sample shows how to take the standard Visual Studio Blazor template and Flu
 Fluxor has the ability to write your own middleware libraries or use existing 3rd party libraries. As these libraries may require Javascript inserted into the hosting html you must first call `@Store.Initialize()` in your main layout page.
 1. In the Client project open the file `Shared\MainLayout.cshtml`
 2. Beneath the `@inherits BlazorLayoutComponent` line add `@inject Blazor.Fluxor.IStore Store`
-3. Beneath that add `@Store.Initialize()` - This will initialize the store and inject any required Javascript
+3. Then add `@Store.Initialize()` - This will initialize the store and inject any required Javascript
 
 ### Automatic discovery of store features
 1. In the Client project find the `Program.cs` file. 
@@ -29,7 +29,7 @@ Fluxor has the ability to write your own middleware libraries or use existing 3r
 1. In the Client project add a folder named `Store`.
 2. It is recommended that you create a folder per feature of your application. Create a folder named `Counter`.
 3. Within the `Counter` folder create a file named `CounterState.cs`.
-3. Enter the following code. It is good practice to make the properties of state have private setters. This ensures state can only be modified by dispatching an action to the store rather than allowing it to be edited in-place.
+3. Enter the following code. It is good practice to make the properties of state have private setters. This ensures state can only be modified by dispatching an action through the store rather than allowing it to be edited in-place.
 ```
 namespace CounterSample.Client.Store.Counter
 {
@@ -66,16 +66,16 @@ namespace CounterSample.Client.Store.Counter
 ```
 @using Blazor.Fluxor
 @using Store.Counter
-@inject IFeature<CounterState> Feature
+@inject IState<CounterState> State
 ```
-   * `@using Blazor.Fluxor` is required in order to identify the `IFeature<>` interface.
+   * `@using Blazor.Fluxor` is required in order to identify the `IState<>` interface.
    * `@using Store.Counter` is required to identify the `CounterState` class we wish to use.
-   * `@inject IFeature<CounterState> Feature` will instruct Blazor to provide use with a reference to our `CounterFeature` from which we can obtain state.
+   * `@inject IState<CounterState> State` will instruct Blazor to provide use with a reference to an interface from which we can obtain state.
 
-2. Change the html that displays the value of the counter to display `@Feature.State.Value` instead.
+2. Change the html that displays the value of the counter to display `@State.Current.Value` instead.
 
 ### Dispatching actions to mutate the state
-The Flux pattern is structured so that the logic and state of the application can effectively function perfectly fine without a user interface being present at all. Changes to state are executed by using the `Store` to dispatch an `Action` telling it what to do next (update a person's details, increment a counter, or something else).
+The Flux pattern is structured so that the logic and state of the application can effectively function perfectly fine without a user interface being present at all. Changes to state are executed by using the `IDispatcher` service to dispatch an `Action` telling it what to do next (update a person's details, increment a counter, or something else).
 
 1. In the Client project's `Store\Counter` folder add a new folder named `IncrementCounter`.
 2. In this folder create a class named `IncrementCounterAction.cs` and add the following code.
@@ -91,7 +91,7 @@ namespace CounterSample.Client.Store.Counter.IncrementCounter
 3. We now need to dispatch an instance of this action to the store whenever the user clicks the `Click me` button. Add the following declarations to the top of the `Pages\Counter.cshtml` file.
 ```
 @using Store.Counter.IncrementCounter
-@inject IStore Store
+@inject IDispatcher Dispatcher
 ```
 The declaration section at the top of the file should now look like this:
 ```
@@ -99,23 +99,23 @@ The declaration section at the top of the file should now look like this:
 @using Blazor.Fluxor
 @using Store.Counter
 @using Store.Counter.IncrementCounter
-@inject IStore Store
-@inject IFeature<CounterState> Feature
+@inject IDispatcher Dispatcher
+@inject IState<CounterState> State
 ```
    * The `@using Store.Counter` line is needed to identify the `CounterState` class.
    * The `@using Store.Counter.IncrementCounter` line is needed to identify the `IncrementCounterAction` class.
-   * The `@inject IStore Store` line instructs Blazor to inject the `Store` instance so we can dispatch actions to it.
-4. Change the `IncrementCount` function to dispatch an action to the store instructing it to increment the counter value.
+   * The `@inject IDispatcher Dispatcher` line instructs Blazor to inject an object can use to dispatch actions through the store.
+4. Change the `IncrementCount` function to dispatch an action through the store instructing it to increment the counter value.
 ```
 async void IncrementCount()
 {
-    await Store.Dispatch(new IncrementCounterAction());
+    await Dispatcher.DispatchAsync(new IncrementCounterAction());
 }
 ```
-   * Although the method would work fine without being async, it is best practice to always use the async/await pattern when dispatching to the store because you never know when the store might have an effect registered that will perform asynchronous action.
+   * Although the method would work fine without being async, it is best practice to always use the async/await pattern when dispatching actions through the store because you never know when the store might have an effect registered that will perform asynchronous action.
    
 ### Mutating the state in response to dispatched actions
-So far we have some feature state, a feature that exposes that state for displaying in the user interface, and an action we can dispatch to the store to indicate the user's desire to increment the value in the state. The final piece of the pattern is to implement a `Reducer`.
+So far we have some feature state, a feature that exposes that state for displaying in the user interface, and an action we can dispatch through the store to indicate the user's desire to increment the value in the state. The final piece of the pattern is to implement a `Reducer`.
 
 A `Reducer` is effectively a pure function. It takes the two parameters, the current state and the action dispatched, and it then alters the state according to the property values on the action (in this case there are no properties on the action, so our `Reducer` will always just increment the value by one).
 

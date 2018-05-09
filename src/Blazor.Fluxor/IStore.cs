@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Blazor;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Blazor.Fluxor
 {
@@ -9,7 +8,7 @@ namespace Blazor.Fluxor
 	/// Identifies a store, which is a collection of features. It is recommended that you do not create your
 	/// own classes that implement this interface as the <see cref="Store"/> class does this for you.
 	/// </summary>
-	public interface IStore
+	public interface IStore: IDispatcher
 	{
 		/// <summary>
 		/// Given an action type and an effect instance, this method will register the effect so that it
@@ -63,17 +62,6 @@ namespace Blazor.Fluxor
 		/// <seealso cref="ReduxDevTools.ReduxDevToolsMiddleware.OnJumpToState(object, ReduxDevTools.CallbackObjects.JumpToStateCallback)"/>
 		/// <seealso cref="Routing.RoutingMiddleware.OnLocationChanged(object, string)"/>
 		IDisposable BeginInternalMiddlewareChange();
-		/// <summary>
-		/// Dispatches an action to all features added to the store and ensures all effects with a regstered
-		/// interest in the action type are notified.
-		/// </summary>
-		/// <remarks>
-		/// The return type is a Task because the store may also dispatch long-running side effects from 
-		/// effects (<see cref="IEffect"/>). The caller should await the result of this method.
-		/// </remarks>
-		/// <param name="action">The action to dispatch to all features</param>
-		/// <returns>An awaitable task</returns>
-		Task DispatchAsync(IAction action);
 		/// <summary>
 		/// All of the features added to the store.
 		/// </summary>

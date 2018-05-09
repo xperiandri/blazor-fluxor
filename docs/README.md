@@ -17,6 +17,10 @@ More sample projects will be added as the framework develops.
   - [Effects sample] - Fluxorizes `FetchData` page in the standard Visual Studio Blazor sample in order to demonstrate asynchronous reactions to actions that are dispatched.
   - [Redux dev tools integration] - Demonstrates how to enable debugger integration for the [Redux dev tools] Chrome plugin.
 
+## What's new
+### New in 0.0.10
+  - Introduced IDispatcher for dispatching actions from Blazor components so that the whole IStore isn't required.
+  - Introduced IState for providing feature state to Blazor components so that the entire IFeature<T> doesn't need to be referenced.
 ### New in 0.0.9
   - Renamed `Handle` to `HandleAsync` in effects
   - Added source docs

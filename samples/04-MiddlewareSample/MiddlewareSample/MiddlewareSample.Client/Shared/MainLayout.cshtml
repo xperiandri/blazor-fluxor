@@ -3,6 +3,7 @@
 @using Store.Counter
 @using Store.Counter.Increment
 @inject IStore Store
+@inject IDispatcher Dispatcher
 @inject IFeature<CounterState> Feature
 
 @Store.Initialize()
@@ -23,6 +24,6 @@
 @functions {
 async void IncrementCount()
 {
-    await Store.DispatchAsync(new IncrementAction());
+    await Dispatcher.DispatchAsync(new IncrementAction());
 }
 }
