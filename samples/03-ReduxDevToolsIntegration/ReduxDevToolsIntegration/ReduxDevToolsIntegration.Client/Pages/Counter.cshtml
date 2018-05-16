@@ -4,13 +4,13 @@
 @using Store.Counter
 @using Store.Counter.IncrementCounter
 @inject IDispatcher Dispatcher
-@inject IStateProvider<CounterState> CounterState
+@inject IState<CounterState> State
 
 <h1>Counter</h1>
 
 <p>This page <strong>has</strong> been Fluxorized</p>
 
-<p>Current count: @CounterState().Value</p>
+<p>Current count: @State.Current.Value</p>
 
 <button class="btn btn-primary" onclick="@IncrementCount">Click me</button>
 

@@ -2,8 +2,8 @@
 @inherits Blazor.Fluxor.Temporary.FluxorComponent
 @using Blazor.Fluxor
 @using Store.Counter
-@inject IStateProvider<CounterState> CounterState
+@inject IState<CounterState> State
 
 <h1>Middleware sample</h1>
 <h2>Look in your browser's console view!</h2>
-Counter value: @CounterState().Value
+Counter value: @State.Current.Value

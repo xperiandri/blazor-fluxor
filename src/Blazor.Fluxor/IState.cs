@@ -5,5 +5,11 @@
 	/// the state of an <see cref="IFeature{TState}"/>
 	/// </summary>
 	/// <typeparam name="TState">The type of the state</typeparam>
-	public delegate TState IStateProvider<TState>();
+	public interface IState<TState>
+	{
+		/// <summary>
+		/// Returns the current state of the feature
+		/// </summary>
+		TState Current { get; }
+	}
 }

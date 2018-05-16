@@ -46,6 +46,7 @@ namespace Blazor.Fluxor
 					serviceCollection: serviceCollection,
 					assembliesToScan: Options.DependencyInjectionAssembliesToScan,
 					scanWhitelist: scanWhitelist);
+				serviceCollection.AddSingleton(typeof(IState<>), typeof(State<>));
 			}
 
 			return serviceCollection;

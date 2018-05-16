@@ -9,11 +9,9 @@ namespace Blazor.Fluxor
 	{
 		public abstract string GetName();
 		public TState State { get; private set; }
-
 		public object GetState() => State;
 		public void RestoreState(object value) => State = (TState)value;
 		public Type GetStateType() => typeof(TState);
-		public IStateProvider<TState> GetStateProvider() => () => State;
 
 		protected abstract TState GetInitialState();
 		private readonly Dictionary<Type, List<Object>> ReducersByActionType = new Dictionary<Type, List<Object>>();
