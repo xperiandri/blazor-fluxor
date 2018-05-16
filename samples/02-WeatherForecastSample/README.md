@@ -83,7 +83,7 @@ We need this action to be dispatched through the store when the FetchData page i
 @using Store.FetchData
 @using Store.FetchData.GetForecastData
 @inject IDispatcher Dispatcher
-@inject IState<FetchDataState> State
+@inject IStateProvider<FetchDataState> FetchDataState
 ```
 We now need to change the rest of the page in the following ways
    * We show the ErrorMessage if it is set in the state.
@@ -92,21 +92,21 @@ We now need to change the rest of the page in the following ways
 
 3. At the following code at the top of the page, beneath the *h1* tag
 ```
-@if (State.Current.ErrorMessage != null)
+@if (FetchDataState().ErrorMessage != null)
 {
     <h1>Error</h1>
-    <p>@State.Current.ErrorMessage</p>
+    <p>@FetchDataState().ErrorMessage</p>
 }
 ```
 4. Replace the section of code that shows the text `Loading...` with the following
 ```
-@if (State.Current.IsLoading)
+@if (FetchDataState().IsLoading)
 {
     <p>Loading...</p>
 }
 ```
-5. Change any occurrences of `forecasts` to `State.Current.Forecasts`. There are two of them, one in an `@if` statement which shows/hides the table, and one in a `@foreach` statement that loops through the data.
-6. Remove the `else` statement and change it to `if (State.Current.Forecasts != null)`.
+5. Change any occurrences of `forecasts` to `FetchDataState().Forecasts`. There are two of them, one in an `@if` statement which shows/hides the table, and one in a `@foreach` statement that loops through the data.
+6. Remove the `else` statement and change it to `if (FetchDataState().Forecasts != null)`.
 
 ## Dispatching the action when the page loads
 The code at the bottom of the `FetchData.cshtml` page calls out to a server. We want to move this code out to an effect that is triggered by the `GetForecastDataAction`. So we need to change the code in the `OnInitAsync` method to the following
@@ -127,25 +127,25 @@ The entirety of the `FetchData.cshtml` file should look like this
 @using Store.FetchData
 @using Store.FetchData.GetForecastData
 @inject IDispatcher Dispatcher
-@inject IState<FetchDataState> State
+@inject IStateProvider<FetchDataState> FetchDataState
 
 <h1>Weather forecast</h1>
 
-@if (State.Current.ErrorMessage != null)
+@if (FetchDataState().ErrorMessage != null)
 {
     <h1>Error</h1>
-    <p>@State.Current.ErrorMessage</p>
+    <p>@FetchDataState().ErrorMessage</p>
 }
 
 <p>This page <strong>has</strong> been Fluxorized</p>
 
 <p>This component demonstrates fetching data from the server.</p>
 
-@if (State.Current.IsLoading)
+@if (FetchDataState().IsLoading)
 {
     <p>Loading...</p>
 }
-@if (State.Current.Forecasts != null)
+@if (FetchDataState().Forecasts != null)
 {
     <table class="table">
         <thead>
@@ -157,7 +157,7 @@ The entirety of the `FetchData.cshtml` file should look like this
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in State.Current.Forecasts)
+            @foreach (var forecast in FetchDataState().Forecasts)
             {
                 <tr>
                     <td>@forecast.Date.ToShortDateString()</td>

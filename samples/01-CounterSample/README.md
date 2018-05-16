@@ -68,13 +68,13 @@ namespace CounterSample.Client.Store.Counter
 ```
 @using Blazor.Fluxor
 @using Store.Counter
-@inject IState<CounterState> State
+@inject IStateProvider<CounterState> CounterState
 ```
    * `@using Blazor.Fluxor` is required in order to identify the `IState<>` interface.
    * `@using Store.Counter` is required to identify the `CounterState` class we wish to use.
-   * `@inject IState<CounterState> State` will instruct Blazor to provide use with a reference to an interface from which we can obtain state.
+   * `@inject IStateProvider<CounterState> CounterState` will instruct Blazor to provide use with a reference to a function from which we can obtain state.
 
-2. Change the html that displays the value of the counter to display `@State.Current.Value` instead.
+2. Change the html that displays the value of the counter to display `@CounterState().Value` instead.
 
 ### Dispatching actions to mutate the state
 The Flux pattern is structured so that the logic and state of the application can effectively function perfectly fine without a user interface being present at all. Changes to state are executed by using the `IDispatcher` service to dispatch an `Action` telling it what to do next (update a person's details, increment a counter, or something else).
@@ -102,7 +102,7 @@ The declaration section at the top of the file should now look like this:
 @using Store.Counter
 @using Store.Counter.IncrementCounter
 @inject IDispatcher Dispatcher
-@inject IState<CounterState> State
+@inject IStateProvider<CounterState> CounterState
 ```
    * The `@using Store.Counter` line is needed to identify the `CounterState` class.
    * The `@using Store.Counter.IncrementCounter` line is needed to identify the `IncrementCounterAction` class.

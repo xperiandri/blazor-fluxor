@@ -49,6 +49,10 @@ namespace Blazor.Fluxor
 	public interface IFeature<TState>: IFeature
 	{
 		/// <summary>
+		/// Returns an <see cref="IStateProvider{TResult}"/> that returns the state
+		/// </summary>
+		IStateProvider<TState> GetStateProvider();
+		/// <summary>
 		/// The current state of the feature
 		/// </summary>
 		TState State { get; }

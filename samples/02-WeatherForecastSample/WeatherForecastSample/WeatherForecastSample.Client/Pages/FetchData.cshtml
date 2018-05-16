@@ -4,25 +4,25 @@
 @using Store.FetchData
 @using Store.FetchData.GetForecastData
 @inject IDispatcher Dispatcher
-@inject IState<FetchDataState> State
+@inject IStateProvider<FetchDataState> FetchDataState
 
 <h1>Weather forecast</h1>
 
-@if (State.Current.ErrorMessage != null)
+@if (FetchDataState().ErrorMessage != null)
 {
     <h1>Error</h1>
-    <p>@State.Current.ErrorMessage</p>
+    <p>@FetchDataState().ErrorMessage</p>
 }
 
 <p>This page <strong>has</strong> been Fluxorized</p>
 
 <p>This component demonstrates fetching data from the server.</p>
 
-@if (State.Current.IsLoading)
+@if (FetchDataState().IsLoading)
 {
     <p>Loading...(2 second delay on server side)</p>
 }
-@if (State.Current.Forecasts != null)
+@if (FetchDataState().Forecasts != null)
 {
     <table class="table">
         <thead>
@@ -34,7 +34,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in State.Current.Forecasts)
+            @foreach (var forecast in FetchDataState().Forecasts)
             {
                 <tr>
                     <td>@forecast.Date.ToShortDateString()</td>
