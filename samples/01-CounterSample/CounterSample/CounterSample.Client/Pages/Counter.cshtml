@@ -14,7 +14,7 @@
 <button class="btn btn-primary" onclick="@IncrementCount">Click me</button>
 
 @functions {
-   async void IncrementCount()
+   async Task IncrementCount()
    {
        await Dispatcher.DispatchAsync(new IncrementCounterAction());
    }
