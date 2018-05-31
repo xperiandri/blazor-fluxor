@@ -2,7 +2,6 @@
 @inherits Blazor.Fluxor.Temporary.FluxorComponent
 @using Blazor.Fluxor
 @using Store.FetchData
-@using Store.FetchData.GetForecastData
 @inject IDispatcher Dispatcher
 @inject IState<FetchDataState> State
 
@@ -27,7 +26,7 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Date</th>Chan
+                <th>Date</th>
                 <th>Temp. (C)</th>
                 <th>Temp. (F)</th>
                 <th>Summary</th>

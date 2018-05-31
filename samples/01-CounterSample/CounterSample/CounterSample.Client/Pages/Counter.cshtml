@@ -1,7 +1,7 @@
 ﻿@page "/counter"
+@inherits Blazor.Fluxor.Temporary.FluxorComponent
 @using Blazor.Fluxor
 @using Store.Counter
-@using Store.Counter.IncrementCounter
 @inject IDispatcher Dispatcher
 @inject IState<CounterState> State
 
@@ -9,7 +9,7 @@
 
 <p>This page <strong>has</strong> been Fluxorized</p>
 
-<p>Current count: @State.Current.Value</p>
+<p>Current count: @State.Current.ClickCount</p>
 
 <button class="btn btn-primary" onclick="@IncrementCount">Click me</button>
 

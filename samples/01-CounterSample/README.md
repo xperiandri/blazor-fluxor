@@ -18,13 +18,13 @@ Fluxor has the ability to write your own middleware libraries or use existing 3r
 1. In the Client project find the `Program.cs` file. 
 2. Add `using Blazor.Fluxor;`
 3. Change the serviceProvider initialization code to add Fluxor
-```
-	var serviceProvider = new BrowserServiceProvider(services =>
-	{
-		services.AddFluxor(options => options
-			.UseDependencyInjection(typeof(Program).Assembly)
-		);
-	});
+```c#
+var serviceProvider = new BrowserServiceProvider(services =>
+{
+	services.AddFluxor(options => options
+		.UseDependencyInjection(typeof(Program).Assembly)
+	);
+});
 ```
 
 ### Adding state
@@ -32,22 +32,22 @@ Fluxor has the ability to write your own middleware libraries or use existing 3r
 2. It is recommended that you create a folder per feature of your application. Create a folder named `Counter`.
 3. Within the `Counter` folder create a file named `CounterState.cs`.
 3. Enter the following code. It is good practice to make the properties of state have private setters. This ensures state can only be modified by dispatching an action through the store rather than allowing it to be edited in-place.
-```
+```c#
 namespace CounterSample.Client.Store.Counter
 {
 	public class CounterState
 	{
-		public int Value { get; private set; }
+		public int ClickCount { get; private set; }
 
-		public CounterState(int value)
+		public CounterState(int clickCount)
 		{
-			Value = value;
+			ClickCount = clickCount;
 		}
 	}
 }
 ```
 4. Now that we have state for the Counter feature we need to create the feature itself. Create a file named `CounterFeature.cs` and enter the following code.
-```
+```c#
 using Blazor.Fluxor;
 
 namespace CounterSample.Client.Store.Counter
@@ -65,24 +65,26 @@ namespace CounterSample.Client.Store.Counter
  
 ### Displaying state in the user interface
 1. Edit `Pages\Counter.cshtml` and add the following `using` clauses.
-```
+```c#
+@inherits Blazor.Fluxor.Temporary.FluxorComponent
 @using Blazor.Fluxor
 @using Store.Counter
 @inject IState<CounterState> State
 ```
+   * `@inherits Blazor.Fluxor.Temporary.FluxorComponent` is a work-around until Blazor implements a way of informing a component its state has changed.
    * `@using Blazor.Fluxor` is required in order to identify the `IState<>` interface.
    * `@using Store.Counter` is required to identify the `CounterState` class we wish to use.
    * `@inject IState<CounterState> State` will instruct Blazor to provide use with a reference to an interface from which we can obtain state.
 
-2. Change the html that displays the value of the counter to display `@State.Current.Value` instead.
+2. Change the html that displays the value of the counter to display `@State.Current.ClickCount` instead.
 
 ### Dispatching actions to mutate the state
 The Flux pattern is structured so that the logic and state of the application can effectively function perfectly fine without a user interface being present at all. Changes to state are executed by using the `IDispatcher` service to dispatch an `Action` telling it what to do next (update a person's details, increment a counter, or something else).
 
 1. In the Client project's `Store\Counter` folder add a new folder named `IncrementCounter`.
 2. In this folder create a class named `IncrementCounterAction.cs` and add the following code.
-```
-namespace CounterSample.Client.Store.Counter.IncrementCounter
+```c#
+namespace CounterSample.Client.Store.Counter
 {
 	public class IncrementCounterAction: IAction
 	{
@@ -90,25 +92,25 @@ namespace CounterSample.Client.Store.Counter.IncrementCounter
 }
 ```
    * In more complicated scenarios the action will have properties, in this case we don't need any as the action will always simply increment the current counter by 1.
+   * Note: In order to keep the `@using` clauses in the view short I have declared this class in the same namespace as the feature rather than in its own `IncrementCounter` child namespace.
 3. We now need to dispatch an instance of this action to the store whenever the user clicks the `Click me` button. Add the following declarations to the top of the `Pages\Counter.cshtml` file.
-```
+```c#
 @using Store.Counter.IncrementCounter
 @inject IDispatcher Dispatcher
 ```
 The declaration section at the top of the file should now look like this:
-```
+```c#
 @page "/counter"
+@inherits Blazor.Fluxor.Temporary.FluxorComponent
 @using Blazor.Fluxor
 @using Store.Counter
-@using Store.Counter.IncrementCounter
 @inject IDispatcher Dispatcher
 @inject IState<CounterState> State
 ```
-   * The `@using Store.Counter` line is needed to identify the `CounterState` class.
-   * The `@using Store.Counter.IncrementCounter` line is needed to identify the `IncrementCounterAction` class.
+   * The `@using Store.Counter` line is needed to identify the `CounterState` and `IncrementCounterAction` classes.
    * The `@inject IDispatcher Dispatcher` line instructs Blazor to inject an object can use to dispatch actions through the store.
 4. Change the `IncrementCount` function to dispatch an action through the store instructing it to increment the counter value.
-```
+```c#
 async void IncrementCount()
 {
     await Dispatcher.DispatchAsync(new IncrementCounterAction());
@@ -124,7 +126,7 @@ A `Reducer` is effectively a pure function. It takes the two parameters, the cur
 If you recall, earlier I recommended you make all of the properties of your state should have private setters. The recommended pattern for reducing (altering) your state is to replace it with a completely new object that is the same as the previous state but with the relevant changes to its values.
 
 1. In the `Store\Counter\IncrementCounter` folder create a new file named `IncrementCounterReducer.cs` and enter the following code.
-```
+```c#
 using Blazor.Fluxor;
 
 namespace CounterSample.Client.Store.Counter.IncrementCounter

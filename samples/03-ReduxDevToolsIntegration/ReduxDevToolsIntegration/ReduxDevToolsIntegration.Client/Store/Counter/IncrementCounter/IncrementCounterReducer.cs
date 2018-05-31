@@ -6,7 +6,7 @@ namespace ReduxDevToolsIntegration.Client.Store.Counter.IncrementCounter
 	{
 		public CounterState Reduce(CounterState state, IncrementCounterAction action)
 		{
-			return new CounterState(state.Value + 1);
+			return new CounterState(state.ClickCount + 1);
 		}
 	}
 }

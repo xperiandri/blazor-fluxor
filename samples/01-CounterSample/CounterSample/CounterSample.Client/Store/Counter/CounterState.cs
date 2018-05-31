@@ -2,11 +2,11 @@
 {
 	public class CounterState
 	{
-		public int Value { get; private set; }
+		public int ClickCount { get; private set; }
 
-		public CounterState(int value)
+		public CounterState(int clickCount)
 		{
-			Value = value;
+			ClickCount = clickCount;
 		}
 	}
 }

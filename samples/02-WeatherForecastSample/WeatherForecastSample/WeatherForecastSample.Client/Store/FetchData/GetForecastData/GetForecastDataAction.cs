@@ -1,6 +1,6 @@
 ﻿using Blazor.Fluxor;
 
-namespace WeatherForecastSample.Client.Store.FetchData.GetForecastData
+namespace WeatherForecastSample.Client.Store.FetchData
 {
     public class GetForecastDataAction: IAction
     {
