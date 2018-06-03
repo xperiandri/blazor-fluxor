@@ -4,13 +4,14 @@ This sample shows how to integrate with the [Redux dev tools] plugin for Google 
 [Run this sample online]
 
 ## Setting up the project
-Once you have your project up and running, adding support for ReduxDevTools is simple. Edit the `Program` class within the `Client` project and add `.UseDebugTools()` to the options.
+Once you have your project up and running, adding support for ReduxDevTools is simple. Edit the `Program` class within the `Client` project and add the Routing and Redux Dev Tools middlewares to the options.
 ```
 var serviceProvider = new BrowserServiceProvider(services =>
 {
 	services.AddFluxor(options => options
 		.UseDependencyInjection(typeof(Program).Assembly)
-		.UseDebugTools()
+		.AddMiddleware<Blazor.Fluxor.ReduxDevTools.ReduxDevToolsMiddleware>()
+		.AddMiddleware<Blazor.Fluxor.Routing.RoutingMiddleware>()
 	);
 });
 ```
