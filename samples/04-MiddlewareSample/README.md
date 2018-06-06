@@ -1,8 +1,6 @@
 # 01-MiddlewareSample
 This sample shows how to write Middleware for Fluxor
 
-[Run this sample online]
-
 ## Creating your middleware
 1. In the Client project create a new folder `Store\Middlewares\AnExample`
 2. Create a new class `AnExampleMiddleware` and descend it from the `Blaxor.Fluxor.Middleware` class
@@ -26,5 +24,3 @@ Features, Reducers, and Effects in the same assembly + namespace (or sub-namespa
 When you call `options.AddMiddleware<T>()` then classes in the same assembly + namespace (or sub-namespace) will be whitelisted, and therefore autoatically discovered by dependency injection because you have whitelisted the middleware.
 
 For a more comprehensive example of writing middleware for Fluxor look at the [Redux Devtools Middleware] classes.
-
-[Run this sample online]: <http://fluxorsample04.azurewebsites.net/>

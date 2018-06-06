@@ -1,8 +1,6 @@
 # 01-CounterSample
 This sample shows how to take the standard Visual Studio Blazor template and Fluxorize it.
 
-[Run this sample online]
-
 ### Creating the project
 1. Create a new Blazor website using the template in Visual Studio (See the [Official Blazor-Fluxor nuget page] for details on how to install Blazor).
 2. Name the project `CounterSample`.
@@ -148,5 +146,3 @@ namespace CounterSample.Client.Store.Counter.IncrementCounter
 If the `Reducer` does not modify the state at all then it is recommended that you return the original state passed into the `Reduce` method.
 
 Note that the folder structure and naming conventions used here are only recommendations. You may wish to have separate folders for Actions, Reducers, and Effects. Or you may wish to use the structure used in this sample so that all code related to `IncrementCounter` are accessible in the same folder.
-
-[Run this sample online]: <http://fluxorsample01.azurewebsites.net/>
