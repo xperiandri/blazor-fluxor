@@ -34,7 +34,7 @@ namespace Blazor.Fluxor.ReduxDevTools
 			return SequenceNumberOfCurrentState == SequenceNumberOfLatestState;
 		}
 
-		public override void AfterDispatch(IAction action)
+		public override IEnumerable<IAction> AfterDispatch(IAction action)
 		{
 			ReduxDevToolsInterop.Dispatch(action, GetState());
 			
@@ -42,6 +42,8 @@ namespace Blazor.Fluxor.ReduxDevTools
 			// ensure the latest is incremented, and the current = latest
 			SequenceNumberOfLatestState++;
 			SequenceNumberOfCurrentState = SequenceNumberOfLatestState;
+
+            return null;
 		}
 
 		private IDictionary<string, object> GetState()

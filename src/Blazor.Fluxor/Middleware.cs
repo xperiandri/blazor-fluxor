@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Blazor.Fluxor
 {
@@ -14,7 +15,7 @@ namespace Blazor.Fluxor
 		public virtual void AfterInitializeAllMiddlewares() { }
 		public virtual bool MayDispatchAction(IAction action) => true;
 		public virtual void BeforeDispatch(IAction action) { }
-		public virtual void AfterDispatch(IAction action) { }
+        public virtual IEnumerable<IAction> AfterDispatch(IAction action) => null;
 
 		public virtual void Initialize(IStore store)
 		{

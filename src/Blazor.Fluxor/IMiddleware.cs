@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Blazor.Fluxor
 {
@@ -36,7 +37,8 @@ namespace Blazor.Fluxor
 		/// Called after each action dispatched
 		/// </summary>
 		/// <param name="action">The action that has just been dispatched</param>
-		void AfterDispatch(IAction action);
+        /// <returns>A collection of actions to dispatch. Null is a valid return value.</returns>
+		IEnumerable<IAction> AfterDispatch(IAction action);
 		/// <summary>
 		/// This should only be called via <see cref="IStore.BeginInternalMiddlewareChange"/>.
 		/// </summary>
