@@ -19,6 +19,9 @@ More sample projects will be added as the framework develops.
   - [Custom Middleware] - Demonstrates how to create custom Middleware to intercept actions etc.
 
 ## What's new
+### New in 0.0.11
+  - Allow middleware to return tasks to dispatch from IMiddleware.AfterDispatch
+  - Upgraded to Blazor 0.4.0
 ### New in 0.0.10
   - Introduced IDispatcher for dispatching actions from Blazor components so that the whole IStore isn't required.
   - Introduced IState for providing feature state to Blazor components so that the entire IFeature<T> doesn't need to be referenced.
