@@ -42,7 +42,7 @@ namespace MiddlewareSample.Client.Store.Middlewares.AnExample
             var newActionsToDispatch = new List<IAction>();
             if (!(action is AnExampleActionFromMiddleware))
             {
-                bool dispatchAFollowUpAction = new Random().Next(4) > 1;
+                bool dispatchAFollowUpAction = new Random().Next(4) < 1;
                 if (dispatchAFollowUpAction)
                 {
                     Console.WriteLine("IMiddleware.AfterDispatch is dispatching a new action");

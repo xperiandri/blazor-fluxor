@@ -33,10 +33,12 @@ namespace Blazor.Fluxor.Temporary
 		{
 			foreach (FluxorComponent component in AllComponents)
 			{
-				component.StateHasChanged();
-				Console.WriteLine(component.GetType().Name + ".StateHasChanged()");
-			}
-		}
+#if DEBUG
+                Console.WriteLine($"Executing {component.GetType()}.StateHasChanged()");
+#endif
+                component.StateHasChanged();
+            }
+        }
 
 	}
 }

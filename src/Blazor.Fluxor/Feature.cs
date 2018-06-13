@@ -8,20 +8,20 @@ namespace Blazor.Fluxor
 	public abstract class Feature<TState> : IFeature<TState>
 	{
 		public abstract string GetName();
-		public TState State { get; private set; }
-		public object GetState() => State;
-		public void RestoreState(object value) => State = (TState)value;
-		public Type GetStateType() => typeof(TState);
+		public virtual TState State { get; protected set; }
+		public virtual object GetState() => State;
+		public virtual void RestoreState(object value) => State = (TState)value;
+		public virtual Type GetStateType() => typeof(TState);
 
 		protected abstract TState GetInitialState();
-		private readonly Dictionary<Type, List<Object>> ReducersByActionType = new Dictionary<Type, List<Object>>();
+		protected readonly Dictionary<Type, List<Object>> ReducersByActionType = new Dictionary<Type, List<Object>>();
 
 		public Feature()
 		{
 			State = GetInitialState();
 		}
 
-		public void AddReducer<TAction>(IReducer<TState, TAction> reducer)
+		public virtual void AddReducer<TAction>(IReducer<TState, TAction> reducer)
 		{
 			if (reducer == null)
 				throw new ArgumentNullException(nameof(reducer));
@@ -35,7 +35,7 @@ namespace Blazor.Fluxor
 			reducers.Add(reducer);
 		}
 
-		public void ReceiveDispatchNotificationFromStore<TAction>(TAction action)
+		public virtual void ReceiveDispatchNotificationFromStore<TAction>(TAction action)
 			where TAction: IAction
 		{
 			if (action == null)
