@@ -21,6 +21,7 @@ More sample projects will be added as the framework develops.
 ## What's new
 ### New in 0.0.11
   - Allow middleware to return tasks to dispatch from IMiddleware.AfterDispatch
+  - Make methods of `Feature<TState>` virtual.
   - Upgraded to Blazor 0.4.0
 ### New in 0.0.10
   - Introduced IDispatcher for dispatching actions from Blazor components so that the whole IStore isn't required.
