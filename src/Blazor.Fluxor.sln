@@ -41,7 +41,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiddlewareSample.Server", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2279CD95-5886-4777-B019-E66683CE32F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor.Fluxor.UnitTests", "..\test\Blazor.Fluxor.UnitTests\Blazor.Fluxor.UnitTests.csproj", "{4BB3FC9F-BD7E-435F-AFC0-2AF04C573095}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor.Fluxor.UnitTests", "..\test\Blazor.Fluxor.UnitTests\Blazor.Fluxor.UnitTests.csproj", "{4BB3FC9F-BD7E-435F-AFC0-2AF04C573095}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -126,6 +126,7 @@ Global
 		{0E4AE0C6-EDFD-4193-ACDD-DB6BCB232780} = {415FF6D9-06F9-44DD-BD46-5857F8B868C4}
 		{BBE7FE59-B2DB-4F11-BD05-4237412FD9D9} = {415FF6D9-06F9-44DD-BD46-5857F8B868C4}
 		{2A8555B7-32E9-4F74-AA21-8EF4CA72E661} = {415FF6D9-06F9-44DD-BD46-5857F8B868C4}
+		{4BB3FC9F-BD7E-435F-AFC0-2AF04C573095} = {2279CD95-5886-4777-B019-E66683CE32F1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B1F2E0DF-C651-48A3-83E3-3B77D34EC3A2}
