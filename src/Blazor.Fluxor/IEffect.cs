@@ -21,9 +21,9 @@ namespace Blazor.Fluxor
 	/// <summary>
 	/// A generic implementation of <see cref="IEffect"/>
 	/// </summary>
-	/// <typeparam name="TAction">The action type that triggers this effect when the store dispatches</typeparam>
-	public interface IEffect<TAction>: IEffect
-	  where TAction : IAction
+	/// <typeparam name="TTriggerAction">The action type that triggers this effect when the store dispatches</typeparam>
+	public interface IEffect<TTriggerAction>: IEffect
+	  where TTriggerAction : IAction
 	{
 		/// <summary>
 		/// This method is executed by the store immediately after an action is dispatched. You must first
@@ -31,6 +31,6 @@ namespace Blazor.Fluxor
 		/// </summary>
 		/// <param name="action"></param>
 		/// <returns>An array of actions that the effect wants the store to process. This can be null or empty.</returns>
-		Task<IAction[]> HandleAsync(TAction action);
+		Task<IAction[]> HandleAsync(TTriggerAction action);
 	}
 }
