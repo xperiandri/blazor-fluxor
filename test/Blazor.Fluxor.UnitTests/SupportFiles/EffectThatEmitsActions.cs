@@ -3,7 +3,6 @@
 namespace Blazor.Fluxor.UnitTests.SupportFiles
 {
 	public class EffectThatEmitsActions<TTriggerAction> : Effect<TTriggerAction>
-	public class EffectThatEmitsActions<TTriggerAction> : Effect<TTriggerAction>
 		where TTriggerAction: IAction
 	{
 		public readonly IAction[] ActionsToEmit;

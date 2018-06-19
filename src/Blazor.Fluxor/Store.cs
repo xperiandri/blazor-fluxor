@@ -16,7 +16,7 @@ namespace Blazor.Fluxor
 
 		private IBrowserInteropService BrowserInteropService;
 		private readonly Dictionary<string, IFeature> FeaturesByName = new Dictionary<string, IFeature>(StringComparer.InvariantCultureIgnoreCase);
-		private readonly Dictionary<Type, List<IEffect>> EffectsByActionType = new Dictionary<Type, List<IEffect>>();
+		private readonly List<IEffect> Effects = new List<IEffect>();
 		private readonly List<IMiddleware> Middlewares = new List<IMiddleware>();
 		private readonly List<IMiddleware> ReversedMiddlewares = new List<IMiddleware>();
 
@@ -90,19 +90,11 @@ namespace Blazor.Fluxor
 			}
 		}
 
-		public void AddEffect(Type actionType, IEffect effect)
+		public void AddEffect(IEffect effect)
 		{
-			if (actionType == null)
-				throw new ArgumentNullException(nameof(actionType));
 			if (effect == null)
 				throw new ArgumentNullException(nameof(effect));
-
-			Type genericType = typeof(IEffect<>).MakeGenericType(actionType);
-			if (!genericType.IsAssignableFrom(effect.GetType()))
-				throw new ArgumentException($"Effect {effect.GetType().Name} does not implement IEffect<{actionType.Name}>");
-
-			List<IEffect> effects = GetEffectsForActionType(actionType, true);
-			effects.Add(effect);
+			Effects.Add(effect);
 		}
 
 		public void AddMiddleware(IMiddleware middleware)
@@ -155,38 +147,23 @@ namespace Blazor.Fluxor
 			};
 		}
 
-		private List<IEffect> GetEffectsForActionType(Type actionType, bool createIfNonExistent)
-		{
-			EffectsByActionType.TryGetValue(actionType, out List<IEffect> effects);
-			if (createIfNonExistent && effects == null)
-			{
-				effects = new List<IEffect>();
-				EffectsByActionType[actionType] = effects;
-			}
-			return effects;
-		}
-
 		private async Task<IEnumerable<IAction>> TriggerEffects(IAction action)
 		{
 			var allActionsCreatedByAllSideEffects = new List<IAction>();
 
-			IEnumerable<IEffect> effectsForAction = GetEffectsForActionType(action.GetType(), false);
-			if (effectsForAction != null && effectsForAction.Any())
+			var effectsToTrigger = Effects.Where(x => x.ShouldReactToAction(action));
+			foreach (var effect in effectsToTrigger)
 			{
-				foreach (var effect in effectsForAction)
+				IAction[] actionsFromSideEffect = await effect.HandleAsync(action);
+				if (actionsFromSideEffect != null)
 				{
-					IAction[] actionsFromSideEffect = await effect.HandleAsync(action);
-					if (actionsFromSideEffect != null)
+					foreach (IAction actionFromSideEffect in actionsFromSideEffect)
 					{
-						foreach (IAction actionFromSideEffect in actionsFromSideEffect)
-						{
-							if (actionFromSideEffect != null)
-								allActionsCreatedByAllSideEffects.Add(actionFromSideEffect);
-						}
+						if (actionFromSideEffect != null)
+							allActionsCreatedByAllSideEffects.Add(actionFromSideEffect);
 					}
 				}
 			}
-
 			return allActionsCreatedByAllSideEffects;
 		}
 

@@ -64,8 +64,8 @@ namespace Blazor.Fluxor.DependencyInjection
 
 				foreach(DiscoveredEffectInfo discoveredEffectInfo in discoveredEffectInfos)
 				{
-					IEffect effect = (IEffect)serviceProvider.GetService(discoveredEffectInfo.EffectInterfaceGenericType);
-					store.AddEffect(discoveredEffectInfo.ActionType, effect);
+					IEffect effect = (IEffect)serviceProvider.GetService(discoveredEffectInfo.ImplementingType);
+					store.AddEffect(effect);
 				}
 
 				foreach (Type middlewareType in Options.MiddlewareTypes)

@@ -130,7 +130,7 @@ namespace Blazor.Fluxor.UnitTests.StoreTests
 				var actionsToEmit = new IAction[] { actionToEmit1, actionToEmit2 };
 				var subject = new Store(BrowserInteropStub);
 				subject.AddFeature(mockFeature.Object);
-				subject.AddEffect(typeof(TestAction), new EffectThatEmitsActions<TestAction>(actionsToEmit));
+				subject.AddEffect(new EffectThatEmitsActions<TestAction>(actionsToEmit));
 
 				BrowserInteropStub._TriggerPageLoaded();
 				await subject.DispatchAsync(new TestAction());
@@ -140,6 +140,32 @@ namespace Blazor.Fluxor.UnitTests.StoreTests
 				mockFeature
 					.Verify(x => x.ReceiveDispatchNotificationFromStore<TestActionFromEffect2>(actionToEmit2), Times.Once);
 			}
+
+			[Fact]
+			public async Task TriggersOnlyEffectsThatHandleTheDispatchedAction()
+			{
+				var mockIncompatibleEffect = new Mock<IEffect>();
+				mockIncompatibleEffect
+					.Setup(x => x.ShouldReactToAction(It.IsAny<IAction>()))
+					.Returns(false);
+				var mockCompatibleEffect = new Mock<IEffect>();
+				mockCompatibleEffect
+					.Setup(x => x.ShouldReactToAction(It.IsAny<IAction>()))
+					.Returns(true);
+
+				var subject = new Store(BrowserInteropStub);
+				subject.AddEffect(mockIncompatibleEffect.Object);
+				subject.AddEffect(mockCompatibleEffect.Object);
+				BrowserInteropStub._TriggerPageLoaded();
+
+				var action = new TestAction();
+				await subject.DispatchAsync(action);
+
+				mockIncompatibleEffect.Verify(x => x.HandleAsync(action), Times.Never);
+				mockCompatibleEffect.Verify(x => x.HandleAsync(action), Times.Once);
+			}
 		}
+
+
 	}
 }

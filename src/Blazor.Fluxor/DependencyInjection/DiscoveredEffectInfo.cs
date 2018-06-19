@@ -2,17 +2,13 @@
 
 namespace Blazor.Fluxor.DependencyInjection
 {
-    internal class DiscoveredEffectInfo
-    {
-		public readonly Type EffectInterfaceGenericType;
+	internal class DiscoveredEffectInfo
+	{
 		public readonly Type ImplementingType;
-		public readonly Type ActionType;
 
-		public DiscoveredEffectInfo(Type implementingType, Type actionType)
+		public DiscoveredEffectInfo(Type implementingType)
 		{
-			EffectInterfaceGenericType = typeof(IEffect<>).MakeGenericType(actionType);
 			ImplementingType = implementingType;
-			ActionType = actionType;
 		}
 	}
 }

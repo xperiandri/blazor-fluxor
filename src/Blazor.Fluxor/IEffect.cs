@@ -16,10 +16,18 @@ namespace Blazor.Fluxor
 		/// <param name="action"></param>
 		/// <returns>An array of actions that the effect wants the store to process. This can be null or empty.</returns>
 		Task<IAction[]> HandleAsync(IAction action);
+		/// <summary>
+		/// Indicates whether or not the effect should react to a specific action dispatched through the store
+		/// </summary>
+		/// <param name="action">The action that is being dispatched through the store</param>
+		/// <returns>True if the <see cref="HandleAsync(IAction)"/> method should be called</returns>
+		bool ShouldReactToAction(IAction action);
 	}
 
 	/// <summary>
-	/// A generic implementation of <see cref="IEffect"/>
+	/// A generic implementation of <see cref="IEffect"/> that returns true
+	/// from <see cref="IEffect.ShouldReactToAction(IAction)"/> if TTriggerAction is
+	/// assignable from the dispatched action.
 	/// </summary>
 	/// <typeparam name="TTriggerAction">The action type that triggers this effect when the store dispatches</typeparam>
 	public interface IEffect<TTriggerAction>: IEffect

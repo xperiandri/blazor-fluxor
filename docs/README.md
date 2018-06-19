@@ -20,14 +20,14 @@ More sample projects will be added as the framework develops.
 
 ## What's new
 ### New in 0.12.0
+ - Added unit tests
  - Change versioning scheme to match the Blazor approach (increment minor version per release)
  - Make BrowserInterop an injected service
  - Ensure DisposableCallback can only be disposed once
  - Change Store.Features from IEnumerable<IFeature> to IReadonlyDictionary<string, Feature> for fast lookup and prevention of duplicate keys
  - Make Store.BeginInternalMiddlewareChange re-entrant
  - Fix NullReferenceException that could occur when Middleware returned null from IMiddleware.AfterDispatch
- - Added unit tests
-### New in 0.0.11
+ ## New in 0.0.11
   - Allow middleware to return tasks to dispatch from IMiddleware.AfterDispatch
   - Make methods of `Feature<TState>` virtual.
   - Upgraded to Blazor 0.4.0

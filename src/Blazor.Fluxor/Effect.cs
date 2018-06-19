@@ -7,6 +7,11 @@ namespace Blazor.Fluxor
 	{
 		public abstract Task<IAction[]> HandleAsync(TTriggerAction action);
 
+		public bool ShouldReactToAction(IAction action)
+		{
+			return typeof(TTriggerAction).IsAssignableFrom(action.GetType());
+		}
+
 		Task<IAction[]> IEffect.HandleAsync(IAction action)
 		{
 			return HandleAsync((TTriggerAction)action);
