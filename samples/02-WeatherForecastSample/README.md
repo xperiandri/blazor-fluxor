@@ -57,9 +57,9 @@ using Blazor.Fluxor;
 
 namespace WeatherForecastSample.Client.Store.FetchData.GetForecastData
 {
-	public class GetForecastDataActionReducer : IReducer<FetchDataState, GetForecastDataAction>
+	public class GetForecastDataActionReducer : Reducer<FetchDataState, GetForecastDataAction>
 	{
-		public FetchDataState Reduce(FetchDataState state, GetForecastDataAction action)
+		public override FetchDataState Reduce(FetchDataState state, GetForecastDataAction action)
 		{
 			return new FetchDataState(
 				isLoading: true,
@@ -227,6 +227,7 @@ namespace WeatherForecastSample.Client.Store.FetchData.GetForecastData
    * It will `await` the response from the server before continuing
    * It will then dispatch a new action through the store depending on whether the request was a success or a failure.
    * Note that the return type is a `Task<>` that returns an array of `IAction`. This is so the effect can return zero to many actions to be dispatched by the store as a side-effect of the action it was triggered by, which in this case is `GetForecastDataAction`.
+   * Note that the `Event<TTriggerAction>` class is for convenience only, `Fluxor` actually works with any class that implements `IEvent`.
 
 ## Adding the final actions and reducers
 In this example, the side effect that executes in a background thread in response to `GetForecastDataAction` indicates either a success or a failure. In your own code you are free to use any pattern you wish (one class for fail & one for success, or a single action with a `bool Success` property, or anything else you can think of).
@@ -256,9 +257,9 @@ using Blazor.Fluxor;
 
 namespace WeatherForecastSample.Client.Store.FetchData.GetForecastData
 {
-	public class GetForecastDataFailedActionReducer : IReducer<FetchDataState, GetForecastDataFailedAction>
+	public class GetForecastDataFailedActionReducer : Reducer<FetchDataState, GetForecastDataFailedAction>
 	{
-		public FetchDataState Reduce(FetchDataState state, GetForecastDataFailedAction action)
+		public override FetchDataState Reduce(FetchDataState state, GetForecastDataFailedAction action)
 		{
 			return new FetchDataState(
 				isLoading: false,
@@ -293,9 +294,9 @@ using Blazor.Fluxor;
 
 namespace WeatherForecastSample.Client.Store.FetchData.GetForecastData
 {
-	public class GetForecastDataSuccessActionReducer : IReducer<FetchDataState, GetForecastDataSuccessAction>
+	public class GetForecastDataSuccessActionReducer : Reducer<FetchDataState, GetForecastDataSuccessAction>
 	{
-		public FetchDataState Reduce(FetchDataState state, GetForecastDataSuccessAction action)
+		public override FetchDataState Reduce(FetchDataState state, GetForecastDataSuccessAction action)
 		{
 			return new FetchDataState(
 				isLoading: false,

@@ -63,7 +63,7 @@ namespace Blazor.Fluxor.UnitTests.StoreTests
 				await subject.DispatchAsync(testAction);
 
 				mockFeature
-					.Verify(x => x.ReceiveDispatchNotificationFromStore<TestAction>(testAction), Times.Never);
+					.Verify(x => x.ReceiveDispatchNotificationFromStore(testAction), Times.Never);
 			}
 
 			[Fact]
@@ -93,7 +93,7 @@ namespace Blazor.Fluxor.UnitTests.StoreTests
 				await subject.DispatchAsync(testAction);
 
 				mockFeature
-					.Verify(x => x.ReceiveDispatchNotificationFromStore<TestAction>(testAction));
+					.Verify(x => x.ReceiveDispatchNotificationFromStore(testAction));
 			}
 
 			[Fact]
@@ -117,7 +117,7 @@ namespace Blazor.Fluxor.UnitTests.StoreTests
 				mockMiddleware
 					.Verify(x => x.MayDispatchAction(testActionFromMiddleware), Times.Once);
 				mockFeature
-					.Verify(x => x.ReceiveDispatchNotificationFromStore<TestActionFromMiddleware>(testActionFromMiddleware), Times.Once);
+					.Verify(x => x.ReceiveDispatchNotificationFromStore(testActionFromMiddleware), Times.Once);
 
 			}
 
@@ -136,9 +136,9 @@ namespace Blazor.Fluxor.UnitTests.StoreTests
 				await subject.DispatchAsync(new TestAction());
 
 				mockFeature
-					.Verify(x => x.ReceiveDispatchNotificationFromStore<TestActionFromEffect1>(actionToEmit1), Times.Once);
+					.Verify(x => x.ReceiveDispatchNotificationFromStore(actionToEmit1), Times.Once);
 				mockFeature
-					.Verify(x => x.ReceiveDispatchNotificationFromStore<TestActionFromEffect2>(actionToEmit2), Times.Once);
+					.Verify(x => x.ReceiveDispatchNotificationFromStore(actionToEmit2), Times.Once);
 			}
 
 			[Fact]

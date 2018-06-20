@@ -19,6 +19,8 @@ More sample projects will be added as the framework develops.
   - [Custom Middleware] - Demonstrates how to create custom Middleware to intercept actions etc.
 
 ## What's new
+### New in 0.12.1
+ - Changed the way Effects and Reducers work so the developer has more flexibility in chosing what they react to (descendant classes, implemented interfaces, etc)
 ### New in 0.12.0
  - Added unit tests
  - Change versioning scheme to match the Blazor approach (increment minor version per release)

@@ -2,9 +2,9 @@
 
 namespace CounterSample.Client.Store.Counter.IncrementCounter
 {
-	public class IncrementCounterReducer : IReducer<CounterState, IncrementCounterAction>
+	public class IncrementCounterReducer : Reducer<CounterState, IncrementCounterAction>
 	{
-		public CounterState Reduce(CounterState state, IncrementCounterAction action)
+		public override CounterState Reduce(CounterState state, IncrementCounterAction action)
 		{
 			return new CounterState(state.ClickCount + 1);
 		}

@@ -24,21 +24,4 @@ namespace Blazor.Fluxor
 		bool ShouldReactToAction(IAction action);
 	}
 
-	/// <summary>
-	/// A generic implementation of <see cref="IEffect"/> that returns true
-	/// from <see cref="IEffect.ShouldReactToAction(IAction)"/> if TTriggerAction is
-	/// assignable from the dispatched action.
-	/// </summary>
-	/// <typeparam name="TTriggerAction">The action type that triggers this effect when the store dispatches</typeparam>
-	public interface IEffect<TTriggerAction>: IEffect
-	  where TTriggerAction : IAction
-	{
-		/// <summary>
-		/// This method is executed by the store immediately after an action is dispatched. You must first
-		/// indicate which action type this effect is interested in by calling <see cref="IStore.AddEffect(System.Type, IEffect)"/>
-		/// </summary>
-		/// <param name="action"></param>
-		/// <returns>An array of actions that the effect wants the store to process. This can be null or empty.</returns>
-		Task<IAction[]> HandleAsync(TTriggerAction action);
-	}
 }

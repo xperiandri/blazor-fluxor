@@ -2,9 +2,9 @@
 
 namespace WeatherForecastSample.Client.Store.FetchData.GetForecastData
 {
-	public class GetForecastDataSuccessActionReducer : IReducer<FetchDataState, GetForecastDataSuccessAction>
+	public class GetForecastDataSuccessActionReducer : Reducer<FetchDataState, GetForecastDataSuccessAction>
 	{
-		public FetchDataState Reduce(FetchDataState state, GetForecastDataSuccessAction action)
+		public override FetchDataState Reduce(FetchDataState state, GetForecastDataSuccessAction action)
 		{
 			return new FetchDataState(
 				isLoading: false,

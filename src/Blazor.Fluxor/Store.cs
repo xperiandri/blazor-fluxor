@@ -192,8 +192,7 @@ namespace Blazor.Fluxor
 			// We need the generic method for the feature instance
 			MethodInfo methodInfo = feature
 				.GetType()
-				.GetMethod(methodName)
-				.MakeGenericMethod(action.GetType());
+				.GetMethod(methodName);
 
 			methodInfo.Invoke(feature, new object[] { action });
 		}

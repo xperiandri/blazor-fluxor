@@ -14,13 +14,12 @@ namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 				.Select(t => new
 				{
 					ImplementingType = t,
-					GenericParameterTypes = TypeHelper.GetGenericParametersForImplementedInterface(t, typeof(IReducer<,>))
+					GenericParameterTypes = TypeHelper.GetGenericParametersForImplementedInterface(t, typeof(IReducer<>))
 				})
 				.Where(x => x.GenericParameterTypes != null)
 				.Select(x => new DiscoveredReducerInfo(
 					implementingType: x.ImplementingType,
-					stateType: x.GenericParameterTypes[0],
-					actionType: x.GenericParameterTypes[1]))
+					stateType: x.GenericParameterTypes[0]))
 				.ToList();
 
 			foreach (DiscoveredReducerInfo discoveredReducerInfo in discoveredReducerInfos)
@@ -33,10 +32,8 @@ namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 
 		private static void RegisterReducer(IServiceCollection serviceCollection, DiscoveredReducerInfo discoveredReducerInfo)
 		{
-			// Register the feature class against the generic IFeature<> interface
-			serviceCollection.AddSingleton(
-				serviceType: discoveredReducerInfo.ReducerInterfaceGenericType,
-				implementationType: discoveredReducerInfo.ImplementingType);
+			// Register the feature class
+			serviceCollection.AddSingleton(serviceType: discoveredReducerInfo.ImplementingType);
 		}
 	}
 }
