@@ -25,7 +25,7 @@ namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 
 		private static void RegisterEffect(IServiceCollection serviceCollection, DiscoveredEffectInfo discoveredEffectInfo)
 		{
-			// Register the effect class against the generic IEffect<> interface
+			// Register the effect class
 			serviceCollection.AddSingleton(discoveredEffectInfo.ImplementingType);
 		}
 	}

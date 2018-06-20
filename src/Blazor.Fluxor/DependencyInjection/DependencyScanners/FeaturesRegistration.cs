@@ -62,12 +62,11 @@ namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 				{
 					foreach (DiscoveredReducerInfo reducerInfo in discoveredReducerInfosForFeatureState)
 					{
-						MethodInfo featureAddreducerMethod = discoveredFeatureInfo.ImplementingType
-							.GetMethod(addReducerMethodName)
-							.MakeGenericMethod(reducerInfo.ActionType);
+						MethodInfo featureAddReducerMethod = 
+							discoveredFeatureInfo.ImplementingType.GetMethod(addReducerMethodName);
 
-						object reducerInstance = serviceProvider.GetService(reducerInfo.ReducerInterfaceGenericType);
-						featureAddreducerMethod.Invoke(featureInstance, new object[] { reducerInstance });
+						object reducerInstance = serviceProvider.GetService(reducerInfo.ImplementingType);
+						featureAddReducerMethod.Invoke(featureInstance, new object[] { reducerInstance });
 					}
 				}
 				return featureInstance;

@@ -36,14 +36,12 @@ namespace Blazor.Fluxor
 		/// Allows a feature to react to an action dispatched via the store. This should not be called by
 		/// consuming applications. Instead you should dispatch actions only via <see cref="IStore.DispatchAsync(IAction)"/>
 		/// </summary>
-		/// <typeparam name="TAction">The type of the action dispatched via the store</typeparam>
 		/// <param name="action">The action dispatched via the store</param>
-		void ReceiveDispatchNotificationFromStore<TAction>(TAction action)
-			where TAction : IAction;
+		void ReceiveDispatchNotificationFromStore(IAction action);
 	}
 
 	/// <summary>
-	/// A type-save implementation of <see cref="IFeature"/>
+	/// A type-safe implementation of <see cref="IFeature"/>
 	/// </summary>
 	/// <typeparam name="TState">The type of the state this feature owns</typeparam>
 	public interface IFeature<TState>: IFeature
@@ -55,9 +53,8 @@ namespace Blazor.Fluxor
 		/// <summary>
 		/// Adds an instance of a reducer to this feature
 		/// </summary>
-		/// <typeparam name="TAction">The action type that the reducer reacts to</typeparam>
 		/// <param name="reducer">The reducer instance</param>
 		/// <seealso cref="DependencyInjection.Options.UseDependencyInjection(System.Reflection.Assembly[])"/>
-		void AddReducer<TAction>(IReducer<TState, TAction> reducer);
+		void AddReducer(IReducer<TState> reducer);
 	}
 }
