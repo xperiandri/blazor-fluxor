@@ -2,7 +2,7 @@
 
 namespace Blazor.Fluxor
 {
-	public abstract class Effect<TTriggerAction> : IEffect<TTriggerAction>
+	public abstract class Effect<TTriggerAction> : IEffect
 	  where TTriggerAction : IAction
 	{
 		public abstract Task<IAction[]> HandleAsync(TTriggerAction action);
