@@ -129,9 +129,9 @@ using Blazor.Fluxor;
 
 namespace CounterSample.Client.Store.Counter.IncrementCounter
 {
-	public class IncrementCounterReducer : IReducer<CounterState, IncrementCounterAction>
+	public class IncrementCounterReducer : Reducer<CounterState, IncrementCounterAction>
 	{
-		public CounterState Reduce(CounterState state, IncrementCounterAction action)
+		public override CounterState Reduce(CounterState state, IncrementCounterAction action)
 		{
 			return new CounterState(state.Value + 1);
 		}
@@ -139,10 +139,11 @@ namespace CounterSample.Client.Store.Counter.IncrementCounter
 }
 ```
 
-   * We import the `Blazor.Fluxor` namespace in order to identify the `IReducer<TState, TActopm>` interface.
+   * We import the `Blazor.Fluxor` namespace in order to identify the `Reducer<TState, TAction>` interface.
    * The first generic parameter in the interface should identify the state the `Reducer` deals with, in this case `CounterState`.
-   * The second generic parameter in the interface should identify the action the `Reducer` will react to, in this case it is the `IncrementCounterAction` class.
+   * The second generic parameter in the interface should identify the action the `Reducer will react to, in this case it is the `IncrementCounterAction` class.
+   * Note that the `Reducer<TState, TAction>` class is for convenience only, `Fluxor` actually works with any class that implements `IReducer<TState>`.
    
-If the `Reducer` does not modify the state at all then it is recommended that you return the original state passed into the `Reduce` method.
+If the `Reducer` does not modify the state at all then you should return the original state passed into the `Reduce` method.
 
 Note that the folder structure and naming conventions used here are only recommendations. You may wish to have separate folders for Actions, Reducers, and Effects. Or you may wish to use the structure used in this sample so that all code related to `IncrementCounter` are accessible in the same folder.
