@@ -2,8 +2,8 @@
 
 namespace WeatherForecastSample.Client.Store.FetchData.GetForecastData
 {
-    public class GetForecastDataFailedAction: IAction
-    {
+	public class GetForecastDataFailedAction : IAction
+	{
 		public string ErrorMessage { get; private set; }
 
 		public GetForecastDataFailedAction(string errorMessage)
@@ -11,5 +11,5 @@ namespace WeatherForecastSample.Client.Store.FetchData.GetForecastData
 			ErrorMessage = errorMessage;
 		}
 
-    }
+	}
 }

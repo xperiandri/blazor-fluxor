@@ -24,3 +24,5 @@ Features, Reducers, and Effects in the same assembly + namespace (or sub-namespa
 When you call `options.AddMiddleware<T>()` then classes in the same assembly + namespace (or sub-namespace) will be whitelisted, and therefore autoatically discovered by dependency injection because you have whitelisted the middleware.
 
 For a more comprehensive example of writing middleware for Fluxor look at the [Redux Devtools Middleware] classes.
+
+[Redux Devtools Middleware]: <https://github.com/mrpmorris/blazor-fluxor/blob/master/src/Blazor.Fluxor/ReduxDevTools/ReduxDevToolsMiddleware.cs>

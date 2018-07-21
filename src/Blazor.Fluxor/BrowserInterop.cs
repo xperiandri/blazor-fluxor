@@ -1,4 +1,5 @@
 ﻿using Blazor.Fluxor.Extensions;
+using Blazor.Fluxor.Services;
 using System;
 
 namespace Blazor.Fluxor

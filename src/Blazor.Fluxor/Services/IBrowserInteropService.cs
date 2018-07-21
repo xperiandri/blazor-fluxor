@@ -2,6 +2,9 @@
 
 namespace Blazor.Fluxor.Services
 {
+	/// <summary>
+	/// An interface that provides the required initialisation steps to the browser
+	/// </summary>
 	public interface IBrowserInteropService
 	{
 		/// <summary>

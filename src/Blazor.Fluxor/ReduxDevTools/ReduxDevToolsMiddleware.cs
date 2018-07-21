@@ -1,5 +1,4 @@
 ﻿using Blazor.Fluxor.ReduxDevTools.CallbackObjects;
-using Blazor.Fluxor.Temporary;
 using Microsoft.AspNetCore.Blazor;
 using System;
 using System.Collections.Generic;
@@ -12,7 +11,7 @@ namespace Blazor.Fluxor.ReduxDevTools
 	/// <summary>
 	/// Middleware for interacting with the Redux Devtools extension for Chrome
 	/// </summary>
-	public class ReduxDevToolsMiddleware : Middleware 
+	public class ReduxDevToolsMiddleware : Middleware
 	{
 		private int SequenceNumberOfCurrentState = 0;
 		private int SequenceNumberOfLatestState = 0;
@@ -37,13 +36,13 @@ namespace Blazor.Fluxor.ReduxDevTools
 		public override IEnumerable<IAction> AfterDispatch(IAction action)
 		{
 			ReduxDevToolsInterop.Dispatch(action, GetState());
-			
+
 			// As actions can only be executed if not in a historical state (yes, "a" historical, pronounce your H!)
 			// ensure the latest is incremented, and the current = latest
 			SequenceNumberOfLatestState++;
 			SequenceNumberOfCurrentState = SequenceNumberOfLatestState;
 
-            return null;
+			return null;
 		}
 
 		private IDictionary<string, object> GetState()
@@ -91,7 +90,6 @@ namespace Blazor.Fluxor.ReduxDevTools
 					feature.RestoreState(stronglyTypedFeatureState);
 				}
 			}
-			FluxorComponent.AllStateHasChanged();
 		}
 
 		public override string GetClientScripts()

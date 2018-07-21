@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace MiddlewareSample.Client.Store.Middlewares.AnExample
 {
-	public class AnExampleMiddleware: Middleware
+	public class AnExampleMiddleware : Middleware
 	{
 		public override string GetClientScripts()
 		{
@@ -26,8 +26,8 @@ namespace MiddlewareSample.Client.Store.Middlewares.AnExample
 		{
 			bool allow = new Random().Next(4) > 1;
 			string allowResult = allow ? "allowed" : "prohibited";
-			Console.WriteLine("Middleware can prevent actions from being dispatched: " + 
-                $"{action.GetType().Name} has been {allowResult}");
+			Console.WriteLine("Middleware can prevent actions from being dispatched: " +
+				$"{action.GetType().Name} has been {allowResult}");
 			return allow;
 		}
 
@@ -39,17 +39,17 @@ namespace MiddlewareSample.Client.Store.Middlewares.AnExample
 		public override IEnumerable<IAction> AfterDispatch(IAction action)
 		{
 			Console.WriteLine("Middleware has been notified that an action was dispatched: " + action.GetType().FullName);
-            var newActionsToDispatch = new List<IAction>();
-            if (!(action is AnExampleActionFromMiddleware))
-            {
-                bool dispatchAFollowUpAction = new Random().Next(4) < 1;
-                if (dispatchAFollowUpAction)
-                {
-                    Console.WriteLine("IMiddleware.AfterDispatch is dispatching a new action");
-                    newActionsToDispatch.Add(new AnExampleActionFromMiddleware());
-                }
-            }
-            return newActionsToDispatch;
+			var newActionsToDispatch = new List<IAction>();
+			if (!(action is AnExampleActionFromMiddleware))
+			{
+				bool dispatchAFollowUpAction = new Random().Next(4) < 1;
+				if (dispatchAFollowUpAction)
+				{
+					Console.WriteLine("IMiddleware.AfterDispatch is dispatching a new action");
+					newActionsToDispatch.Add(new AnExampleActionFromMiddleware());
+				}
+			}
+			return newActionsToDispatch;
 		}
 	}
 }

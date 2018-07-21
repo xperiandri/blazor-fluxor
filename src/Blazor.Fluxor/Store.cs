@@ -4,14 +4,15 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Blazor.Fluxor.Services;
-using Blazor.Fluxor.Temporary;
 using Microsoft.AspNetCore.Blazor;
 using Microsoft.AspNetCore.Blazor.RenderTree;
 
 namespace Blazor.Fluxor
 {
+	/// <see cref="IStore"/>
 	public class Store : IStore
 	{
+		/// <see cref="IStore.Features"/>
 		public IReadOnlyDictionary<string, IFeature> Features => FeaturesByName;
 
 		private IBrowserInteropService BrowserInteropService;
@@ -24,12 +25,17 @@ namespace Blazor.Fluxor
 		private bool HasActivatedStore;
 		private bool IsInsideMiddlewareChange => BeginMiddlewareChangeCount > 0;
 
+		/// <summary>
+		/// Creates an instance of the store
+		/// </summary>
+		/// <param name="browserInteropService">The BrowserInteropService the Browser will use to initialise the store</param>
 		public Store(IBrowserInteropService browserInteropService)
 		{
 			BrowserInteropService = browserInteropService;
 			BrowserInteropService.PageLoaded += OnPageLoaded;
 		}
 
+		/// <see cref="IStore.AddFeature(IFeature)"/>
 		public void AddFeature(IFeature feature)
 		{
 			if (feature == null)
@@ -38,6 +44,7 @@ namespace Blazor.Fluxor
 			FeaturesByName.Add(feature.GetName(), feature);
 		}
 
+		/// <see cref="IDispatcher.DispatchAsync(IAction)"/>
 		public async Task DispatchAsync(IAction action)
 		{
 			if (action == null)
@@ -72,7 +79,6 @@ namespace Blazor.Fluxor
 				{
 					NotifyFeatureOfDispatch(featureInstance, currentActionToDispatch);
 				};
-				FluxorComponent.AllStateHasChanged();
 
 				IEnumerable<IAction> actionsCreatedByMiddlewares =
 					ExecuteMiddlewareAfterDispatch(currentActionToDispatch)
@@ -90,6 +96,7 @@ namespace Blazor.Fluxor
 			}
 		}
 
+		/// <see cref="IStore.AddEffect(IEffect)"/>
 		public void AddEffect(IEffect effect)
 		{
 			if (effect == null)
@@ -97,6 +104,7 @@ namespace Blazor.Fluxor
 			Effects.Add(effect);
 		}
 
+		/// <see cref="IStore.AddMiddleware(IMiddleware)"/>
 		public void AddMiddleware(IMiddleware middleware)
 		{
 			Middlewares.Add(middleware);
@@ -110,6 +118,7 @@ namespace Blazor.Fluxor
 			}
 		}
 
+		/// <see cref="IStore.BeginInternalMiddlewareChange"/>
 		public IDisposable BeginInternalMiddlewareChange()
 		{
 			BeginMiddlewareChangeCount++;
@@ -124,6 +133,7 @@ namespace Blazor.Fluxor
 			});
 		}
 
+		/// <see cref="IStore.Initialize"/>
 		public RenderFragment Initialize()
 		{
 			return (RenderTreeBuilder renderer) =>
@@ -182,7 +192,7 @@ namespace Blazor.Fluxor
 		private IEnumerable<IAction> ExecuteMiddlewareAfterDispatch(IAction actionJustDispatched)
 		{
 			IEnumerable<IAction> actionsToDispatch =
-				Middlewares.SelectMany(x => x.AfterDispatch(actionJustDispatched) ?? new IAction[0]);
+				Middlewares.SelectMany(x => x.AfterDispatch(actionJustDispatched) ?? Array.Empty<IAction>());
 			return actionsToDispatch;
 		}
 
@@ -204,7 +214,13 @@ namespace Blazor.Fluxor
 
 			HasActivatedStore = true;
 			InitializeMiddlewares();
-			DispatchAsync(new StoreInitializedAction()).Wait();
+#pragma warning disable CS4014
+			// Ignore: "Because this call is not awaited, execution of the current method continues before the call is completed"
+			// Reason: If we await it then any Effect<StoreInitializedAction> // implementations that fire off long running
+			// tasks will actually cause a thread lock. Because the store + state is completely initialised it is save to
+			// fire and forget the StoreInitializedAction. 
+			DispatchAsync(new StoreInitializedAction());
+#pragma warning restore CS4014 
 		}
 
 		private string GetClientScripts()

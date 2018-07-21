@@ -2,7 +2,7 @@
 
 namespace MiddlewareSample.Client.Store.Middlewares.AnExample
 {
-    public class AnExampleActionFromMiddleware: IAction
-    {
-    }
+	public class AnExampleActionFromMiddleware : IAction
+	{
+	}
 }

@@ -1,27 +1,27 @@
 ﻿@page "/fetchdata"
-@inherits Blazor.Fluxor.Temporary.FluxorComponent
+@inherits Blazor.Fluxor.Components.FluxorComponent
 @using Blazor.Fluxor
 @using Store.FetchData
 @inject IDispatcher Dispatcher
-@inject IState<FetchDataState> State
+@inject IState<FetchDataState> FetchDataState
 
 <h1>Weather forecast</h1>
 
-@if (State.Current.ErrorMessage != null)
+@if (FetchDataState.Value.ErrorMessage != null)
 {
     <h1>Error</h1>
-    <p>@State.Current.ErrorMessage</p>
+    <p>@FetchDataState.Value.ErrorMessage</p>
 }
 
 <p>This page <strong>has</strong> been Fluxorized</p>
 
 <p>This component demonstrates fetching data from the server.</p>
 
-@if (State.Current.IsLoading)
+@if (FetchDataState.Value.IsLoading)
 {
     <p>Loading...(2 second delay on server side)</p>
 }
-@if (State.Current.Forecasts != null)
+@if (FetchDataState.Value.Forecasts != null)
 {
     <table class="table">
         <thead>
@@ -33,7 +33,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in State.Current.Forecasts)
+            @foreach (var forecast in FetchDataState.Value.Forecasts)
             {
                 <tr>
                     <td>@forecast.Date.ToShortDateString()</td>
@@ -46,10 +46,10 @@
     </table>
 }
 
-
 @functions {
-   protected override async Task OnInitAsync()
-   {
-       await Dispatcher.DispatchAsync(new GetForecastDataAction());
-   }
+    protected override async Task OnInitAsync()
+    {
+        FetchDataState.Changed(this, StateHasChanged);
+        await Dispatcher.DispatchAsync(new GetForecastDataAction());
+    }
 }

@@ -38,13 +38,19 @@ namespace Blazor.Fluxor
 		/// </summary>
 		/// <param name="action">The action dispatched via the store</param>
 		void ReceiveDispatchNotificationFromStore(IAction action);
+		/// <summary>
+		/// Executed when the state changes
+		/// </summary>
+		/// <param name="observer">The observer to call back</param>
+		/// <param name="callback">The callback to execute</param>
+		void Changed<TObserver>(TObserver observer, Action callback);
 	}
 
 	/// <summary>
 	/// A type-safe implementation of <see cref="IFeature"/>
 	/// </summary>
 	/// <typeparam name="TState">The type of the state this feature owns</typeparam>
-	public interface IFeature<TState>: IFeature
+	public interface IFeature<TState> : IFeature
 	{
 		/// <summary>
 		/// The current state of the feature

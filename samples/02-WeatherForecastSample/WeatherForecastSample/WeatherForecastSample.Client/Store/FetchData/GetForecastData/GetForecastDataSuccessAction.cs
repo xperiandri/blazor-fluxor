@@ -3,8 +3,8 @@ using WeatherForecastSample.Shared;
 
 namespace WeatherForecastSample.Client.Store.FetchData.GetForecastData
 {
-    public class GetForecastDataSuccessAction: IAction
-    {
+	public class GetForecastDataSuccessAction : IAction
+	{
 		public WeatherForecast[] WeatherForecasts { get; private set; }
 
 		public GetForecastDataSuccessAction(WeatherForecast[] weatherForecasts)
@@ -12,5 +12,5 @@ namespace WeatherForecastSample.Client.Store.FetchData.GetForecastData
 			WeatherForecasts = weatherForecasts;
 		}
 
-    }
+	}
 }
