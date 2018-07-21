@@ -1,4 +1,7 @@
-﻿namespace Blazor.Fluxor
+﻿using Microsoft.AspNetCore.Blazor.Components;
+using System;
+
+namespace Blazor.Fluxor
 {
 	/// <summary>
 	/// A class that is injected into Blazor components/pages that provides access
@@ -18,7 +21,10 @@
 			Feature = feature;
 		}
 
-		/// <see cref="IState{TState}.Current"/>
-		public TState Current => Feature.State;
+		/// <see cref="IState{TState}.Value"/>
+		public TState Value => Feature.State;
+
+		/// <see cref="IState.Subscribe(BlazorComponent)"/>
+		public void Subscribe(BlazorComponent subscriber) => Feature.Subscribe(subscriber);
 	}
 }

@@ -2,8 +2,8 @@
 
 namespace Blazor.Fluxor.DependencyInjection
 {
-    internal class DiscoveredFeatureInfo
-    {
+	internal class DiscoveredFeatureInfo
+	{
 		public readonly Type FeatureInterfaceGenericType;
 		public readonly Type ImplementingType;
 		public readonly Type StateType;

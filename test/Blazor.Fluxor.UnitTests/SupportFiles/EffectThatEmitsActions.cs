@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace Blazor.Fluxor.UnitTests.SupportFiles
 {
@@ -9,7 +10,7 @@ namespace Blazor.Fluxor.UnitTests.SupportFiles
 
 		public EffectThatEmitsActions(IAction[] actionsToEmit)
 		{
-			ActionsToEmit = actionsToEmit ?? new IAction[0];
+			ActionsToEmit = actionsToEmit ?? Array.Empty<IAction>();
 		}
 		public override Task<IAction[]> HandleAsync(TTriggerAction action)
 		{

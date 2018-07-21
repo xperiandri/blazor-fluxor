@@ -76,12 +76,11 @@ We need this action to be dispatched through the store when the FetchData page i
 2. Set the code at the top of the page to the following
 ```c#
 @page "/fetchdata"
-@inherits Blazor.Fluxor.Temporary.FluxorComponent
 @using WeatherForecastSample.Shared
 @using Blazor.Fluxor
 @using Store.FetchData
 @inject IDispatcher Dispatcher
-@inject IState<FetchDataState> State
+@inject IState<FetchDataState> FetchDataState
 ```
 We now need to change the rest of the page in the following ways
    * We show the ErrorMessage if it is set in the state.
@@ -90,21 +89,21 @@ We now need to change the rest of the page in the following ways
 
 3. At the following code at the top of the page, beneath the *h1* tag
 ```c#
-@if (State.Current.ErrorMessage != null)
+@if (FetchDataState.Value.ErrorMessage != null)
 {
     <h1>Error</h1>
-    <p>@State.Current.ErrorMessage</p>
+    <p>@FetchDataState.Value.ErrorMessage</p>
 }
 ```
 4. Replace the section of code that shows the text `Loading...` with the following
 ```c#
-@if (State.Current.IsLoading)
+@if (FetchDataState.Value.IsLoading)
 {
     <p>Loading...</p>
 }
 ```
-5. Change any occurrences of `forecasts` to `State.Current.Forecasts`. There are two of them, one in an `@if` statement which shows/hides the table, and one in a `@foreach` statement that loops through the data.
-6. Remove the `else` statement and change it to `if (State.Current.Forecasts != null)`.
+5. Change any occurrences of `forecasts` to `FetchDataState.Value.Forecasts`. There are two of them, one in an `@if` statement which shows/hides the table, and one in a `@foreach` statement that loops through the data.
+6. Remove the `else` statement and change it to `if (FetchDataState.Value.Forecasts != null)`.
 
 ## Dispatching the action when the page loads
 The code at the bottom of the `FetchData.cshtml` page calls out to a server. We want to move this code out to an effect that is triggered by the `GetForecastDataAction`. So we need to change the code in the `OnInitAsync` method to the following
@@ -120,30 +119,29 @@ The code at the bottom of the `FetchData.cshtml` page calls out to a server. We 
 The entirety of the `FetchData.cshtml` file should look like this
 ```c#
 @page "/fetchdata"
-@inherits Blazor.Fluxor.Temporary.FluxorComponent
 @using WeatherForecastSample.Shared
 @using Blazor.Fluxor
 @using Store.FetchData
 @inject IDispatcher Dispatcher
-@inject IState<FetchDataState> State
+@inject IState<FetchDataState> FetchDataState
 
 <h1>Weather forecast</h1>
 
-@if (State.Current.ErrorMessage != null)
+@if (FetchDataState.Value.ErrorMessage != null)
 {
     <h1>Error</h1>
-    <p>@State.Current.ErrorMessage</p>
+    <p>@FetchDataState.Value.ErrorMessage</p>
 }
 
 <p>This page <strong>has</strong> been Fluxorized</p>
 
 <p>This component demonstrates fetching data from the server.</p>
 
-@if (State.Current.IsLoading)
+@if (FetchDataState.Value.IsLoading)
 {
     <p>Loading...</p>
 }
-@if (State.Current.Forecasts != null)
+@if (FetchDataState.Value.Forecasts != null)
 {
     <table class="table">
         <thead>
@@ -155,7 +153,7 @@ The entirety of the `FetchData.cshtml` file should look like this
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in State.Current.Forecasts)
+            @foreach (var forecast in FetchDataState.Value.Forecasts)
             {
                 <tr>
                     <td>@forecast.Date.ToShortDateString()</td>

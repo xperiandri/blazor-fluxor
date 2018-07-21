@@ -28,9 +28,22 @@ Because the [Redux dev tools] implementation uses serialization to switch back t
 public CounterState() {}
 ```
 
-## Temporary steps
-1. Currently there is no way in Blazor to instruct `JsonUtil.Deserialize()` to deserialize properties with private setters. Until this is possible you will need to ensure the setter visibility of all state properties is public. (See [Issue 705]).
-2. There is currently no way to trigger some kind of a global `StateHasChanged()` to instruct all visible components to rebind their UI to their view state. Until this is possible you will need to descend your components from `FluxorComponent`. (See [Issue 704]). In each `Pages\*.cshtml` file add `@inherits Blazor.Fluxor.Temporary.FluxorComponent`.
+## Temporary step
+Currently there is no way in Blazor to instruct `JsonUtil.Deserialize()` to deserialize properties with private setters. Until this is possible you will need to ensure the setter visibility of all state properties is public. (See [Issue 705]).
+
+## Subscribing to state changes
+To ensure your component is re-rendered when state is changed in another component simply descend your components from `FluxorComponent`, like this `@inherits Blazor.Fluxor.Components.FluxorComponent`.
+
+If you do not wish to descend from a specific base class you can instruct Fluxor to call your component's `StateHasChanged` method whenever its state changes, like this:
+
+```
+protected override void OnInit()
+{
+	base.OnInit();
+	NameOfYourState.Subscribe(this)
+}
+```
+This will register your component's `StateHasChanged` method to be called back whenever the state changes. There is no need to unsubscribe, Fluxor will no longer call back your component once it has been garbage collected.
 
 [Redux dev tools]: <https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd>
 [Tutorial 1]: <https://github.com/mrpmorris/blazor-fluxor/tree/master/samples/01-CounterSample>

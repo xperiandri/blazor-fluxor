@@ -12,43 +12,43 @@ using System.Net.Mime;
 
 namespace WeatherForecastSample.Server
 {
-    public class Startup
-    {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddMvc().AddJsonOptions(options =>
-            {
-                options.SerializerSettings.ContractResolver = new DefaultContractResolver();
-            });
+	public class Startup
+	{
+		// This method gets called by the runtime. Use this method to add services to the container.
+		// For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+		public void ConfigureServices(IServiceCollection services)
+		{
+			services.AddMvc().AddJsonOptions(options =>
+			{
+				options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+			});
 
-            services.AddResponseCompression(options =>
-            {
-                options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[]
-                {
-                    MediaTypeNames.Application.Octet,
-                    WasmMediaTypeNames.Application.Wasm,
-                });
-            });
-        }
+			services.AddResponseCompression(options =>
+			{
+				options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[]
+				{
+					MediaTypeNames.Application.Octet,
+					WasmMediaTypeNames.Application.Wasm,
+				});
+			});
+		}
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
-            app.UseResponseCompression();
+		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		{
+			app.UseResponseCompression();
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+			if (env.IsDevelopment())
+			{
+				app.UseDeveloperExceptionPage();
+			}
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(name: "default", template: "{controller}/{action}/{id?}");
-            });
+			app.UseMvc(routes =>
+			{
+				routes.MapRoute(name: "default", template: "{controller}/{action}/{id?}");
+			});
 
-            app.UseBlazor<Client.Program>();
-        }
-    }
+			app.UseBlazor<Client.Program>();
+		}
+	}
 }

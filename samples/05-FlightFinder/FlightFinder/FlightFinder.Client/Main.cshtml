@@ -1,0 +1,32 @@
+﻿@inject IStore Store
+@inject IState<Client.Store.AppState> AppState
+
+@Store.Initialize()
+
+<input type="checkbox" bind=ShowShortlist />
+<div id="search-and-results-area">
+    <div id="search-area" class="px-2 py-3">
+        <Search />
+    </div>
+    <div id="results-area">
+        <GreyOutZone IsGreyedOut=AppState.Value.SearchInProgress>
+            <SearchResults />
+        </GreyOutZone>
+    </div>
+</div>
+@if (ShowShortlist)
+{
+    <div id="selections-area" class="p-3 pl-4">
+        <Shortlist />
+    </div>
+}
+
+@functions
+{
+    public bool ShowShortlist { get; set; } = true;
+
+    protected override void OnInit()
+    {
+        AppState.Subscribe(this);
+    }
+}

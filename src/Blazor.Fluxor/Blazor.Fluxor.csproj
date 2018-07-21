@@ -5,15 +5,15 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Peter Morris</Authors>
     <Company />
-    <Description>A low-boilerplate Flux/Redux state library for Blazor</Description>
+    <Description>An almost-zero-boilerplate Flux/Redux state library for Blazor</Description>
     <Copyright>Peter Morris</Copyright>
-    <PackageLicenseUrl>https://github.com/mrpmorris/blazor-fluxor/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseUrl>https://github.com/mrpmorris/blazor-fluxor/blob/master/LICENCE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/mrpmorris/blazor-fluxor</PackageProjectUrl>
     <PackageTags>blazor redux flux state</PackageTags>
     <RepositoryUrl>https://github.com/mrpmorris/blazor-fluxor</RepositoryUrl>
-    <AssemblyVersion>0.12.2.0</AssemblyVersion>
-    <FileVersion>0.12.2.0</FileVersion>
-    <Version>0.12.2.0</Version>
+    <AssemblyVersion>0.13.0.0</AssemblyVersion>
+    <FileVersion>0.13.0.0</FileVersion>
+    <Version>0.13.1.0</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

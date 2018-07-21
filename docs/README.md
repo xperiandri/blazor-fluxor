@@ -1,5 +1,5 @@
 # Blazor-Fluxor
-Blazor-Fluxor is a low (zero) boilerplate Flux/Redux library for the new [Microsoft aspdotnet Blazor project]. 
+Blazor-Fluxor is a low (almost-zero) boilerplate Flux/Redux library for the new [Microsoft aspdotnet Blazor project]. 
 
 The aim of Fluxor is to create a single-state store approach to front-end development in Blazor without the headaches typically associated with other implementations, such as the overwhelming amount of boiler-plate code required just to add a very basic feature.
 
@@ -17,8 +17,13 @@ More sample projects will be added as the framework develops.
   - [Effects sample] - Fluxorizes `FetchData` page in the standard Visual Studio Blazor sample in order to demonstrate asynchronous reactions to actions that are dispatched.
   - [Redux dev tools integration] - Demonstrates how to enable debugger integration for the [Redux dev tools] Chrome plugin.
   - [Custom Middleware] - Demonstrates how to create custom Middleware to intercept actions etc.
+  - [Blazor Flight Finder] - A conversion of the official Blazor `Flight Finder` demo.
 
 ## What's new
+### New in 0.13.0
+ - Added state change observer pattern. Calling `SomeInjectedState.Changed(this, StateHasChanged)` in a component's `OnInit` method will subscribe to all state changes triggered by other components.
+ - Changed `IState.Current` to `IState.Value`
+ - Modified the official Blazor `Flight Finder` demo to use Fluxor. Status is incomplete but functional.
 ### New in 0.12.1
  - Changed the way Effects and Reducers work so the developer has more flexibility in chosing what they react to (descendant classes, implemented interfaces, etc)
 ### New in 0.12.0
@@ -73,7 +78,7 @@ More sample projects will be added as the framework develops.
 ### New in 0.0.1
   - Basic store / feature / reducer implementation
   
-# License
+# Licence
 MIT
 
    [Official Blazor-Fluxor nuget page]: <https://www.nuget.org/packages/Blazor.Fluxor>
@@ -83,3 +88,4 @@ MIT
    [Redux dev tools integration]: <https://github.com/mrpmorris/blazor-fluxor/tree/master/samples/03-ReduxDevToolsIntegration>
    [Custom Middleware]: <https://github.com/mrpmorris/blazor-fluxor/tree/master/samples/04-MiddlewareSample>
    [Sample projects]: <https://github.com/mrpmorris/blazor-fluxor/tree/master/samples>
+   [Blazor Flight Finder]: <https://github.com/mrpmorris/blazor-fluxor/tree/master/samples/05-FlightFinder>

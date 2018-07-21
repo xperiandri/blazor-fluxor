@@ -5,8 +5,8 @@ using System.Linq;
 
 namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 {
-    internal static class ReducersRegistration
-    {
+	internal static class ReducersRegistration
+	{
 		internal static IEnumerable<DiscoveredReducerInfo> DiscoverReducers(
 			IServiceCollection serviceCollection, IEnumerable<Type> allCandidateTypes)
 		{

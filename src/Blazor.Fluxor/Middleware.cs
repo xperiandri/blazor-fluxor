@@ -15,7 +15,7 @@ namespace Blazor.Fluxor
 		public virtual void AfterInitializeAllMiddlewares() { }
 		public virtual bool MayDispatchAction(IAction action) => true;
 		public virtual void BeforeDispatch(IAction action) { }
-        public virtual IEnumerable<IAction> AfterDispatch(IAction action) => null;
+		public virtual IEnumerable<IAction> AfterDispatch(IAction action) => null;
 
 		public virtual void Initialize(IStore store)
 		{

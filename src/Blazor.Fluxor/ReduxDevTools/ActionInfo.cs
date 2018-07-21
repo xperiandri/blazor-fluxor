@@ -2,8 +2,8 @@
 
 namespace Blazor.Fluxor.ReduxDevTools
 {
-    internal class ActionInfo
-    {
+	internal class ActionInfo
+	{
 #pragma warning disable IDE1006 // Naming Styles
 		public string type { get; }
 #pragma warning restore IDE1006 // Naming Styles
@@ -17,5 +17,5 @@ namespace Blazor.Fluxor.ReduxDevTools
 			type = action.GetType().FullName;
 			Payload = action;
 		}
-    }
+	}
 }

@@ -8,7 +8,7 @@ namespace Blazor.Fluxor
 	/// Identifies a store, which is a collection of features. It is recommended that you do not create your
 	/// own classes that implement this interface as the <see cref="Store"/> class does this for you.
 	/// </summary>
-	public interface IStore: IDispatcher
+	public interface IStore : IDispatcher
 	{
 		/// <summary>
 		/// This method will register an effect so that it
@@ -52,8 +52,8 @@ namespace Blazor.Fluxor
 		/// <example>
 		/// using(Store.BeginInternalMiddlewareChange()) 
 		/// {
-		///   // Do some stuff that other Middlewares should know was not triggered by a 
-		///   // normal user event.
+		///		// Do some stuff that other Middlewares should know was not triggered by a 
+		///		// normal user event.
 		/// }
 		/// </example>
 		/// <returns>A disposable that should have Dispose() called on to indicate the internal change is complete</returns>

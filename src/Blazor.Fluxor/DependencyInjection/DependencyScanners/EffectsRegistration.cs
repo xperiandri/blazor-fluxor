@@ -5,8 +5,8 @@ using System.Linq;
 
 namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 {
-    internal class EffectsRegistration
-    {
+	internal class EffectsRegistration
+	{
 		internal static IEnumerable<DiscoveredEffectInfo> DiscoverEffects(
 			IServiceCollection serviceCollection, IEnumerable<Type> allCandidateTypes)
 		{

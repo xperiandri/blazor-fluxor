@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Blazor.Components;
+using System;
 
 namespace Blazor.Fluxor
 {
@@ -34,17 +35,22 @@ namespace Blazor.Fluxor
 		void RestoreState(object value);
 		/// <summary>
 		/// Allows a feature to react to an action dispatched via the store. This should not be called by
-		/// consuming applications. Instead you should dispatch actions only via <see cref="IStore.DispatchAsync(IAction)"/>
+		/// consuming applications. Instead you should dispatch actions only via <see cref="IDispatcher.DispatchAsync(IAction)"/>
 		/// </summary>
 		/// <param name="action">The action dispatched via the store</param>
 		void ReceiveDispatchNotificationFromStore(IAction action);
+		/// <summary>
+		/// Registers a component to be re-rendered whenever the state changes
+		/// </summary>
+		/// <param name="subscriber">The component that will have <see cref="BlazorComponent.StateHasChanged"/> executed when the state changes</param>
+		void Subscribe(BlazorComponent subscriber);
 	}
 
 	/// <summary>
 	/// A type-safe implementation of <see cref="IFeature"/>
 	/// </summary>
 	/// <typeparam name="TState">The type of the state this feature owns</typeparam>
-	public interface IFeature<TState>: IFeature
+	public interface IFeature<TState> : IFeature
 	{
 		/// <summary>
 		/// The current state of the feature
