@@ -21,6 +21,9 @@ namespace Blazor.Fluxor
 			Action = action ?? throw new ArgumentNullException(nameof(action));
 		}
 
+		/// <summary>
+		/// Executes the action when disposed
+		/// </summary>
 		public void Dispose()
 		{
 			if (IsDisposed)
@@ -31,6 +34,10 @@ namespace Blazor.Fluxor
 			Action();
 		}
 
+		/// <summary>
+		/// Throws an exception if this object is collected without being disposed
+		/// </summary>
+		/// <exception cref="InvalidOperationException">Thrown if the object is collected without being disposed</exception>
 		~DisposableCallback()
 		{
 			throw new InvalidOperationException("DisposableCallback was not disposed");

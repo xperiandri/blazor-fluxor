@@ -2,24 +2,18 @@
 This sample shows how to integrate with the [Redux dev tools] plugin for Google Chrome. It is recommended that you read both [Tutorial 1] and [Tutorial 2] first.
 
 ## Setting up the project
-Once you have your project up and running, adding support for ReduxDevTools is simple. Edit the `Program` class within the `Client` project and add the Routing and Redux Dev Tools middlewares to the options.
+Once you have your project up and running, adding support for ReduxDevTools is simple. Edit the `Startup` class within the `Client` project and add the Routing and Redux Dev Tools middlewares to the options.
 ```
-var serviceProvider = new BrowserServiceProvider(services =>
+public void ConfigureServices(IServiceCollection services)
 {
 	services.AddFluxor(options => options
-		.UseDependencyInjection(typeof(Program).Assembly)
+		.UseDependencyInjection(typeof(Startup).Assembly)
 		.AddMiddleware<Blazor.Fluxor.ReduxDevTools.ReduxDevToolsMiddleware>()
 		.AddMiddleware<Blazor.Fluxor.Routing.RoutingMiddleware>()
 	);
-});
+};
 ```
 
-Next we need to ensure the HTML on the client has the required Javascript to talk to the Redux dev tools. Edit the file `Shared\MainLayout.cshtml` and add the following code to the top of the file
-
-```
-@using Blazor.Fluxor.DevTools
-@ReduxDevTools.Initialize()
-```
 ## Required changes to state classes
 Because the [Redux dev tools] implementation uses serialization to switch back to historial states it is necessary to create a public parameterless constructor on all of your state classes.
 

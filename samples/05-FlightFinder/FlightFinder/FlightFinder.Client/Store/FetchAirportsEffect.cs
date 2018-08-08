@@ -16,7 +16,7 @@ namespace FlightFinder.Client.Store
 			HttpClient = httpClient;
 		}
 
-		public override async Task<IAction[]> HandleAsync(FetchAirportsAction action)
+		protected async override Task HandleAsync(FetchAirportsAction action, IDispatcher dispatcher)
 		{
 			Airport[] airports = Array.Empty<Airport>();
 			try
@@ -28,7 +28,7 @@ namespace FlightFinder.Client.Store
 				// Should really dispatch an error action
 			}
 			var completeAction = new FetchAirportsCompleteAction(airports);
-			return new IAction[] { completeAction };
+			dispatcher.Dispatch(completeAction);
 		}
 	}
 }

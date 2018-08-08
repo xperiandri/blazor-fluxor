@@ -11,6 +11,10 @@
 		/// </summary>
 		public string NewUri { get; private set; }
 
+		/// <summary>
+		/// Creates a new instance of the action
+		/// </summary>
+		/// <param name="newUri"></param>
 		public Go(string newUri)
 		{
 			NewUri = newUri;

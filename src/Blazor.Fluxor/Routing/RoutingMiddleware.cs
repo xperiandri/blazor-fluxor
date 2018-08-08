@@ -11,6 +11,11 @@ namespace Blazor.Fluxor.Routing
 		private readonly IUriHelper UriHelper;
 		private readonly IFeature<RoutingState> Feature;
 
+		/// <summary>
+		/// Creates a new instance of the routing middleware
+		/// </summary>
+		/// <param name="uriHelper">Uri helper</param>
+		/// <param name="feature">The routing feature</param>
 		public RoutingMiddleware(IUriHelper uriHelper, IFeature<RoutingState> feature)
 		{
 			UriHelper = uriHelper;
@@ -18,13 +23,15 @@ namespace Blazor.Fluxor.Routing
 			UriHelper.OnLocationChanged += OnLocationChanged;
 		}
 
+		/// <see cref="IMiddleware.Initialize(IStore)"/>
 		public override void Initialize(IStore store)
 		{
 			base.Initialize(store);
 			// If the URL changed before we initialized then dispatch an action
-			Store.DispatchAsync(new Go(UriHelper.GetAbsoluteUri())).Wait();
+			Store.Dispatch(new Go(UriHelper.GetAbsoluteUri()));
 		}
 
+		/// <see cref="Middleware.OnInternalMiddlewareChangeEnding"/>
 		protected override void OnInternalMiddlewareChangeEnding()
 		{
 			if (Feature.State.Uri != UriHelper.GetAbsoluteUri())
@@ -35,9 +42,7 @@ namespace Blazor.Fluxor.Routing
 		{
 			string fullUri = UriHelper.ToAbsoluteUri(e).ToString();
 			if (Store != null && !IsInsideMiddlewareChange && fullUri != Feature.State.Uri)
-				Store.DispatchAsync(new Go(e)).Wait();
+				Store.Dispatch(new Go(e));
 		}
-
-
 	}
 }

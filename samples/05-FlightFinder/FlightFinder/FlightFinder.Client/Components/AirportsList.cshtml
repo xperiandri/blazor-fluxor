@@ -1,4 +1,5 @@
-﻿@inject IState<Client.Store.AppState> AppState
+﻿@inherits Blazor.Fluxor.Components.FluxorComponent
+@inject IState<Client.Store.AppState> AppState
 
 <datalist id="airports">
     @foreach (var airport in AppState.Value.Airports)

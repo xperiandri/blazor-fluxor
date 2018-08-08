@@ -15,21 +15,23 @@ namespace Blazor.Fluxor
 		/// is executed whenever an action dispatched via the store.
 		/// </summary>
 		/// <param name="effect">The instance of the effect to call back</param>
-		/// <seealso cref="IEffect.HandleAsync(IAction)"/>
-		/// <seealso cref="IEffect{TAction}.HandleAsync(TAction)"/>
+		/// <seealso cref="IEffect.Handle(IAction)"/>
 		void AddEffect(IEffect effect);
+
 		/// <summary>
 		/// Adds a feature to the store. Once added, the feature will be notified of all actions dispatched
 		/// via the store so that it can keep its state up to date.
 		/// </summary>
 		/// <param name="feature">The feature to add</param>
 		void AddFeature(IFeature feature);
+
 		/// <summary>
 		/// Adds a Middleware instance to the store. The Middleware will be notified of various events ocurring
 		/// in the store and be able to influence what happens as a result.
 		/// </summary>
 		/// <param name="middleware">The instance of the Middleware to hook into the store</param>
 		void AddMiddleware(IMiddleware middleware);
+
 		/// <summary>
 		/// Sometimes Middleware may need to indicate that code currently being executed is running within
 		/// some kind of special context.
@@ -61,10 +63,12 @@ namespace Blazor.Fluxor
 		/// <seealso cref="ReduxDevTools.ReduxDevToolsMiddleware.OnJumpToState(object, ReduxDevTools.CallbackObjects.JumpToStateCallback)"/>
 		/// <seealso cref="Routing.RoutingMiddleware.OnLocationChanged(object, string)"/>
 		IDisposable BeginInternalMiddlewareChange();
+
 		/// <summary>
 		/// All of the features added to the store, keyed by their unique name.
 		/// </summary>
 		IReadOnlyDictionary<string, IFeature> Features { get; }
+
 		/// <summary>
 		/// This should be executed within a cshtml page such as Shared/MainLayout to ensure all 
 		/// Middleware Javascripts are inserted into the web page

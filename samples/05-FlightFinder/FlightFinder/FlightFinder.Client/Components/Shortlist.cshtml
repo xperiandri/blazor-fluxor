@@ -30,10 +30,10 @@
 }
 
 @functions
-{      
-    private async Task RemoveFromShortlist(Itinerary itinerary)
-    {
-        var action = new Client.Store.RemoveFromShortlistAction(itinerary);
-        await Dispatcher.DispatchAsync(action);
-    }
+{
+private void RemoveFromShortlist(Itinerary itinerary)
+{
+    var action = new Client.Store.RemoveFromShortlistAction(itinerary);
+    Dispatcher.Dispatch(action);
+}
 }

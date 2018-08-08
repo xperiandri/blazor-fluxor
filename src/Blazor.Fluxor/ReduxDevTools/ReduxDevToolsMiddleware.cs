@@ -1,5 +1,6 @@
 ﻿using Blazor.Fluxor.ReduxDevTools.CallbackObjects;
 using Microsoft.AspNetCore.Blazor;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -16,24 +17,30 @@ namespace Blazor.Fluxor.ReduxDevTools
 		private int SequenceNumberOfCurrentState = 0;
 		private int SequenceNumberOfLatestState = 0;
 
+		/// <summary>
+		/// Creates a new instance of the middleware
+		/// </summary>
 		public ReduxDevToolsMiddleware()
 		{
 			ReduxDevToolsInterop.JumpToState += OnJumpToState;
 			ReduxDevToolsInterop.Commit += OnCommit;
 		}
 
+		/// <see cref="IMiddleware.Initialize(IStore)"/>
 		public override void Initialize(IStore store)
 		{
 			base.Initialize(store);
 			ReduxDevToolsInterop.Init(GetState());
 		}
 
+		/// <see cref="IMiddleware.MayDispatchAction(IAction)"/>
 		public override bool MayDispatchAction(IAction action)
 		{
 			return SequenceNumberOfCurrentState == SequenceNumberOfLatestState;
 		}
 
-		public override IEnumerable<IAction> AfterDispatch(IAction action)
+		/// <see cref="IMiddleware.AfterDispatch(IAction)"/>
+		public override void AfterDispatch(IAction action)
 		{
 			ReduxDevToolsInterop.Dispatch(action, GetState());
 
@@ -41,8 +48,6 @@ namespace Blazor.Fluxor.ReduxDevTools
 			// ensure the latest is incremented, and the current = latest
 			SequenceNumberOfLatestState++;
 			SequenceNumberOfCurrentState = SequenceNumberOfLatestState;
-
-			return null;
 		}
 
 		private IDictionary<string, object> GetState()
@@ -64,7 +69,7 @@ namespace Blazor.Fluxor.ReduxDevTools
 			SequenceNumberOfCurrentState = e.payload.actionId;
 			using (Store.BeginInternalMiddlewareChange())
 			{
-				var newFeatureStates = (IDictionary<string, object>)JsonUtil.Deserialize<object>(e.state);
+				var newFeatureStates = (IDictionary<string, object>)Json.Deserialize<object>(e.state);
 				foreach (KeyValuePair<string, object> newFeatureState in newFeatureStates)
 				{
 					// Get the feature with the given name
@@ -72,8 +77,8 @@ namespace Blazor.Fluxor.ReduxDevTools
 						continue;
 
 					// Get the generic method of JsonUtil.Deserialize<> so we have the correct object type for the state
-					string deserializeMethodName = nameof(JsonUtil.Deserialize);
-					MethodInfo deserializeMethodInfo = typeof(JsonUtil)
+					string deserializeMethodName = nameof(Json.Deserialize);
+					MethodInfo deserializeMethodInfo = typeof(Json)
 						.GetMethod(deserializeMethodName)
 						.GetGenericMethodDefinition()
 						.MakeGenericMethod(new Type[] { feature.GetStateType() });
@@ -92,6 +97,7 @@ namespace Blazor.Fluxor.ReduxDevTools
 			}
 		}
 
+		/// <see cref="IMiddleware.GetClientScripts"/>
 		public override string GetClientScripts()
 		{
 			return ReduxDevToolsInterop.GetClientScripts();

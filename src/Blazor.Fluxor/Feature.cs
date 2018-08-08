@@ -11,10 +11,13 @@ namespace Blazor.Fluxor
 	{
 		/// <see cref="IFeature.GetName"/>
 		public abstract string GetName();
+
 		/// <see cref="IFeature.GetState"/>
 		public virtual object GetState() => State;
+
 		/// <see cref="IFeature.RestoreState(object)"/>
 		public virtual void RestoreState(object value) => State = (TState)value;
+
 		/// <see cref="IFeature.GetStateType"/>
 		public virtual Type GetStateType() => typeof(TState);
 
@@ -23,6 +26,7 @@ namespace Blazor.Fluxor
 		/// </summary>
 		/// <returns>The initial state</returns>
 		protected abstract TState GetInitialState();
+
 		/// <summary>
 		/// A list of reducers registered with this feature
 		/// </summary>
@@ -86,7 +90,6 @@ namespace Blazor.Fluxor
 
 		private void TriggerStateChangedCallbacks()
 		{
-			GC.Collect();
 			var subscribers = new List<BlazorComponent>();
 			var callbacks = new List<Action>();
 			var newStateChangedCallbacks = new List<WeakReference<BlazorComponent>>();

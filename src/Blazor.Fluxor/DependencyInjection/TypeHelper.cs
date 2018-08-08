@@ -17,6 +17,5 @@ namespace Blazor.Fluxor
 			}
 			return null;
 		}
-
 	}
 }

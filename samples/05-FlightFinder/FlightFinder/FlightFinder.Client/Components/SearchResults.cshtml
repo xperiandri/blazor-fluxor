@@ -35,18 +35,18 @@
 
 @functions
 {
-    // Private state
-    private SortOrder chosenSortOrder;
-    private IEnumerable<Itinerary> sortedSearchResults
-        => chosenSortOrder == SortOrder.Price
-        ? AppState.Value.SearchResults.OrderBy(x => x.Price)
-        : AppState.Value.SearchResults.OrderBy(x => x.TotalDurationHours);
+// Private state
+private SortOrder chosenSortOrder;
+private IEnumerable<Itinerary> sortedSearchResults
+    => chosenSortOrder == SortOrder.Price
+    ? AppState.Value.SearchResults.OrderBy(x => x.Price)
+    : AppState.Value.SearchResults.OrderBy(x => x.TotalDurationHours);
 
-    enum SortOrder { Price, Duration }
+enum SortOrder { Price, Duration }
 
-    private async Task AddToShortlist(Itinerary itinerary)
-    {
-        var action = new Client.Store.AddToShortlistAction(itinerary);
-        await Dispatcher.DispatchAsync(action);
-    }
+private void AddToShortlist(Itinerary itinerary)
+{
+    var action = new Client.Store.AddToShortlistAction(itinerary);
+    Dispatcher.Dispatch(action);
+}
 }

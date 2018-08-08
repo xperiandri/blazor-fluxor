@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace ReduxDevToolsIntegration.Server.Controllers
 {
@@ -12,13 +11,12 @@ namespace ReduxDevToolsIntegration.Server.Controllers
 	{
 		private static string[] Summaries = new[]
 		{
-				"Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-		  };
+			"Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+		};
 
 		[HttpGet("[action]")]
-		public async Task<IEnumerable<WeatherForecast>> WeatherForecasts()
+		public IEnumerable<WeatherForecast> WeatherForecasts()
 		{
-			await Task.Delay(2000);
 			var rng = new Random();
 			return Enumerable.Range(1, 5).Select(index => new WeatherForecast
 			{

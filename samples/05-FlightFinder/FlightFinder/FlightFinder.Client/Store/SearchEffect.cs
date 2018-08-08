@@ -15,17 +15,17 @@ namespace FlightFinder.Client.Store
 			HttpClient = httpClient;
 		}
 
-		public override async Task<IAction[]> HandleAsync(SearchAction action)
+		protected async override Task HandleAsync(SearchAction action, IDispatcher dispatcher)
 		{
 			try
 			{
 				Itinerary[] searchResults = await HttpClient.PostJsonAsync<Itinerary[]>("/api/flightsearch", action.SearchCriteria);
-				return new IAction[] { new SearchCompleteAction(searchResults) };
+				dispatcher.Dispatch(new SearchCompleteAction(searchResults));
 			}
 			catch
 			{
 				// Should really dispatch an error action
-				return new IAction[] { new SearchCompleteAction(null) };
+				dispatcher.Dispatch(new SearchCompleteAction(null));
 			}
 		}
 	}

@@ -1,26 +1,47 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Blazor.Fluxor
 {
+	/// <see cref="IMiddleware"/>
 	public abstract class Middleware : IMiddleware
 	{
+		/// <summary>
+		/// A reference to the store instance this middleware was added to
+		/// </summary>
+		protected IStore Store { get; private set; }
+
+		/// <summary>
+		/// Number of times <see cref="IMiddleware.BeginInternalMiddlewareChange"/> has been called
+		/// </summary>
 		protected int BeginMiddlewareChangeCount { get; private set; }
 
-		protected IStore Store { get; private set; }
+		/// <summary>
+		/// True if <see cref="BeginMiddlewareChangeCount"/> is greater than zero
+		/// </summary>
 		protected bool IsInsideMiddlewareChange => BeginMiddlewareChangeCount > 0;
-		protected virtual void OnInternalMiddlewareChangeEnding() { }
 
+		/// <see cref="IMiddleware.GetClientScripts"/>
 		public virtual string GetClientScripts() => null;
-		public virtual void AfterInitializeAllMiddlewares() { }
-		public virtual bool MayDispatchAction(IAction action) => true;
-		public virtual void BeforeDispatch(IAction action) { }
-		public virtual IEnumerable<IAction> AfterDispatch(IAction action) => null;
 
-		public virtual void Initialize(IStore store)
-		{
-			Store = store;
-		}
+		/// <see cref="IMiddleware.Initialize(IStore)"/>
+		public virtual void Initialize(IStore store) => Store = store;
+
+		/// <see cref="IMiddleware.AfterInitializeAllMiddlewares"/>
+		public virtual void AfterInitializeAllMiddlewares() { }
+
+		/// <see cref="IMiddleware.MayDispatchAction(IAction)"/>
+		public virtual bool MayDispatchAction(IAction action) => true;
+
+		/// <see cref="IMiddleware.BeforeDispatch(IAction)"/>
+		public virtual void BeforeDispatch(IAction action) { }
+
+		/// <see cref="IMiddleware.AfterDispatch(IAction)"/>
+		public virtual void AfterDispatch(IAction action) { }
+
+		/// <summary>
+		/// Executed when <see cref="BeginMiddlewareChangeCount"/> becomes zero
+		/// </summary>
+		protected virtual void OnInternalMiddlewareChangeEnding() { }
 
 		IDisposable IMiddleware.BeginInternalMiddlewareChange()
 		{

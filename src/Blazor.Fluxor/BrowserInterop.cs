@@ -1,5 +1,4 @@
-﻿using Blazor.Fluxor.Extensions;
-using Blazor.Fluxor.Services;
+﻿using Microsoft.JSInterop;
 using System;
 
 namespace Blazor.Fluxor
@@ -9,6 +8,7 @@ namespace Blazor.Fluxor
 	/// </summary>
 	public static class BrowserInterop
 	{
+		private const string OnPageLoadedId = "Blazor.Fluxor.OnPageLoaded";
 		/// <summary>
 		/// Executed when the browser finishes loading the page
 		/// </summary>
@@ -21,24 +21,20 @@ namespace Blazor.Fluxor
 		public static string GetClientScripts()
 		{
 			string assemblyName = typeof(BrowserInterop).Assembly.GetName().Name;
-			string @namespace = typeof(Store).GetNamespace();
-			string className = typeof(BrowserInterop).Name;
-			string callbackMethodName = nameof(OnPageLoaded);
 
 			return $@"
 	(function() {{ 
-		const fluxorBrowserHooksLoadedCallback = Blazor.platform.findMethod(
-			'{assemblyName}',
-			'{@namespace}',
-			'{className}',
-			'{callbackMethodName}'
-		);
-		Blazor.platform.callMethod(fluxorBrowserHooksLoadedCallback, null, []); 
+		DotNet.invokeMethodAsync('{assemblyName}', '{OnPageLoadedId}');
 	}})();
 ";
 		}
 
-		private static void OnPageLoaded()
+		/// <summary>
+		/// Called from JavaScript when document.ready is executed
+		/// </summary>
+		[JSInvokable(OnPageLoadedId)]
+		//TODO: Make private if private callbacks are permitted https://github.com/aspnet/Blazor/issues/1218
+		public static void OnPageLoaded()
 		{
 			PageLoaded?.Invoke(null, EventArgs.Empty);
 		}

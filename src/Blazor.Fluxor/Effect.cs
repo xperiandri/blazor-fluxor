@@ -12,7 +12,8 @@ namespace Blazor.Fluxor
 		/// <summary>
 		/// <see cref="IEffect.HandleAsync(IAction)"/>
 		/// </summary>
-		public abstract Task<IAction[]> HandleAsync(TTriggerAction action);
+		protected abstract Task HandleAsync(TTriggerAction action, IDispatcher dispatcher);
+
 		/// <summary>
 		/// <see cref="IEffect.ShouldReactToAction(IAction)"/>
 		/// </summary>
@@ -21,9 +22,9 @@ namespace Blazor.Fluxor
 			return typeof(TTriggerAction).IsAssignableFrom(action.GetType());
 		}
 
-		Task<IAction[]> IEffect.HandleAsync(IAction action)
+		Task IEffect.HandleAsync(IAction action, IDispatcher dispatcher)
 		{
-			return HandleAsync((TTriggerAction)action);
+			return HandleAsync((TTriggerAction)action, dispatcher);
 		}
 	}
 }

@@ -1,23 +1,24 @@
 ﻿using ReduxDevToolsIntegration.Shared;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ReduxDevToolsIntegration.Client.Store.FetchData
 {
-	// TODO: Make property setters private - https://github.com/aspnet/Blazor/issues/705
 	public class FetchDataState
 	{
-		public bool IsLoading { get; set; }
-		public string ErrorMessage { get; set; }
-		public WeatherForecast[] Forecasts { get; set; }
+		public bool IsLoading { get; set; }  // TODO: Make setter private https://github.com/aspnet/Blazor/issues/705
+		public string ErrorMessage { get; set; }  // TODO: Make setter private https://github.com/aspnet/Blazor/issues/705
+		public WeatherForecast[] Forecasts { get; set; }  // TODO: Make setter private https://github.com/aspnet/Blazor/issues/705
 
 		[Obsolete("For deserialization purposes only. Use the constructor with parameters")]
-		public FetchDataState() { } // Required by DevTools to recreate historic state
+		public FetchDataState() { }
 
-		public FetchDataState(bool isLoading, string errorMessage, WeatherForecast[] forecasts)
+		public FetchDataState(bool isLoading, string errorMessage, IEnumerable<WeatherForecast> forecasts)
 		{
 			IsLoading = isLoading;
 			ErrorMessage = errorMessage;
-			Forecasts = forecasts;
+			Forecasts = forecasts == null ? null : forecasts.ToArray();
 		}
 	}
 }

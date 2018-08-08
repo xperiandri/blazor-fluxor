@@ -14,11 +14,13 @@ namespace Blazor.Fluxor
 		/// </summary>
 		/// <returns>The unique name of the feature</returns>
 		string GetName();
+
 		/// <summary>
 		/// The current state of the feature
 		/// </summary>
 		/// <returns>The current state of the feature</returns>
 		object GetState();
+
 		/// <summary>
 		/// Identifies which class type the state should be. This is useful for
 		/// operations that need to know the type even when the state is null,
@@ -26,6 +28,7 @@ namespace Blazor.Fluxor
 		/// </summary>
 		/// <returns>The type of the state that the feature works with</returns>
 		Type GetStateType();
+
 		/// <summary>
 		/// Sets the current state of the feature. This should only be used by Middleware, not for mutating
 		/// state within an application.
@@ -33,12 +36,14 @@ namespace Blazor.Fluxor
 		/// <seealso cref="IMiddleware"/>
 		/// <param name="value">The value of the state to set as the feature's current state</param>
 		void RestoreState(object value);
+
 		/// <summary>
 		/// Allows a feature to react to an action dispatched via the store. This should not be called by
-		/// consuming applications. Instead you should dispatch actions only via <see cref="IDispatcher.DispatchAsync(IAction)"/>
+		/// consuming applications. Instead you should dispatch actions only via <see cref="IDispatcher.Dispatch(IAction)"/>
 		/// </summary>
 		/// <param name="action">The action dispatched via the store</param>
 		void ReceiveDispatchNotificationFromStore(IAction action);
+
 		/// <summary>
 		/// Registers a component to be re-rendered whenever the state changes
 		/// </summary>
@@ -56,6 +61,7 @@ namespace Blazor.Fluxor
 		/// The current state of the feature
 		/// </summary>
 		TState State { get; }
+
 		/// <summary>
 		/// Adds an instance of a reducer to this feature
 		/// </summary>

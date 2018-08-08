@@ -62,10 +62,10 @@
 
 @functions
 {
-    async Task OnSearch()
-    {
-        await Dispatcher.DispatchAsync(new Client.Store.SearchAction(criteria));
-    }
+void OnSearch()
+{
+    Dispatcher.Dispatch(new Client.Store.SearchAction(criteria));
+}
 
-    private SearchCriteria criteria = new SearchCriteria("LHR", "SEA");
+private SearchCriteria criteria = new SearchCriteria("LHR", "SEA");
 }

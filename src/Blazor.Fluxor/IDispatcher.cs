@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Blazor.Fluxor
+﻿namespace Blazor.Fluxor
 {
 	/// <summary>
 	/// Interface that blazor components/pages should use to dispatch actions
@@ -14,10 +12,9 @@ namespace Blazor.Fluxor
 		/// </summary>
 		/// <remarks>
 		/// The return type is a Task because the store may also dispatch long-running side effects from 
-		/// effects (<see cref="IEffect"/>). The caller should await the result of this method.
+		/// effects (<see cref="IEffect"/>).
 		/// </remarks>
 		/// <param name="action">The action to dispatch to all features</param>
-		/// <returns>An awaitable task</returns>
-		Task DispatchAsync(IAction action);
+		void Dispatch(IAction action);
 	}
 }

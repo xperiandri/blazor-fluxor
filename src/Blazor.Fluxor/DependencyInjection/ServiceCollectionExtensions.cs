@@ -8,6 +8,9 @@ using System.Linq;
 
 namespace Blazor.Fluxor
 {
+	/// <summary>
+	/// Extensions for <see cref="IServiceCollection"/>
+	/// </summary>
 	public static class ServiceCollectionExtensions
 	{
 		/// <summary>
@@ -55,6 +58,5 @@ namespace Blazor.Fluxor
 
 			return serviceCollection;
 		}
-
 	}
 }

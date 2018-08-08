@@ -13,10 +13,10 @@ namespace FlightFinder.Client.Store
 			HttpClient = httpClient;
 		}
 
-		public override Task<IAction[]> HandleAsync(StoreInitializedAction action)
+		protected override Task HandleAsync(StoreInitializedAction action, IDispatcher dispatcher)
 		{
-			var fetchAirports = new FetchAirportsAction();
-			return Task.FromResult(new IAction[] { fetchAirports });
+			dispatcher.Dispatch(new FetchAirportsAction());
+			return Task.CompletedTask;
 		}
 	}
 }

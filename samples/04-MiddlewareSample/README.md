@@ -6,15 +6,15 @@ This sample shows how to write Middleware for Fluxor
 2. Create a new class `AnExampleMiddleware` and descend it from the `Blaxor.Fluxor.Middleware` class
 
 ## Consuming your middleware
-Fluxor will not automatically discover and install Middlewares. These must be registered manually. In the Client's `Program` class change the serviceProvider configuration like so
+Fluxor will *not* automatically discover and install Middlewares. These must be registered manually. In the Client's `Program` class change the serviceProvider configuration like so
 
 ```
 var serviceProvider = new BrowserServiceProvider(services =>
 {
-	services.AddFluxor(options =>
-		options
-			.AddMiddleware<AnExampleMiddleware>()
-			.UseDependencyInjection(typeof(Program).Assembly)
+	services.AddFluxor(options => options
+		.UseDependencyInjection(typeof(Startup).Assembly)
+		.AddMiddleware<Blazor.Fluxor.Routing.RoutingMiddleware>() // So we can see route changes in the console
+		.AddMiddleware<AnExampleMiddleware>()
 	);
 });
 ```

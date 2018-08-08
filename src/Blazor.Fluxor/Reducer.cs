@@ -20,7 +20,7 @@
 		/// <param name="action">The action type this reducer handles</param>
 		/// <returns>The new state</returns>
 		public abstract TState Reduce(TState state, TAction action);
-		TState IReducer<TState>.Reduce(TState state, IAction action) => Reduce(state, (TAction)action);
 
+		TState IReducer<TState>.Reduce(TState state, IAction action) => Reduce(state, (TAction)action);
 	}
 }

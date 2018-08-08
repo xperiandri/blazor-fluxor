@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using WeatherForecastSample.Shared;
+﻿using WeatherForecastSample.Shared;
 
 namespace WeatherForecastSample.Client.Store.FetchData
 {
@@ -10,11 +8,11 @@ namespace WeatherForecastSample.Client.Store.FetchData
 		public string ErrorMessage { get; private set; }
 		public WeatherForecast[] Forecasts { get; private set; }
 
-		public FetchDataState(bool isLoading, string errorMessage, IEnumerable<WeatherForecast> forecasts)
+		public FetchDataState(bool isLoading, string errorMessage, WeatherForecast[] forecasts)
 		{
 			IsLoading = isLoading;
 			ErrorMessage = errorMessage;
-			Forecasts = forecasts == null ? null : forecasts.ToArray();
+			Forecasts = forecasts;
 		}
 	}
 }

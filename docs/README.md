@@ -1,12 +1,10 @@
 # Blazor-Fluxor
-Blazor-Fluxor is a low (almost-zero) boilerplate Flux/Redux library for the new [Microsoft aspdotnet Blazor project]. 
+Blazor-Fluxor is a zero boilerplate Flux/Redux library for the new [Microsoft aspdotnet Blazor project]. 
 
 The aim of Fluxor is to create a single-state store approach to front-end development in Blazor without the headaches typically associated with other implementations, such as the overwhelming amount of boiler-plate code required just to add a very basic feature.
 
 ## Installation
 You can download the latest release / pre-release NuGet packages from the [official Blazor-Fluxor nuget page].
-
-Install the dependencies and devDependencies and start the server.
 
 ## Getting started
 The easiest way to get started is to look at the [Sample projects]. They are numbered in an order recommended for learning Blazor-Fluxor. Each will have a `readme` file that explains how the sample was created.
@@ -20,6 +18,9 @@ More sample projects will be added as the framework develops.
   - [Blazor Flight Finder] - A conversion of the official Blazor `Flight Finder` demo.
 
 ## What's new
+### New in 0.14.0
+ - Upgraded to Blazor 0.5.1.
+ - Effects and Middlewares must now call `IDispatcher.Dispatch()` to dispatch actions.
 ### New in 0.13.0
  - Added state change observer pattern. Calling `SomeInjectedState.Changed(this, StateHasChanged)` in a component's `OnInit` method will subscribe to all state changes triggered by other components.
  - Changed `IState.Current` to `IState.Value`

@@ -6,7 +6,6 @@
 @inject IState<FetchDataState> FetchDataState
 
 <h1>Weather forecast</h1>
-
 @if (FetchDataState.Value.ErrorMessage != null)
 {
     <h1>Error</h1>
@@ -19,8 +18,9 @@
 
 @if (FetchDataState.Value.IsLoading)
 {
-    <p>Loading...(2 second delay on server side)</p>
+    <p><em>Loading...</em></p>
 }
+
 @if (FetchDataState.Value.Forecasts != null)
 {
     <table class="table">
@@ -46,9 +46,12 @@
     </table>
 }
 
+
+
 @functions {
-    protected override async Task OnInitAsync()
-    {
-        await Dispatcher.DispatchAsync(new GetForecastDataAction());
-    }
+protected override void OnInit()
+{
+    base.OnInit();
+    Dispatcher.Dispatch(new GetForecastDataAction());
+}
 }

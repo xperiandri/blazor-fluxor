@@ -1,42 +1,54 @@
-﻿using Blazor.Fluxor.Extensions;
-using Blazor.Fluxor.ReduxDevTools.CallbackObjects;
-using Microsoft.AspNetCore.Blazor;
+﻿using Blazor.Fluxor.ReduxDevTools.CallbackObjects;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Blazor.Fluxor.ReduxDevTools
 {
-	internal static class ReduxDevToolsInterop
+	/// <summary>
+	/// Interop for dev tools
+	/// </summary>
+	public static class ReduxDevToolsInterop
 	{
-		internal const string FromJsDevToolsDetectedId = "fluxorDevTools/detected";
 
+		internal const string DevToolsCallbackId = RootId + "DevToolsCallback";
 		internal static bool DevToolsBrowserPluginDetected { get; private set; }
 		internal static event EventHandler<JumpToStateCallback> JumpToState;
 		internal static event EventHandler AfterJumpToState;
 		internal static event EventHandler Commit;
 
-		private const string ToJsDispatchId = "fluxorDevTools/dispatch";
-		private const string ToJsInitId = "fluxorDevTools/init";
+		private const string RootId = "Blazor.Fluxor.ReduxDevTools.ReduxDevToolsInterop.";
+		private const string FluxorDevToolsId = "__FluxorDevTools__";
+		private const string FromJsDevToolsDetectedActionTypeName = "detected";
+		private const string ToJsDispatchMethodName = "dispatch";
+		private const string ToJsInitMethodName = "init";
 
 		internal static void Init(IDictionary<string, object> state)
 		{
-			Invoke<object>(ToJsInitId, state);
+			InvokeFluxorDevToolsMethod<object>(ToJsInitMethodName, state);
 		}
 
 		internal static void Dispatch(IAction action, IDictionary<string, object> state)
 		{
-			Invoke<object>(ToJsDispatchId, new ActionInfo(action), state);
+			InvokeFluxorDevToolsMethod<object>(ToJsDispatchMethodName, new ActionInfo(action), state);
 		}
 
-		private static void DevToolsCallback(string messageAsJson)
+		/// <summary>
+		/// Called back from ReduxDevTools
+		/// </summary>
+		/// <param name="messageAsJson"></param>
+		[JSInvokable(DevToolsCallbackId)]
+		//TODO: Make private https://github.com/aspnet/Blazor/issues/1218
+		public static void DevToolsCallback(string messageAsJson)
 		{
 			if (string.IsNullOrWhiteSpace(messageAsJson))
 				return;
 
-			var message = JsonUtil.Deserialize<BaseCallbackObject>(messageAsJson);
+			var message = Json.Deserialize<BaseCallbackObject>(messageAsJson);
 			switch (message?.payload?.type)
 			{
-				case FromJsDevToolsDetectedId:
+				case FromJsDevToolsDetectedActionTypeName:
 					DevToolsBrowserPluginDetected = true;
 					break;
 
@@ -46,17 +58,18 @@ namespace Blazor.Fluxor.ReduxDevTools
 
 				case "JUMP_TO_STATE":
 				case "JUMP_TO_ACTION":
-					OnJumpToState(JsonUtil.Deserialize<JumpToStateCallback>(messageAsJson));
+					OnJumpToState(Json.Deserialize<JumpToStateCallback>(messageAsJson));
 					break;
 			}
 		}
 
-		private static TRes Invoke<TRes>(string identifier, params object[] args)
+		private static Task<TRes> InvokeFluxorDevToolsMethod<TRes>(string identifier, params object[] args)
 		{
 			if (!DevToolsBrowserPluginDetected)
-				return default(TRes);
+				return Task.FromResult(default(TRes));
 
-			return Microsoft.AspNetCore.Blazor.Browser.Interop.RegisteredFunction.Invoke<TRes>(identifier, args);
+			string fullIdentifier = $"{FluxorDevToolsId}.{identifier}";
+			return JSRuntime.Current.InvokeAsync<TRes>(fullIdentifier, args);
 		}
 
 		private static void OnJumpToState(JumpToStateCallback jumpToStateCallback)
@@ -68,53 +81,39 @@ namespace Blazor.Fluxor.ReduxDevTools
 		internal static string GetClientScripts()
 		{
 			string assemblyName = typeof(ReduxDevToolsInterop).Assembly.GetName().Name;
-			string @namespace = typeof(ReduxDevToolsInterop).GetNamespace();
-			string className = typeof(ReduxDevToolsInterop).Name;
-			string callbackMethodName = nameof(ReduxDevToolsInterop.DevToolsCallback);
 
 			return $@"
-(function() {{
+window.{FluxorDevToolsId} = new (function() {{
 	const reduxDevTools = window.__REDUX_DEVTOOLS_EXTENSION__;
 	if (reduxDevTools !== undefined && reduxDevTools !== null) {{
-		const fluxorDevToolsCallback = Blazor.platform.findMethod(
-			'{assemblyName}',
-			'{@namespace}',
-			'{className}',
-			'{callbackMethodName}'
-		);
-		
 		const fluxorDevTools = reduxDevTools.connect({{ name: 'Blazor-Fluxor' }});
 		if (fluxorDevTools !== undefined && fluxorDevTools !== null) {{
 			fluxorDevTools.subscribe((message) => {{ 
 				const messageAsJson = JSON.stringify(message);
-				const messageAsString = Blazor.platform.toDotNetString(messageAsJson);
-				Blazor.platform.callMethod(fluxorDevToolsCallback, null, [ messageAsString ]);
+				DotNet.invokeMethodAsync('{assemblyName}', '{DevToolsCallbackId}', messageAsJson); 
 			}});
 
 		}}
 
-		Blazor.registerFunction('{ToJsDispatchId}', function(action, state) {{
-			fluxorDevTools.send(action, state);
-		}});
-
-		Blazor.registerFunction('{ToJsInitId}', function(state) {{
+		this.{ToJsInitMethodName} = function(state) {{
 			fluxorDevTools.init(state);
-		}});
+		}};
+
+		this.{ToJsDispatchMethodName} = function(action, state) {{
+			fluxorDevTools.send(action, state);
+		}};
 
 		// Notify Fluxor of the presence of the browser plugin
 		const detectedMessage = {{
 			payload: {{
-				type: '{ReduxDevToolsInterop.FromJsDevToolsDetectedId}'
+				type: '{ReduxDevToolsInterop.FromJsDevToolsDetectedActionTypeName}'
 			}}
 		}};
 		const detectedMessageAsJson = JSON.stringify(detectedMessage);
-		const detectedMessageAsString = Blazor.platform.toDotNetString(detectedMessageAsJson);
-		Blazor.platform.callMethod(fluxorDevToolsCallback, null, [ detectedMessageAsString ]);
+		DotNet.invokeMethodAsync('{assemblyName}', '{DevToolsCallbackId}', detectedMessageAsJson);
 	}}
 }})();
 ";
 		}
-
-
 	}
 }

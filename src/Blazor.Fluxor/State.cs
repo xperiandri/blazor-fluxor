@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Blazor.Components;
-using System;
 
 namespace Blazor.Fluxor
 {

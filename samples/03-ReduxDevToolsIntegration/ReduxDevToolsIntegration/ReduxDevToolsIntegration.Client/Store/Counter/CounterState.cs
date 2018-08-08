@@ -2,13 +2,12 @@
 
 namespace ReduxDevToolsIntegration.Client.Store.Counter
 {
-	// TODO: Make property setters private - https://github.com/aspnet/Blazor/issues/705
 	public class CounterState
 	{
-		public int ClickCount { get; set; }
+		public int ClickCount { get; set; }  // TODO: Make setter private https://github.com/aspnet/Blazor/issues/705
 
 		[Obsolete("For deserialization purposes only. Use the constructor with parameters")]
-		public CounterState() { } // Required by DevTools to recreate historic state
+		public CounterState() { }
 
 		public CounterState(int clickCount)
 		{

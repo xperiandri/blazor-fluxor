@@ -66,6 +66,5 @@ namespace Blazor.Fluxor.DependencyInjection
 			.ToArray();
 			return this;
 		}
-
 	}
 }

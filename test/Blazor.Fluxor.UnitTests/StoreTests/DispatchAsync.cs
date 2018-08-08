@@ -9,26 +9,26 @@ namespace Blazor.Fluxor.UnitTests.StoreTests
 {
 	public partial class StoreTests
 	{
-		public class DispatchAsync
+		public class Dispatch
 		{
 			BrowserInteropStub BrowserInteropStub = new BrowserInteropStub();
 
 			[Fact]
-			public async Task ThrowsArgumentNullException_WhenActionIsNull()
+			public void ThrowsArgumentNullException_WhenActionIsNull()
 			{
 				var subject = new Store(BrowserInteropStub);
-				await Assert.ThrowsAsync<ArgumentNullException>(() => subject.DispatchAsync(null));
+				Assert.Throws<ArgumentNullException>(() => subject.Dispatch(null));
 			}
 
 			[Fact]
-			public async Task ThrowsInvalidOperationException_IfStoreHasNotBeenInitialised()
+			public void ThrowsInvalidOperationException_IfStoreHasNotBeenInitialised()
 			{
 				var subject = new Store(BrowserInteropStub);
-				await Assert.ThrowsAsync<InvalidOperationException>(() => subject.DispatchAsync(new TestAction()));
+				Assert.Throws<InvalidOperationException>(() => subject.Dispatch(new TestAction()));
 			}
 
 			[Fact]
-			public async Task DoesNotDispatchActions_WhenIsInsideMiddlewareChange()
+			public void DoesNotDispatchActions_WhenIsInsideMiddlewareChange()
 			{
 				var mockMiddleware = MockMiddlewareFactory.Create();
 
@@ -40,14 +40,14 @@ namespace Blazor.Fluxor.UnitTests.StoreTests
 				var testAction = new TestAction();
 				using (subject.BeginInternalMiddlewareChange())
 				{
-					await subject.DispatchAsync(testAction);
+					subject.Dispatch(testAction);
 				}
 
 				mockMiddleware.Verify(x => x.MayDispatchAction(testAction), Times.Never);
 			}
 
 			[Fact]
-			public async Task DoesNotSendActionToFeatures_WhenMiddlewareForbidsIt()
+			public void DoesNotSendActionToFeatures_WhenMiddlewareForbidsIt()
 			{
 				var testAction = new TestAction();
 				var mockFeature = MockFeatureFactory.Create();
@@ -58,14 +58,14 @@ namespace Blazor.Fluxor.UnitTests.StoreTests
 				var subject = new Store(BrowserInteropStub);
 
 				BrowserInteropStub._TriggerPageLoaded();
-				await subject.DispatchAsync(testAction);
+				subject.Dispatch(testAction);
 
 				mockFeature
 					.Verify(x => x.ReceiveDispatchNotificationFromStore(testAction), Times.Never);
 			}
 
 			[Fact]
-			public async Task ExecutesBeforeDispatchActionOnMiddlewares()
+			public void ExecutesBeforeDispatchActionOnMiddlewares()
 			{
 				var testAction = new TestAction();
 				var mockMiddleware = MockMiddlewareFactory.Create();
@@ -73,14 +73,14 @@ namespace Blazor.Fluxor.UnitTests.StoreTests
 				subject.AddMiddleware(mockMiddleware.Object);
 
 				BrowserInteropStub._TriggerPageLoaded();
-				await subject.DispatchAsync(testAction);
+				subject.Dispatch(testAction);
 
 				mockMiddleware
 					.Verify(x => x.BeforeDispatch(testAction), Times.Once);
 			}
 
 			[Fact]
-			public async Task NotifiesFeatures()
+			public void NotifiesFeatures()
 			{
 				var mockFeature = MockFeatureFactory.Create();
 				var subject = new Store(BrowserInteropStub);
@@ -88,39 +88,14 @@ namespace Blazor.Fluxor.UnitTests.StoreTests
 
 				var testAction = new TestAction();
 				BrowserInteropStub._TriggerPageLoaded();
-				await subject.DispatchAsync(testAction);
+				subject.Dispatch(testAction);
 
 				mockFeature
 					.Verify(x => x.ReceiveDispatchNotificationFromStore(testAction));
 			}
 
 			[Fact]
-			public async Task DispatchesTasksFromMiddleware_WhenAfterDispatchReturnsATask()
-			{
-				var testAction = new TestAction();
-				var testActionFromMiddleware = new TestActionFromMiddleware();
-				var mockMiddleware = MockMiddlewareFactory.Create();
-				mockMiddleware
-					.Setup(x => x.AfterDispatch(testAction))
-					.Returns(new IAction[] { testActionFromMiddleware });
-				var mockFeature = MockFeatureFactory.Create();
-
-				var subject = new Store(BrowserInteropStub);
-				subject.AddMiddleware(mockMiddleware.Object);
-				subject.AddFeature(mockFeature.Object);
-				BrowserInteropStub._TriggerPageLoaded();
-
-				await subject.DispatchAsync(testAction);
-
-				mockMiddleware
-					.Verify(x => x.MayDispatchAction(testActionFromMiddleware), Times.Once);
-				mockFeature
-					.Verify(x => x.ReceiveDispatchNotificationFromStore(testActionFromMiddleware), Times.Once);
-
-			}
-
-			[Fact]
-			public async Task DispatchesTasksFromEffect()
+			public void DispatchesTasksFromEffect()
 			{
 				var mockFeature = MockFeatureFactory.Create();
 				var actionToEmit1 = new TestActionFromEffect1();
@@ -131,7 +106,7 @@ namespace Blazor.Fluxor.UnitTests.StoreTests
 				subject.AddEffect(new EffectThatEmitsActions<TestAction>(actionsToEmit));
 
 				BrowserInteropStub._TriggerPageLoaded();
-				await subject.DispatchAsync(new TestAction());
+				subject.Dispatch(new TestAction());
 
 				mockFeature
 					.Verify(x => x.ReceiveDispatchNotificationFromStore(actionToEmit1), Times.Once);
@@ -140,7 +115,7 @@ namespace Blazor.Fluxor.UnitTests.StoreTests
 			}
 
 			[Fact]
-			public async Task TriggersOnlyEffectsThatHandleTheDispatchedAction()
+			public void TriggersOnlyEffectsThatHandleTheDispatchedAction()
 			{
 				var mockIncompatibleEffect = new Mock<IEffect>();
 				mockIncompatibleEffect
@@ -157,10 +132,10 @@ namespace Blazor.Fluxor.UnitTests.StoreTests
 				BrowserInteropStub._TriggerPageLoaded();
 
 				var action = new TestAction();
-				await subject.DispatchAsync(action);
+				subject.Dispatch(action);
 
-				mockIncompatibleEffect.Verify(x => x.HandleAsync(action), Times.Never);
-				mockCompatibleEffect.Verify(x => x.HandleAsync(action), Times.Once);
+				mockIncompatibleEffect.Verify(x => x.HandleAsync(action, It.IsAny<IDispatcher>()), Times.Never);
+				mockCompatibleEffect.Verify(x => x.HandleAsync(action, It.IsAny<IDispatcher>()), Times.Once);
 			}
 		}
 

@@ -1,4 +1,5 @@
 ﻿@page "/fetchdata"
+@inherits Blazor.Fluxor.Components.FluxorComponent
 @using Blazor.Fluxor
 @using Store.FetchData
 @inject IDispatcher Dispatcher
@@ -18,7 +19,7 @@
 
 @if (FetchDataState.Value.IsLoading)
 {
-    <p>Loading...(2 second delay on server side)</p>
+    <p><em>Loading...</em></p>
 }
 @if (FetchDataState.Value.Forecasts != null)
 {
@@ -45,10 +46,10 @@
     </table>
 }
 
-
 @functions {
-protected override async Task OnInitAsync()
+protected override void OnInit()
 {
-    await Dispatcher.DispatchAsync(new GetForecastDataAction());
+    base.OnInit();
+    Dispatcher.Dispatch(new GetForecastDataAction());
 }
 }

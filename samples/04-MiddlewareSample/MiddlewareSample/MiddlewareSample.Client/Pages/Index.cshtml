@@ -1,14 +1,5 @@
 ﻿@page "/"
-@inherits Blazor.Fluxor.Components.FluxorComponent
-@using Blazor.Fluxor
-@using Store.Counter
-@inject IState<CounterState> CounterState
 
-<h1>Middleware sample</h1>
-<h2>Look in your browser's console view!</h2>
-<p>Current count: @CounterState.Value.ClickCount</p>
+<h1>Open the developer console and look in the Console output as you browse this website!</h1>
 
-<!--
-    Note: The IncrementCounterAction in this sample is dispatched in
-    the file /Shared/MainLayout.cshtml
--->
+<SurveyPrompt Title="How is Blazor working for you?" />

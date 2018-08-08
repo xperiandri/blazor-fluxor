@@ -13,7 +13,7 @@ namespace Blazor.Fluxor.Routing
 			UriHelper = uriHelper;
 		}
 
-		public override Task<IAction[]> HandleAsync(Go action)
+		protected override Task HandleAsync(Go action, IDispatcher dispatcher)
 		{
 			Uri fullUri = UriHelper.ToAbsoluteUri(action.NewUri);
 			if (fullUri.ToString() != UriHelper.GetAbsoluteUri())
@@ -21,7 +21,7 @@ namespace Blazor.Fluxor.Routing
 				// Only navigate if we are not already at the URI specified
 				UriHelper.NavigateTo(action.NewUri);
 			}
-			return Task.FromResult(new IAction[0]);
+			return Task.CompletedTask;
 		}
 	}
 }

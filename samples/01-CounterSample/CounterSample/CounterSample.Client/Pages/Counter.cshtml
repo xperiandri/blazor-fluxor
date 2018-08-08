@@ -1,4 +1,5 @@
 ﻿@page "/counter"
+@inherits Blazor.Fluxor.Components.FluxorComponent
 @using Blazor.Fluxor
 @using Store.Counter
 @inject IDispatcher Dispatcher
@@ -13,8 +14,8 @@
 <button class="btn btn-primary" onclick="@IncrementCount">Click me</button>
 
 @functions {
-   async Task IncrementCount()
-   {
-       await Dispatcher.DispatchAsync(new IncrementCounterAction());
-   }
+void IncrementCount()
+{
+    Dispatcher.Dispatch(new IncrementCounterAction());
+}
 }

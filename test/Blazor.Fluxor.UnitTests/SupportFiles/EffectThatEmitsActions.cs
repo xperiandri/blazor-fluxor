@@ -12,9 +12,11 @@ namespace Blazor.Fluxor.UnitTests.SupportFiles
 		{
 			ActionsToEmit = actionsToEmit ?? Array.Empty<IAction>();
 		}
-		public override Task<IAction[]> HandleAsync(TTriggerAction action)
+		protected override Task HandleAsync(TTriggerAction action, IDispatcher dispatcher)
 		{
-			return Task.FromResult(ActionsToEmit);
+			foreach (IAction actionToEmit in ActionsToEmit)
+				dispatcher.Dispatch(actionToEmit);
+			return Task.CompletedTask;
 		}
 	}
 }

@@ -13,6 +13,7 @@
 		/// <param name="action">The action dispatched via the store</param>
 		/// <returns>The new state based on the current state + the changes the action should cause</returns>
 		TState Reduce(TState state, IAction action);
+
 		/// <summary>
 		/// Indicates whether or not this reducer intends to alter state based on the action
 		/// </summary>

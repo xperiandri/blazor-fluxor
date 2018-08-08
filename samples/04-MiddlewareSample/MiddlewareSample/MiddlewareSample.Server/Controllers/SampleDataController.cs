@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace MiddlewareSample.Server.Controllers
 {
@@ -15,8 +16,9 @@ namespace MiddlewareSample.Server.Controllers
 		};
 
 		[HttpGet("[action]")]
-		public IEnumerable<WeatherForecast> WeatherForecasts()
+		public async Task<IEnumerable<WeatherForecast>> WeatherForecasts()
 		{
+			await Task.Delay(2000);
 			var rng = new Random();
 			return Enumerable.Range(1, 5).Select(index => new WeatherForecast
 			{
