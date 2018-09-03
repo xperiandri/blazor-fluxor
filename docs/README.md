@@ -18,15 +18,25 @@ More sample projects will be added as the framework develops.
   - [Blazor Flight Finder] - A conversion of the official Blazor `Flight Finder` demo.
 
 ## What's new
+### New in 0.15.0
+ - Queue dispatched actions until store is initialized and then dequeue them.
+ - Made demos reference NuGet packages so they can be downloaded separately.
+
+Issues fixed
+ - https://github.com/mrpmorris/blazor-fluxor/issues/28
+
 ### New in 0.14.0
  - Upgraded to Blazor 0.5.1.
  - Effects and Middlewares must now call `IDispatcher.Dispatch()` to dispatch actions.
+
 ### New in 0.13.0
  - Added state change observer pattern. Calling `SomeInjectedState.Changed(this, StateHasChanged)` in a component's `OnInit` method will subscribe to all state changes triggered by other components.
  - Changed `IState.Current` to `IState.Value`
  - Modified the official Blazor `Flight Finder` demo to use Fluxor. Status is incomplete but functional.
+
 ### New in 0.12.1
  - Changed the way Effects and Reducers work so the developer has more flexibility in chosing what they react to (descendant classes, implemented interfaces, etc)
+
 ### New in 0.12.0
  - Added unit tests
  - Change versioning scheme to match the Blazor approach (increment minor version per release)
@@ -35,16 +45,20 @@ More sample projects will be added as the framework develops.
  - Change Store.Features from IEnumerable<IFeature> to IReadonlyDictionary<string, Feature> for fast lookup and prevention of duplicate keys
  - Make Store.BeginInternalMiddlewareChange re-entrant
  - Fix NullReferenceException that could occur when Middleware returned null from IMiddleware.AfterDispatch
- ## New in 0.0.11
+
+### New in 0.0.11
   - Allow middleware to return tasks to dispatch from IMiddleware.AfterDispatch
   - Make methods of `Feature<TState>` virtual.
   - Upgraded to Blazor 0.4.0
+
 ### New in 0.0.10
   - Introduced IDispatcher for dispatching actions from Blazor components so that the whole IStore isn't required.
   - Introduced IState for providing feature state to Blazor components so that the entire IFeature<T> doesn't need to be referenced.
+
 ### New in 0.0.9
   - Renamed `Handle` to `HandleAsync` in effects
   - Added source docs
+
 ### New in 0.0.8
   - Added an example showing how to create Middleware modules for Fluxor
   - Fixed a bug where components were not displaying state updates when actions effecting their state were dispatched from another component

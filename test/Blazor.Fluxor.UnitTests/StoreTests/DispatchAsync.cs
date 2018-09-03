@@ -21,13 +21,6 @@ namespace Blazor.Fluxor.UnitTests.StoreTests
 			}
 
 			[Fact]
-			public void ThrowsInvalidOperationException_IfStoreHasNotBeenInitialised()
-			{
-				var subject = new Store(BrowserInteropStub);
-				Assert.Throws<InvalidOperationException>(() => subject.Dispatch(new TestAction()));
-			}
-
-			[Fact]
 			public void DoesNotDispatchActions_WhenIsInsideMiddlewareChange()
 			{
 				var mockMiddleware = MockMiddlewareFactory.Create();

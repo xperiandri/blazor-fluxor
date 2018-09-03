@@ -31,7 +31,7 @@ namespace MiddlewareSample.Client.Store.Middlewares.AnExample
 
 		public override void AfterDispatch(IAction action)
 		{
-			Console.WriteLine($"Action {action.GetType().Name} has just beenr dispatched to all features");
+			Console.WriteLine($"Action {action.GetType().Name} has just been dispatched to all features");
 		}
 	}
 }

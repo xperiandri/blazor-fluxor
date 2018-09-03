@@ -34,6 +34,7 @@ namespace Blazor.Fluxor
 		{
 			BrowserInteropService = browserInteropService;
 			BrowserInteropService.PageLoaded += OnPageLoaded;
+			Dispatch(new StoreInitializedAction());
 		}
 
 		/// <see cref="IStore.AddFeature(IFeature)"/>
@@ -59,9 +60,6 @@ namespace Blazor.Fluxor
 			if (IsInsideMiddlewareChange)
 				return;
 
-			if (!HasActivatedStore)
-				throw new InvalidOperationException("Store has not been initialized. Add `@Store.Initialize()` to your layout page");
-
 			// If there was already an action in the Queue then an action dispatch is already in progress, so we will just
 			// let this new action be added to the queue and then exit
 			// Note: This is to cater for the following scenario
@@ -74,29 +72,12 @@ namespace Blazor.Fluxor
 			if (wasAlreadyDispatching)
 				return;
 
-			while (QueuedActions.Any())
-			{
-				// We want the next action but we won't dequeue it because we use
-				// a non-empty queue as an indication that a Dispatch() loop is already in progress
-				IAction nextActionToDequeue = QueuedActions.Peek();
-				// Only process the action if no middleware vetos it
-				if (Middlewares.All(x => x.MayDispatchAction(nextActionToDequeue)))
-				{
-					ExecuteMiddlewareBeforeDispatch(nextActionToDequeue);
+			// HasActivatedStore is set to true when the page finishes loading
+			// At which point DequeueActions will be called
+			if (!HasActivatedStore)
+				return;
 
-					// Notify all features of this action
-					foreach (var featureInstance in FeaturesByName.Values)
-					{
-						NotifyFeatureOfDispatch(featureInstance, nextActionToDequeue);
-					};
-
-					ExecuteMiddlewareAfterDispatch(nextActionToDequeue);
-
-					TriggerEffects(nextActionToDequeue);
-				}
-				// Now remove the processed action from the queue so we can move on to the next (if any)
-				QueuedActions.Dequeue();
-			}
+			DequeueActions();
 		}
 
 		/// <see cref="IStore.AddEffect(IEffect)"/>
@@ -202,7 +183,34 @@ namespace Blazor.Fluxor
 
 			HasActivatedStore = true;
 			InitializeMiddlewares();
-			Dispatch(new StoreInitializedAction());
+			DequeueActions();
+		}
+
+		private void DequeueActions()
+		{
+			while (QueuedActions.Any())
+			{
+				// We want the next action but we won't dequeue it because we use
+				// a non-empty queue as an indication that a Dispatch() loop is already in progress
+				IAction nextActionToDequeue = QueuedActions.Peek();
+				// Only process the action if no middleware vetos it
+				if (Middlewares.All(x => x.MayDispatchAction(nextActionToDequeue)))
+				{
+					ExecuteMiddlewareBeforeDispatch(nextActionToDequeue);
+
+					// Notify all features of this action
+					foreach (var featureInstance in FeaturesByName.Values)
+					{
+						NotifyFeatureOfDispatch(featureInstance, nextActionToDequeue);
+					};
+
+					ExecuteMiddlewareAfterDispatch(nextActionToDequeue);
+
+					TriggerEffects(nextActionToDequeue);
+				}
+				// Now remove the processed action from the queue so we can move on to the next (if any)
+				QueuedActions.Dequeue();
+			}
 		}
 
 		private string GetClientScripts()
