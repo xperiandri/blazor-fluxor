@@ -21,7 +21,7 @@ namespace Blazor.Fluxor
 		/// Indicates whether or not the effect should react to a specific action dispatched through the store
 		/// </summary>
 		/// <param name="action">The action that is being dispatched through the store</param>
-		/// <returns>True if the <see cref="Handle(IAction)"/> method should be called</returns>
+		/// <returns>True if the <see cref="HandleAsync(IAction, IDispatcher)"/> method should be called</returns>
 		bool ShouldReactToAction(IAction action);
 	}
 }

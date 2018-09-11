@@ -15,7 +15,7 @@ namespace Blazor.Fluxor
 		/// is executed whenever an action dispatched via the store.
 		/// </summary>
 		/// <param name="effect">The instance of the effect to call back</param>
-		/// <seealso cref="IEffect.Handle(IAction)"/>
+		/// <seealso cref="IEffect.HandleAsync(IAction, IDispatcher)"/>
 		void AddEffect(IEffect effect);
 
 		/// <summary>

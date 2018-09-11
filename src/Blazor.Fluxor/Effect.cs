@@ -10,7 +10,7 @@ namespace Blazor.Fluxor
 	  where TTriggerAction : IAction
 	{
 		/// <summary>
-		/// <see cref="IEffect.HandleAsync(IAction)"/>
+		/// <see cref="IEffect.HandleAsync(IAction, IDispatcher)"/>
 		/// </summary>
 		protected abstract Task HandleAsync(TTriggerAction action, IDispatcher dispatcher);
 

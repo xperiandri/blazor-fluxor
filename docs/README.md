@@ -18,6 +18,8 @@ More sample projects will be added as the framework develops.
   - [Blazor Flight Finder] - A conversion of the official Blazor `Flight Finder` demo.
 
 ## What's new
+### New in 0.15.1
+ - Added setTimeout workaround because Blazor won't allow calling StateHasChanged when the page loads
 ### New in 0.15.0
  - Queue dispatched actions until store is initialized and then dequeue them.
  - Made demos reference NuGet packages so they can be downloaded separately.
