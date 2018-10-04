@@ -18,6 +18,9 @@ More sample projects will be added as the framework develops.
   - [Blazor Flight Finder] - A conversion of the official Blazor `Flight Finder` demo.
 
 ## What's new
+### New in 0.16.0
+ - Upgrade to Blazor 0.6.0
+ - Added a Task to IStore named `Initialized` that can be awaited in `OnInitAsync`
 ### New in 0.15.1
  - Added setTimeout workaround because Blazor won't allow calling StateHasChanged when the page loads
 ### New in 0.15.0

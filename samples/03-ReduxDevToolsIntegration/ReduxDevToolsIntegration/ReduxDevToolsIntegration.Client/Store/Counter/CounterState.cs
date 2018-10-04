@@ -4,10 +4,10 @@ namespace ReduxDevToolsIntegration.Client.Store.Counter
 {
 	public class CounterState
 	{
-		public int ClickCount { get; set; }  // TODO: Make setter private https://github.com/aspnet/Blazor/issues/705
+		public int ClickCount { get; private set; } 
 
-		[Obsolete("For deserialization purposes only. Use the constructor with parameters")]
-		public CounterState() { }
+		// Required for deserialisation
+		private CounterState() { }
 
 		public CounterState(int clickCount)
 		{

@@ -1,5 +1,4 @@
 ﻿using ReduxDevToolsIntegration.Shared;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,12 +6,12 @@ namespace ReduxDevToolsIntegration.Client.Store.FetchData
 {
 	public class FetchDataState
 	{
-		public bool IsLoading { get; set; }  // TODO: Make setter private https://github.com/aspnet/Blazor/issues/705
-		public string ErrorMessage { get; set; }  // TODO: Make setter private https://github.com/aspnet/Blazor/issues/705
-		public WeatherForecast[] Forecasts { get; set; }  // TODO: Make setter private https://github.com/aspnet/Blazor/issues/705
+		public bool IsLoading { get; private set; }
+		public string ErrorMessage { get; private set; }
+		public WeatherForecast[] Forecasts { get; private set; }
 
-		[Obsolete("For deserialization purposes only. Use the constructor with parameters")]
-		public FetchDataState() { }
+		// Required for deserialisation
+		private FetchDataState() { }
 
 		public FetchDataState(bool isLoading, string errorMessage, IEnumerable<WeatherForecast> forecasts)
 		{

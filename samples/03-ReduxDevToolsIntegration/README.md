@@ -15,15 +15,13 @@ public void ConfigureServices(IServiceCollection services)
 ```
 
 ## Required changes to state classes
-Because the [Redux dev tools] implementation uses serialization to switch back to historial states it is necessary to create a public parameterless constructor on all of your state classes.
+Because the [Redux dev tools] implementation uses serialization to switch back to historial states it is necessary to create a parameterless constructor on all of your state classes.
 
 ```
-[Obsolete("For deserialization purposes only. Use the constructor with parameters")]
-public CounterState() {}
+private CounterState() {}
 ```
 
-## Temporary step
-Currently there is no way in Blazor to instruct `JsonUtil.Deserialize()` to deserialize properties with private setters. Until this is possible you will need to ensure the setter visibility of all state properties is public. (See [Issue 705]).
+In order to deserialize state your properties must have setters, these may be private if you wish.
 
 ## Subscribing to state changes
 To ensure your component is re-rendered when state is changed in another component simply descend your components from `FluxorComponent`, like this `@inherits Blazor.Fluxor.Components.FluxorComponent`.

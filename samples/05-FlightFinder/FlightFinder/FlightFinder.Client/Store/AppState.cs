@@ -7,10 +7,10 @@ namespace FlightFinder.Client.Store
 {
 	public class AppState
 	{
-		public bool SearchInProgress { get; set; }
-		public Itinerary[] SearchResults { get; set; }
-		public Itinerary[] Shortlist { get; set; }
-		public Airport[] Airports { get; set; }
+		public bool SearchInProgress { get; private set; }
+		public Itinerary[] SearchResults { get; private set; }
+		public Itinerary[] Shortlist { get; private set; }
+		public Airport[] Airports { get; private set; }
 
 		public AppState()
 		{

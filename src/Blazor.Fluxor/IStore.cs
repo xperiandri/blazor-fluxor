@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Blazor;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Blazor.Fluxor
 {
@@ -75,5 +76,11 @@ namespace Blazor.Fluxor
 		/// </summary>
 		/// <returns></returns>
 		RenderFragment Initialize();
+
+		/// <summary>
+		/// Await this task if you need to asynchronously wait for the store to initialise
+		/// </summary>
+		/// <see cref="Initialize()"/>
+		Task Initialized { get; }
 	}
 }

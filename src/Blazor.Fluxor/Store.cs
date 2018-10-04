@@ -14,6 +14,8 @@ namespace Blazor.Fluxor
 	{
 		/// <see cref="IStore.Features"/>
 		public IReadOnlyDictionary<string, IFeature> Features => FeaturesByName;
+		/// <see cref="IStore.Initialized"/>
+		public Task Initialized => InitializedCompletionSource.Task;
 
 		private IBrowserInteropService BrowserInteropService;
 		private readonly Dictionary<string, IFeature> FeaturesByName = new Dictionary<string, IFeature>(StringComparer.InvariantCultureIgnoreCase);
@@ -21,6 +23,7 @@ namespace Blazor.Fluxor
 		private readonly List<IMiddleware> Middlewares = new List<IMiddleware>();
 		private readonly List<IMiddleware> ReversedMiddlewares = new List<IMiddleware>();
 		private readonly Queue<IAction> QueuedActions = new Queue<IAction>();
+		private readonly TaskCompletionSource<bool> InitializedCompletionSource = new TaskCompletionSource<bool>();
 
 		private int BeginMiddlewareChangeCount;
 		private bool HasActivatedStore;
@@ -184,6 +187,7 @@ namespace Blazor.Fluxor
 			HasActivatedStore = true;
 			InitializeMiddlewares();
 			DequeueActions();
+			InitializedCompletionSource.SetResult(true);
 		}
 
 		private void DequeueActions()
