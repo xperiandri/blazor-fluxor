@@ -49,10 +49,10 @@ namespace Blazor.Fluxor.DependencyInjection
 			IEnumerable<DiscoveredEffectInfo> discoveredEffectInfos)
 		{
 			// Register IDispatcher as an alias to IStore
-			serviceCollection.AddSingleton<IDispatcher>(sp => sp.GetService<IStore>());
+			serviceCollection.AddScoped<IDispatcher>(sp => sp.GetService<IStore>());
 
 			// Register a custom factory for building IStore that will inject all effects
-			serviceCollection.AddSingleton(typeof(IStore), serviceProvider =>
+			serviceCollection.AddScoped(typeof(IStore), serviceProvider =>
 			{
 				var browserInteropService = serviceProvider.GetService<IBrowserInteropService>();
 				var store = new Store(browserInteropService);

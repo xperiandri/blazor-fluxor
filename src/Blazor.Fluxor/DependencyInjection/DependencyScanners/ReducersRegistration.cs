@@ -33,7 +33,7 @@ namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 		private static void RegisterReducer(IServiceCollection serviceCollection, DiscoveredReducerInfo discoveredReducerInfo)
 		{
 			// Register the feature class
-			serviceCollection.AddSingleton(serviceType: discoveredReducerInfo.ImplementingType);
+			serviceCollection.AddScoped(serviceType: discoveredReducerInfo.ImplementingType);
 		}
 	}
 }

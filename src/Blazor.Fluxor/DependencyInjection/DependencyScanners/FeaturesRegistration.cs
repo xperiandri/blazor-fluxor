@@ -50,10 +50,10 @@ namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 			string addReducerMethodName = nameof(IFeature<object>.AddReducer);
 
 			// Register the implementing type so we can get an instance from the service provider
-			serviceCollection.AddSingleton(discoveredFeatureInfo.ImplementingType);
+			serviceCollection.AddScoped(discoveredFeatureInfo.ImplementingType);
 
 			// Register a factory for creating instance of this feature type when requested via the generic IFeature interface
-			serviceCollection.AddSingleton(discoveredFeatureInfo.FeatureInterfaceGenericType, serviceProvider =>
+			serviceCollection.AddScoped(discoveredFeatureInfo.FeatureInterfaceGenericType, serviceProvider =>
 			{
 				// Create an instance of the implementing type
 				IFeature featureInstance = (IFeature)serviceProvider.GetService(discoveredFeatureInfo.ImplementingType);

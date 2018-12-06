@@ -33,7 +33,7 @@ namespace Blazor.Fluxor
 				throw new ArgumentNullException(nameof(configure));
 
 			// Add the browser interop service
-			serviceCollection.AddSingleton<IBrowserInteropService, BrowserInteropPassthrough>();
+			serviceCollection.AddScoped<IBrowserInteropService, BrowserInteropPassthrough>();
 
 			// We only use an instance so middleware can create extensions to the Options
 			var options = new Options();
@@ -41,7 +41,7 @@ namespace Blazor.Fluxor
 
 			// Register all middleware types with dependency injection
 			foreach (Type middlewareType in Options.MiddlewareTypes)
-				serviceCollection.AddSingleton(middlewareType);
+				serviceCollection.AddScoped(middlewareType);
 
 			IEnumerable<AssemblyScanSettings> scanWhitelist = Options.MiddlewareTypes
 				.Select(t => new AssemblyScanSettings(t.Assembly, t.GetNamespace()));
@@ -53,7 +53,7 @@ namespace Blazor.Fluxor
 					serviceCollection: serviceCollection,
 					assembliesToScan: Options.DependencyInjectionAssembliesToScan,
 					scanWhitelist: scanWhitelist);
-				serviceCollection.AddSingleton(typeof(IState<>), typeof(State<>));
+				serviceCollection.AddScoped(typeof(IState<>), typeof(State<>));
 			}
 
 			return serviceCollection;
