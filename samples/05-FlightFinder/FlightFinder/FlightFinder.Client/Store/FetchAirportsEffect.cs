@@ -1,13 +1,13 @@
 ﻿using Blazor.Fluxor;
 using FlightFinder.Shared;
-using Microsoft.AspNetCore.Blazor;
+using Microsoft.AspNetCore.Components;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace FlightFinder.Client.Store
 {
-	public class FetchAirportsEffect : Effect<FetchAirportsAction>
+    public class FetchAirportsEffect : Effect<FetchAirportsAction>
 	{
 		private readonly HttpClient HttpClient;
 

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Blazor.Components;
+﻿using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -7,9 +7,9 @@ namespace Blazor.Fluxor.Components
 {
 	/// <summary>
 	/// A component that auto-subscribes to state changes on all <see cref="IState"/> properties
-	/// and ensures <see cref="Microsoft.AspNetCore.Blazor.Components.BlazorComponent.StateHasChanged"/> is called
+	/// and ensures <see cref="Microsoft.AspNetCore.Components.ComponentBase.StateHasChanged"/> is called
 	/// </summary>
-	public class FluxorComponent : BlazorComponent
+	public class FluxorComponent : ComponentBase
 	{
 		/// <summary>
 		/// Subscribes to state properties

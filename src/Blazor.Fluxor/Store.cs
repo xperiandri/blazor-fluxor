@@ -4,8 +4,8 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Blazor.Fluxor.Services;
-using Microsoft.AspNetCore.Blazor;
-using Microsoft.AspNetCore.Blazor.RenderTree;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.RenderTree;
 
 namespace Blazor.Fluxor
 {

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Blazor.Services;
+﻿using Microsoft.AspNetCore.Components.Services;
 using System;
 using System.Threading.Tasks;
 

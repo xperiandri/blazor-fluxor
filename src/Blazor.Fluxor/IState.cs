@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Blazor.Components;
+﻿using Microsoft.AspNetCore.Components;
 using System;
 
 namespace Blazor.Fluxor
@@ -12,8 +12,8 @@ namespace Blazor.Fluxor
 		/// <summary>
 		/// Registers a component to be re-rendered whenever the state changes
 		/// </summary>
-		/// <param name="subscriber">The component that will have <see cref="BlazorComponent.StateHasChanged"/> executed when the state changes</param>
-		void Subscribe(BlazorComponent subscriber);
+		/// <param name="subscriber">The component that will have <see cref="ComponentBase.StateHasChanged"/> executed when the state changes</param>
+		void Subscribe(ComponentBase subscriber);
 	}
 
 	/// <summary>

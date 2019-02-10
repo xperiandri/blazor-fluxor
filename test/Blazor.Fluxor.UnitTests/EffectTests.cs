@@ -1,12 +1,9 @@
 ﻿using Blazor.Fluxor.UnitTests.SupportFiles;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace Blazor.Fluxor.UnitTests
 {
-	public class EffectTests
+    public class EffectTests
 	{
 		public class ShouldReactToAction
 		{

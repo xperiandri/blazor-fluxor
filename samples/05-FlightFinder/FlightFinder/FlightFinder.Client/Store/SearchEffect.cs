@@ -1,12 +1,12 @@
 ﻿using Blazor.Fluxor;
 using FlightFinder.Shared;
-using Microsoft.AspNetCore.Blazor;
+using Microsoft.AspNetCore.Components;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace FlightFinder.Client.Store
 {
-	public class SearchEffect : Effect<SearchAction>
+    public class SearchEffect : Effect<SearchAction>
 	{
 		private readonly HttpClient HttpClient;
 

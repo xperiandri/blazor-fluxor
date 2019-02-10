@@ -1,5 +1,6 @@
 ﻿using Blazor.Fluxor;
 using Microsoft.AspNetCore.Blazor;
+using Microsoft.AspNetCore.Components;
 using ReduxDevToolsIntegration.Shared;
 using System;
 using System.Net.Http;

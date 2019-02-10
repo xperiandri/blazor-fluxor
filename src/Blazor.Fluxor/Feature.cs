@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Blazor.Components;
+﻿using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +33,7 @@ namespace Blazor.Fluxor
 		protected readonly List<IReducer<TState>> Reducers = new List<IReducer<TState>>();
 
 		private MethodInfo BlazorComponentStateHasChangedMethod;
-		private List<WeakReference<BlazorComponent>> ObservingComponents = new List<WeakReference<BlazorComponent>>();
+		private List<WeakReference<ComponentBase>> ObservingComponents = new List<WeakReference<ComponentBase>>();
 
 		/// <summary>
 		/// Creates a new instance
@@ -41,7 +41,7 @@ namespace Blazor.Fluxor
 		public Feature()
 		{
 			State = GetInitialState();
-			BlazorComponentStateHasChangedMethod = typeof(BlazorComponent).GetMethod("StateHasChanged", BindingFlags.NonPublic | BindingFlags.Instance);
+			BlazorComponentStateHasChangedMethod = typeof(ComponentBase).GetMethod("StateHasChanged", BindingFlags.NonPublic | BindingFlags.Instance);
 		}
 
 		private TState _State;
@@ -81,23 +81,23 @@ namespace Blazor.Fluxor
 			State = newState;
 		}
 
-		/// <see cref="IFeature.Subscribe(BlazorComponent)"/>
-		public void Subscribe(BlazorComponent subscriber)
+		/// <see cref="IFeature.Subscribe(ComponentBase)"/>
+		public void Subscribe(ComponentBase subscriber)
 		{
-			var subscriberReference = new WeakReference<BlazorComponent>(subscriber);
+			var subscriberReference = new WeakReference<ComponentBase>(subscriber);
 			ObservingComponents.Add(subscriberReference);
 		}
 
 		private void TriggerStateChangedCallbacks()
 		{
-			var subscribers = new List<BlazorComponent>();
+			var subscribers = new List<ComponentBase>();
 			var callbacks = new List<Action>();
-			var newStateChangedCallbacks = new List<WeakReference<BlazorComponent>>();
+			var newStateChangedCallbacks = new List<WeakReference<ComponentBase>>();
 
 			// Keep only weak references that have not expired
 			foreach (var subscription in ObservingComponents)
 			{
-				subscription.TryGetTarget(out BlazorComponent subscriber);
+				subscription.TryGetTarget(out ComponentBase subscriber);
 				if (subscriber != null)
 				{
 					// Keep a reference to the subscribers stop them being collected before we have finished

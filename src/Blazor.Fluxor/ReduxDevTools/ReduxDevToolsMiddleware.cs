@@ -1,5 +1,5 @@
 ﻿using Blazor.Fluxor.ReduxDevTools.CallbackObjects;
-using Microsoft.AspNetCore.Blazor;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;

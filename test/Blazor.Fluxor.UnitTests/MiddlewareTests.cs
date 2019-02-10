@@ -1,12 +1,11 @@
 ﻿using Blazor.Fluxor.UnitTests.SupportFiles;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace Blazor.Fluxor.UnitTests
 {
-	public class MiddlewareTests
+    public class MiddlewareTests
 	{
 		[Fact]
 		public void IsInsideMiddlewareChange_ShouldBeTrue_UntilBeginInternalMiddlewareChangeIsDisposed()
