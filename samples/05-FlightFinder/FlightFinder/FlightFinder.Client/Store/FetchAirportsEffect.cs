@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FlightFinder.Client.Store
 {
-    public class FetchAirportsEffect : Effect<FetchAirportsAction>
+	public class FetchAirportsEffect : Effect<FetchAirportsAction>
 	{
 		private readonly HttpClient HttpClient;
 

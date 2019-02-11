@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FlightFinder.Client.Store
 {
-    public class SearchEffect : Effect<SearchAction>
+	public class SearchEffect : Effect<SearchAction>
 	{
 		private readonly HttpClient HttpClient;
 

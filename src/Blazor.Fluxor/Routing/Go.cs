@@ -3,7 +3,7 @@
 	/// <summary>
 	/// Dispatching this action will navigate the browser to the specified URL
 	/// </summary>
-	/// <seealso cref="Microsoft.AspNetCore.Blazor.Services.IUriHelper"/>
+	/// <seealso cref="Microsoft.AspNetCore.Components.Services.IUriHelper"/>
 	public class Go: IAction
 	{
 		/// <summary>

@@ -3,7 +3,7 @@ using Xunit;
 
 namespace Blazor.Fluxor.UnitTests
 {
-    public class EffectTests
+	public class EffectTests
 	{
 		public class ShouldReactToAction
 		{

@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Blazor.Fluxor.UnitTests
 {
-    public class MiddlewareTests
+	public class MiddlewareTests
 	{
 		[Fact]
 		public void IsInsideMiddlewareChange_ShouldBeTrue_UntilBeginInternalMiddlewareChangeIsDisposed()
@@ -17,7 +17,7 @@ namespace Blazor.Fluxor.UnitTests
 			Assert.False(subject._IsInsideMiddlewareChange);
 
 			int expectedChangeCount = 0;
-			for(int i = 1; i <= 10; i++)
+			for (int i = 1; i <= 10; i++)
 			{
 				expectedChangeCount = i;
 				IDisposable disposable = subject._BeginInternalMiddlewareChange();

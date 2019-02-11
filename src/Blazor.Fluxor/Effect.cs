@@ -7,7 +7,7 @@ namespace Blazor.Fluxor
 	/// </summary>
 	/// <typeparam name="TTriggerAction"></typeparam>
 	public abstract class Effect<TTriggerAction> : IEffect
-	  where TTriggerAction : IAction
+		where TTriggerAction : IAction
 	{
 		/// <summary>
 		/// <see cref="IEffect.HandleAsync(IAction, IDispatcher)"/>

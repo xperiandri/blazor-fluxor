@@ -18,6 +18,8 @@ More sample projects will be added as the framework develops.
   - [Blazor Flight Finder] - A conversion of the official Blazor `Flight Finder` demo.
 
 ## What's new
+### New in 0.19.0
+ - Upgrade to Blazor 0.8.0 (Thanks to [@chris_sainty](https://twitter.com/chris_sainty) on Twitter)
 ### New in 0.18.0
  - Changed UseDependencyInjection to use `AddScoped` instead of `AddSingleton` so server-side Blazor apps do not share the same store across clients.
 ### New in 0.17.0
