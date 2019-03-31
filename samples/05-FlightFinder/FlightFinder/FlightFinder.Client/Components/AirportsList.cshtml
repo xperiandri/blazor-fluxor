@@ -2,8 +2,8 @@
 @inject IState<Client.Store.AppState> AppState
 
 <datalist id="airports">
-    @foreach (var airport in AppState.Value.Airports)
-    {
-        <option value=@airport.Code>@airport.DisplayName (@airport.Code)</option>
-    }
+	@foreach (var airport in AppState.Value.Airports)
+	{
+		<option value=@airport.Code>@airport.DisplayName (@airport.Code)</option>
+	}
 </datalist>

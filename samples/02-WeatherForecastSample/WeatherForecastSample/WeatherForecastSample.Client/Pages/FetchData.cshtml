@@ -9,8 +9,8 @@
 
 @if (FetchDataState.Value.ErrorMessage != null)
 {
-    <h1>Error</h1>
-    <p>@FetchDataState.Value.ErrorMessage</p>
+	<h1>Error</h1>
+	<p>@FetchDataState.Value.ErrorMessage</p>
 }
 
 <p>This page <strong>has</strong> been Fluxorized</p>
@@ -19,37 +19,37 @@
 
 @if (FetchDataState.Value.IsLoading)
 {
-    <p><em>Loading...</em></p>
+	<p><em>Loading...</em></p>
 }
 @if (FetchDataState.Value.Forecasts != null)
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in FetchDataState.Value.Forecasts)
-            {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Date</th>
+				<th>Temp. (C)</th>
+				<th>Temp. (F)</th>
+				<th>Summary</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var forecast in FetchDataState.Value.Forecasts)
+			{
+				<tr>
+					<td>@forecast.Date.ToShortDateString()</td>
+					<td>@forecast.TemperatureC</td>
+					<td>@forecast.TemperatureF</td>
+					<td>@forecast.Summary</td>
+				</tr>
+			}
+		</tbody>
+	</table>
 }
 
 @functions {
-protected override void OnInit()
-{
-    base.OnInit();
-    Dispatcher.Dispatch(new GetForecastDataAction());
-}
+	protected override void OnInit()
+	{
+		base.OnInit();
+		Dispatcher.Dispatch(new GetForecastDataAction());
+	}
 }

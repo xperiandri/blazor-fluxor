@@ -16,12 +16,14 @@ namespace Blazor.Fluxor.ReduxDevTools
 	{
 		private int SequenceNumberOfCurrentState = 0;
 		private int SequenceNumberOfLatestState = 0;
+		private readonly ReduxDevToolsInterop ReduxDevToolsInterop;
 
 		/// <summary>
 		/// Creates a new instance of the middleware
 		/// </summary>
-		public ReduxDevToolsMiddleware()
+		public ReduxDevToolsMiddleware(ReduxDevToolsInterop reduxDevToolsInterop)
 		{
+			ReduxDevToolsInterop = reduxDevToolsInterop;
 			ReduxDevToolsInterop.JumpToState += OnJumpToState;
 			ReduxDevToolsInterop.Commit += OnCommit;
 		}

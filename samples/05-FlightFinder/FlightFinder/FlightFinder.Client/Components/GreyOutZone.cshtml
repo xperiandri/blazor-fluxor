@@ -1,12 +1,12 @@
 ﻿<div class=@(IsGreyedOut ? "greyout" : null)>
-    <div class="cover"></div>
+	<div class="cover"></div>
 
-    @ChildContent
+	@ChildContent
 </div>
 
 @functions
 {
-    [Parameter] RenderFragment ChildContent { get; set; }
+	[Parameter] RenderFragment ChildContent { get; set; }
 
-    [Parameter] bool IsGreyedOut { get; set; }
+	[Parameter] bool IsGreyedOut { get; set; }
 }
