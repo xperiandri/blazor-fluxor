@@ -18,6 +18,8 @@ More sample projects will be added as the framework develops.
   - [Blazor Flight Finder] - A conversion of the official Blazor `Flight Finder` demo.
 
 ## What's new
+### New in 0.21.0
+ - Upgrade to latest packages (.net core v3.0.0-preview3-19153-02)
 ### New in 0.20.0
  - Upgrade to Blazor 0.9.0
 ### New in 0.19.0
