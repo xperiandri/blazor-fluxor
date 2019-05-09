@@ -1,4 +1,6 @@
-# Blazor-Fluxor
+# Blazor-Fluxor 
+![](./images/blazor-fluxor-logo.png)
+
 Blazor-Fluxor is a zero boilerplate Flux/Redux library for the new [Microsoft aspdotnet Blazor project]. 
 
 The aim of Fluxor is to create a single-state store approach to front-end development in Blazor without the headaches typically associated with other implementations, such as the overwhelming amount of boiler-plate code required just to add a very basic feature.
