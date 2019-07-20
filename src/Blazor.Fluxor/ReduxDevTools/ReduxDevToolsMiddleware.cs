@@ -34,14 +34,14 @@ namespace Blazor.Fluxor.ReduxDevTools
 			ReduxDevToolsInterop.Init(GetState());
 		}
 
-		/// <see cref="IMiddleware.MayDispatchAction(IAction)"/>
-		public override bool MayDispatchAction(IAction action)
+		/// <see cref="IMiddleware.MayDispatchAction(object)"/>
+		public override bool MayDispatchAction(object action)
 		{
 			return SequenceNumberOfCurrentState == SequenceNumberOfLatestState;
 		}
 
-		/// <see cref="IMiddleware.AfterDispatch(IAction)"/>
-		public override void AfterDispatch(IAction action)
+		/// <see cref="IMiddleware.AfterDispatch(object)"/>
+		public override void AfterDispatch(object action)
 		{
 			ReduxDevToolsInterop.Dispatch(action, GetState());
 
