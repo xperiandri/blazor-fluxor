@@ -49,7 +49,7 @@ namespace WeatherForecastSample.Client.Store.FetchData
 ```
   
 ## Creating the action that triggers a data request to the HTTP server
-1. In the `Store\FetchData` folder create a class in that folder named `GetForecastDataAction.cs`. This class can remain empty, but it must implement the interface `IAction`.
+1. In the `Store\FetchData` folder create a class in that folder named `GetForecastDataAction.cs`, this class can remain empty.
 2. When this action is dispatched through the store we want to clear out any previous state and set IsLoading to true. To do this create a class `GetForecastDataActionReducer.cs` with the following code
 ```c#
 using Blazor.Fluxor;
@@ -236,7 +236,7 @@ using Blazor.Fluxor;
 
 namespace WeatherForecastSample.Client.Store.FetchData
 {
-	public class GetForecastDataFailedAction : IAction
+	public class GetForecastDataFailedAction
 	{
 		public string ErrorMessage { get; private set; }
 
@@ -272,7 +272,7 @@ using WeatherForecastSample.Shared;
 
 namespace WeatherForecastSample.Client.Store.FetchData
 {
-	public class GetForecastDataSuccessAction : IAction
+	public class GetForecastDataSuccessAction
 	{
 		public WeatherForecast[] WeatherForecasts { get; private set; }
 
