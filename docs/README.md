@@ -21,6 +21,9 @@ More sample projects will be added as the framework develops.
 
 ## What's new
 ### New in 0.25.0
+ - Update to Blazor preview 7
+ - Alter the icon that appears in NuGet
+### New in 0.25.0
  - Remove IAction. Actions may now be any type of object.
 ### New in 0.24.0
 **NOTE**: Due to a [bug in System.Text.Json](https://github.com/dotnet/corefx/issues/38435) the ReduxDevTools do not work in this release.
