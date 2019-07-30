@@ -1,12 +1,19 @@
-﻿namespace FullStackSample.Client.Store.ClientCreate
+﻿using FullStackSample.Api.Models;
+
+namespace FullStackSample.Client.Store.ClientCreate
 {
 	public class ClientCreateState
 	{
-		public bool IsExecutingApi { get; private set; }
+		public bool IsExecutingApi { get; }
 		public string ErrorMessage { get; }
+		public ClientCreateOrUpdate Client { get; }
 
-		public ClientCreateState(bool isExecutingApi, string errorMessage)
+		public ClientCreateState(
+			ClientCreateOrUpdate client,
+			bool isExecutingApi,
+			string errorMessage)
 		{
+			Client = client ?? new ClientCreateOrUpdate();
 			IsExecutingApi = isExecutingApi;
 			ErrorMessage = errorMessage;
 		}

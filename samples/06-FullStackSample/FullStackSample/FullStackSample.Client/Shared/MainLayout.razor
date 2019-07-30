@@ -1,4 +1,4 @@
-﻿@inherits LayoutComponentBase
+﻿@inherits Blazor.Fluxor.Components.FluxorLayout
 @inject IDispatcher Dispatcher
 @inject Blazor.Fluxor.IStore Store
 @inject IState<FullStackSample.Client.Store.Main.MainState> MainState
@@ -30,11 +30,6 @@
 
 @code
 {
-	protected override void OnInit()
-	{
-		MainState.Subscribe(this);
-	}
-
 	void DismissError()
 	{
 		Dispatcher.Dispatch(

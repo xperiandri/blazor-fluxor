@@ -1,4 +1,4 @@
-﻿@page "/clients"
+﻿@page "/clients/search/"
 @using Store.ClientsSearch
 @inherits Blazor.Fluxor.Components.FluxorComponent
 @inject IState<ClientsSearchState> State
@@ -57,12 +57,12 @@ else
 
 	void Create()
 	{
-		Dispatcher.Dispatch(new Blazor.Fluxor.Routing.Go("/clients/create"));
+		Dispatcher.Dispatch(new Blazor.Fluxor.Routing.Go("/clients/create/"));
 	}
 
 	void Edit(int clientId)
 	{
-		Dispatcher.Dispatch(new Blazor.Fluxor.Routing.Go($"/clients/{clientId}/edit/"));
+		Dispatcher.Dispatch(new Blazor.Fluxor.Routing.Go($"/client/{clientId}/edit/"));
 	}
 
 }

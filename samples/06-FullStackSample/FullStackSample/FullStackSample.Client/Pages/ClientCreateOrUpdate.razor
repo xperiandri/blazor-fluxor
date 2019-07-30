@@ -1,5 +1,5 @@
-﻿@page "/clients/{ClientId:int}/edit"
-@page "/clients/create"
+﻿@page "/clients/{ClientId:int}/edit/"
+@page "/clients/create/"
 @inherits Blazor.Fluxor.Components.FluxorComponent
 @inject IDispatcher Dispatcher
 @inject IState<FullStackSample.Client.Store.ClientCreate.ClientCreateState> State
@@ -7,24 +7,24 @@
 <nav aria-label="Breadcrumb">
 	<ol class="breadcrumb">
 		<li class="breadcrumb-item">
-			<a href="/clients">Clients</a>
+			<a href="/clients/search/">Clients</a>
 		</li>
 		<li class="breadcrumb-item active">
 			@ActionText
 		</li>
 	</ol>
 </nav>
-<EditForm Model="@Client" OnValidSubmit=@Submit>
+<EditForm Model="@State.Value.Client" OnValidSubmit=@Submit>
 	<PeterLeslieMorris.Blazor.Validation.Validate />
 	<div class="form-group">
 		<label for="Name">Name</label>
-		<InputText @bind-Value=@Client.Name Class="form-control" aria-describedby="Name" @attributes=GetElementDisabled() />
-		<ValidationMessage For=@(() => Client.Name) />
+		<InputText @bind-Value=@State.Value.Client.Name Class="form-control" aria-describedby="Name" @attributes=GetElementDisabled() />
+		<ValidationMessage For=@(() => State.Value.Client.Name) />
 	</div>
 	<div class="form-group">
 		<label for="RegistrationNumber">Registration number</label>
-		<InputNumber @bind-Value=@Client.RegistrationNumber Class="form-control" aria-describedby="Registration number" @attributes=GetElementDisabled() />
-		<ValidationMessage For=@(() => Client.RegistrationNumber) />
+		<InputNumber @bind-Value=@State.Value.Client.RegistrationNumber Class="form-control" aria-describedby="Registration number" @attributes=GetElementDisabled() />
+		<ValidationMessage For=@(() => State.Value.Client.RegistrationNumber) />
 	</div>
 	<button type="submit" class="btn btn-primary" @attributes=@GetElementDisabled()>
 		@(State.Value.IsExecutingApi ? ActionInProgressText : SubmitText)
@@ -38,11 +38,9 @@
 	string SubmitText => IsNew ? "Create" : "Save";
 	string ActionInProgressText => IsNew ? "Creating..." : "Saving...";
 
-	Api.Models.ClientCreateOrUpdate Client = new Api.Models.ClientCreateOrUpdate();
-
 	void Submit()
 	{
-		var command = new Api.Requests.ClientCreateCommand(Client);
+		var command = new Api.Requests.ClientCreateCommand(State.Value.Client);
 		Dispatcher.Dispatch(command);
 	}
 

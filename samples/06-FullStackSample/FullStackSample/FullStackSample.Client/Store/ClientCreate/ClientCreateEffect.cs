@@ -28,7 +28,7 @@ namespace FullStackSample.Client.Store.ClientCreate
 					NotifyStateChanged(dispatcher, response.Client);
 
 				dispatcher.Dispatch(response);
-				dispatcher.Dispatch(new Go("/clients"));
+				dispatcher.Dispatch(new Go("/clients/search/"));
 			}
 			catch
 			{
