@@ -9,6 +9,7 @@ namespace FullStackSample.Client.Store.ClientCreate
 			=> new ClientCreateState(
 				client: null,
 				isExecutingApi: false,
-				errorMessage: null);
+				errorMessage: null,
+				validationErrors: null);
 	}
 }

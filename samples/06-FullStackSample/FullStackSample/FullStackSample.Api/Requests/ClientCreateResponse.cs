@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using FullStackSample.Api.Models;
 
 namespace FullStackSample.Api.Requests
@@ -18,7 +19,7 @@ namespace FullStackSample.Api.Requests
 
 		public ClientCreateResponse(
 			string errorMessage,
-			IEnumerable<KeyValuePair<string, string>> validationErrors)
+			params KeyValuePair<string, string>[] validationErrors)
 			: base(errorMessage, validationErrors)
 		{
 		}

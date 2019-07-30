@@ -6,10 +6,10 @@ namespace FullStackSample.Api.Requests
 {
 	public class ApiResponse
 	{
-		public string ErrorMessage { get; private set; }
+		public string ErrorMessage { get; set; }
 		public bool HasErrors => !string.IsNullOrEmpty(ErrorMessage) || ValidationErrors.Any();
 		public bool Successful => !HasErrors;
-		public IEnumerable<KeyValuePair<string, string>> ValidationErrors { get; private set; }
+		public IEnumerable<KeyValuePair<string, string>> ValidationErrors { get; set; }
 
 		public ApiResponse()
 		{
