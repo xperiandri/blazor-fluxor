@@ -24,11 +24,13 @@ namespace FullStackSample.Client.Store.ClientCreate
 			{
 				var response = 
 					await ApiService.Execute<ClientCreateCommand, ClientCreateResponse>(action);
-				if (response.Successful)
-					NotifyStateChanged(dispatcher, response.Client);
 
 				dispatcher.Dispatch(response);
-				dispatcher.Dispatch(new Go("/clients/search/"));
+				if (response.Successful)
+				{
+					NotifyStateChanged(dispatcher, response.Client);
+					dispatcher.Dispatch(new Go("/clients/search/"));
+				}
 			}
 			catch
 			{

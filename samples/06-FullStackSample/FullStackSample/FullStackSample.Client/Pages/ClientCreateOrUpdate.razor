@@ -14,6 +14,12 @@
 		</li>
 	</ol>
 </nav>
+@if (!string.IsNullOrEmpty(State.Value.ErrorMessage))
+{
+	<div class="alert alert-danger" role="alert">
+		@State.Value.ErrorMessage
+	</div>
+}
 <EditForm Model="@State.Value.Client" OnValidSubmit=@Submit>
 	<PeterLeslieMorris.Blazor.Validation.Validate />
 	<div class="form-group">

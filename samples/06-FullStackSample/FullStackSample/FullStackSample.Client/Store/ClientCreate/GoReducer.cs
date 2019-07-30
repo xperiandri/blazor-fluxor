@@ -13,7 +13,8 @@ namespace FullStackSample.Client.Store.ClientCreate
 			return new ClientCreateState(
 				client: null,
 				isExecutingApi: false,
-				errorMessage: null);
+				errorMessage: null,
+				validationErrors: null);
 		}
 	}
 }

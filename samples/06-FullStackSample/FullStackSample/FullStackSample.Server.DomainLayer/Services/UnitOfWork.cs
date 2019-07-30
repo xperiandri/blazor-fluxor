@@ -1,5 +1,8 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
+using FullStackSample.Server.DomainLayer.Extensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace FullStackSample.Server.DomainLayer.Services
 {
@@ -14,9 +17,16 @@ namespace FullStackSample.Server.DomainLayer.Services
 
 		public async Task<UnitOfWorkResult> CommitAsync(CancellationToken cancellationToken = default)
 		{
-			await DbContext.SaveChangesAsync(cancellationToken);
-			//TODO: Catch unique index violation and return it as an error
-			return UnitOfWorkResult.Success;
+			try
+			{
+				await DbContext.SaveChangesAsync(cancellationToken);
+				return UnitOfWorkResult.Success;
+			}
+			catch (DbUpdateException e) when (e.IsUniqueIndexViolation())
+			{
+				KeyValuePair<string, string> violationInfo = e.GetViolationInfo();
+				return new UnitOfWorkResult($"{violationInfo.Value} must be unique.");
+			}
 		}
 	}
 }

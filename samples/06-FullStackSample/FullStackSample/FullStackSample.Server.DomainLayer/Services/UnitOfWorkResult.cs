@@ -2,8 +2,8 @@
 {
 	public class UnitOfWorkResult
 	{
-		public string ErrorMessage { get; private set; }
-		public bool HasError => !string.IsNullOrEmpty(ErrorMessage);
+		public string Error { get; }
+		public bool HasError => !string.IsNullOrEmpty(Error);
 		public bool Successful => !HasError;
 
 		public static readonly UnitOfWorkResult Success;
@@ -13,11 +13,11 @@
 			Success = new UnitOfWorkResult();
 		}
 
-		public UnitOfWorkResult() { }
+		private UnitOfWorkResult() { }
 
-		public UnitOfWorkResult(string errorMessage) : this()
+		public UnitOfWorkResult(string error) : this()
 		{
-			ErrorMessage = errorMessage;
+			Error = error;
 		}
 	}
 }

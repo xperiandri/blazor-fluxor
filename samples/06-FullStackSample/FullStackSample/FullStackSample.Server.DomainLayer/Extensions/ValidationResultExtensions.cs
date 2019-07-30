@@ -6,10 +6,11 @@ namespace FullStackSample.Server.DomainLayer.Extensions
 {
 	public static class ValidationResultExtensions
 	{
-		public static IEnumerable<KeyValuePair<string, string>> ToResponseErrors(
+		public static KeyValuePair<string, string>[] ToResponseErrors(
 			this ValidationResult validationResult) =>
 				validationResult
 				.Errors
-				.Select(x => new KeyValuePair<string, string>(x.PropertyName, x.ErrorMessage));
+				.Select(x => new KeyValuePair<string, string>(x.PropertyName, x.ErrorMessage))
+				.ToArray();
 	}
 }
