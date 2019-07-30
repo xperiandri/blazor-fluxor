@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components.Layouts;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -6,17 +6,17 @@ using System.Reflection;
 namespace Blazor.Fluxor.Components
 {
 	/// <summary>
-	/// A component that auto-subscribes to state changes on all <see cref="IState"/> properties
+	/// A layout component that auto-subscribes to state changes on all <see cref="IState"/> properties
 	/// and ensures <see cref="Microsoft.AspNetCore.Components.ComponentBase.StateHasChanged"/> is called
 	/// </summary>
-	public class FluxorComponent : ComponentBase
+	public class FluxorLayout : LayoutComponentBase
 	{
 		/// <summary>
 		/// Subscribes to state properties
 		/// </summary>
-		protected override void OnInitialized()
+		protected override void OnInit()
 		{
-			base.OnInitialized();
+			base.OnInit();
 			// Find all state properties
 			const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
 			IEnumerable<PropertyInfo> stateProperties = GetType().GetProperties(bindingFlags)

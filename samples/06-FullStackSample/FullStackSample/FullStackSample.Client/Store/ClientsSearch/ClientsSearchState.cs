@@ -19,5 +19,10 @@ namespace FullStackSample.Client.Store.ClientsSearch
 			ErrorMessage = errorMessage;
 			Clients = clients ?? Array.Empty<Api.Models.ClientSummary>();
 		}
+
+		public static readonly ClientsSearchState Default = new ClientsSearchState(
+			isSearching: false,
+			errorMessage: null,
+			clients: null);
 	}
 }

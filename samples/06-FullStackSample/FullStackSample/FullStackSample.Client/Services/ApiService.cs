@@ -56,11 +56,12 @@ namespace FullStackSample.Client.Services
 				System.Diagnostics.Debug.WriteLine(e.ToString());
 				throw;
 			}
-#endif
+#else
 			catch
 			{
 				throw;
 			}
+#endif
 		}
 
 		private async Task<string> ExecuteHttpRequest(object request, Uri uri)
