@@ -23,6 +23,13 @@ namespace FullStackSample.Client.Validators
 					.MustAsync(HaveUniqueName)
 					.WithMessage("Name must be unique");
 			});
+
+			When(x => x.RegistrationNumber != 0, () =>
+			{
+				RuleFor(x => x.RegistrationNumber)
+					.MustAsync(HaveUniqueRegistrationNumber)
+					.WithMessage("Registration number must be unique");
+			});
 			ApiService = apiService;
 		}
 
@@ -32,19 +39,36 @@ namespace FullStackSample.Client.Validators
 			PropertyValidatorContext context,
 			CancellationToken cancellationToken)
 		{
-			System.Diagnostics.Debug.WriteLine("Client validate name: Start");
 			int? clientIdToIgnore = 
 				client.Id == 0
 				? (int?)null
 				: client.Id;
 
-			var apiQuery = new ClientIsNameTakenQuery(
+			var apiQuery = new ClientIsNameAvailableQuery(
 				clientIdToIgnore: clientIdToIgnore,
 				name: name);
 			var apiResponse = 
-				await ApiService.Execute<ClientIsNameTakenQuery, ClientIsNameTakenResponse>(apiQuery);
-			System.Diagnostics.Debug.WriteLine("Client validate name: End");
-			return !apiResponse.IsTaken;
+				await ApiService.Execute<ClientIsNameAvailableQuery, ClientIsNameAvailableResponse>(apiQuery);
+			return apiResponse.Available;
+		}
+
+		private async Task<bool> HaveUniqueRegistrationNumber(
+			ClientCreateOrUpdate client,
+			int registrationNumber,
+			PropertyValidatorContext context,
+			CancellationToken cancellationToken)
+		{
+			int? clientIdToIgnore =
+				client.Id == 0
+				? (int?)null
+				: client.Id;
+
+			var apiQuery = new ClientIsRegistrationNumberAvailableQuery(
+				clientIdToIgnore: clientIdToIgnore,
+				registrationNumber: registrationNumber);
+			var apiResponse =
+				await ApiService.Execute<ClientIsRegistrationNumberAvailableQuery, ClientIsRegistrationNumberAvailableResponse>(apiQuery);
+			return apiResponse.Available;
 		}
 	}
 }

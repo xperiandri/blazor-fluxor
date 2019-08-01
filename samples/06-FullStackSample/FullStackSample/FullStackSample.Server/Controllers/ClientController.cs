@@ -23,7 +23,11 @@ namespace FullStackSample.Server.Controllers
 			Mediator.Send(command);
 
 		[HttpPost]
-		public Task<ClientIsNameTakenResponse> IsNameTaken([FromBody]ClientIsNameTakenQuery query) =>
+		public Task<ClientIsNameAvailableResponse> IsNameAvailable([FromBody]ClientIsNameAvailableQuery query) =>
+			Mediator.Send(query);
+
+		[HttpPost]
+		public Task<ClientIsRegistrationNumberAvailableResponse> IsRegistrationNumberAvailable([FromBody]ClientIsRegistrationNumberAvailableQuery query) =>
 			Mediator.Send(query);
 	}
 }

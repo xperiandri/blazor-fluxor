@@ -8,26 +8,24 @@ using System.Threading.Tasks;
 
 namespace FullStackSample.Server.DomainLayer.RequestHandlers
 {
-	public class ClientIsNameTakenQueryHandler : IRequestHandler<ClientIsNameTakenQuery, ClientIsNameTakenResponse>
+	public class ClientIsRegistrationNumberAvailableQueryHandler : IRequestHandler<ClientIsRegistrationNumberAvailableQuery, ClientIsRegistrationNumberAvailableResponse>
 	{
 		private readonly FullStackDbContext DbContext;
 
-		public ClientIsNameTakenQueryHandler(FullStackDbContext dbContext)
+		public ClientIsRegistrationNumberAvailableQueryHandler(FullStackDbContext dbContext)
 		{
 			DbContext = dbContext;
 		}
 
-		public async Task<ClientIsNameTakenResponse> Handle(ClientIsNameTakenQuery query, CancellationToken cancellationToken)
+		public async Task<ClientIsRegistrationNumberAvailableResponse> Handle(ClientIsRegistrationNumberAvailableQuery query, CancellationToken cancellationToken)
 		{
-			System.Diagnostics.Debug.WriteLine("Server validate name: Start");
 			IQueryable<Entities.Client> dbQuery = DbContext.Clients
-				.Where(x => x.Name == query.Name);
+				.Where(x => x.RegistrationNumber == query.RegistrationNumber);
 			if (query.ClientIdToIgnore.HasValue)
 				dbQuery = dbQuery.Where(x => x.Id != query.ClientIdToIgnore.Value);
 
 			bool found = await dbQuery.AnyAsync();
-			System.Diagnostics.Debug.WriteLine("Server validate name: End");
-			return new ClientIsNameTakenResponse(isTaken: found);
+			return new ClientIsRegistrationNumberAvailableResponse(available: !found);
 		}
 	}
 }
