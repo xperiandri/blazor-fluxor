@@ -3,14 +3,14 @@ using System;
 
 namespace FullStackSample.Api.Requests
 {
-	public class ClientIsNameTakenQuery : IRequest<ClientIsNameTakenResponse>
+	public class ClientIsNameAvailableQuery : IRequest<ClientIsNameAvailableResponse>
 	{
 		public int? ClientIdToIgnore { get; set; }
 		public string Name { get; set; }
 
-		public ClientIsNameTakenQuery() { }
+		public ClientIsNameAvailableQuery() { }
 
-		public ClientIsNameTakenQuery(int? clientIdToIgnore, string name) : this()
+		public ClientIsNameAvailableQuery(int? clientIdToIgnore, string name) : this()
 		{
 			if (string.IsNullOrEmpty(name))
 				throw new ArgumentNullException(nameof(name));

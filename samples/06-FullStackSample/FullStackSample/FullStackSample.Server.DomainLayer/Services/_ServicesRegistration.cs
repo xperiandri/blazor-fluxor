@@ -33,7 +33,8 @@ namespace FullStackSample.Server.DomainLayer.Services
 		private static void RegisterRequestHandlers(IServiceCollection services)
 		{
 			services.AddScoped<IRequestHandler<ClientCreateCommand, ClientCreateResponse>, ClientCreateCommandHandler>();
-			services.AddScoped<IRequestHandler<ClientIsNameTakenQuery, ClientIsNameTakenResponse>, ClientIsNameTakenQueryHandler>();
+			services.AddScoped<IRequestHandler<ClientIsNameAvailableQuery, ClientIsNameAvailableResponse>, ClientIsNameAvailableQueryHandler>();
+			services.AddScoped<IRequestHandler<ClientIsRegistrationNumberAvailableQuery, ClientIsRegistrationNumberAvailableResponse>, ClientIsRegistrationNumberAvailableQueryHandler>();
 			services.AddScoped<IRequestHandler<ClientsSearchQuery, ClientsSearchResponse>, ClientsSearchQueryHandler>();
 		}
 
