@@ -21,15 +21,15 @@ namespace FullStackSample.Client.Store.ClientsSearch
 			try
 			{
 				var response = await ApiService.Execute<Api.Requests.ClientsSearchQuery, Api.Requests.ClientsSearchResponse>(query);
+				dispatcher.Dispatch(response);
 
 				response.Clients.ToList().ForEach(x => dispatcher.Dispatch(
 					new ClientStateNotification(
+						stateUpdateKind: StateUpdateKind.Modified,
 						id: x.Id,
 						name: x.Name)
 					)
 				);
-
-				dispatcher.Dispatch(response);
 			}
 			catch
 			{

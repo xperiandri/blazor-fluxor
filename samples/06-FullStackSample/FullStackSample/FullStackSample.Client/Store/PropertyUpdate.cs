@@ -6,7 +6,8 @@
 		private readonly T Value;
 
 		public static implicit operator PropertyUpdate<T>(T value) => new PropertyUpdate<T>(value);
-		public T GetValueOrDefault(T @default) => Updated ? Value : @default;
+		public T GetValueOrDefault() => Updated ? Value : default(T);
+		public T UpdatedValue(T originalValue) => Updated ? Value : originalValue;
 
 		public PropertyUpdate(T value)
 		{
