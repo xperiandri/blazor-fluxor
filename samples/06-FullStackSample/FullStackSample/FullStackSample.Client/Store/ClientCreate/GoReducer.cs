@@ -1,5 +1,6 @@
 ﻿using Blazor.Fluxor;
 using Blazor.Fluxor.Routing;
+using System;
 
 namespace FullStackSample.Client.Store.ClientCreate
 {
@@ -7,7 +8,7 @@ namespace FullStackSample.Client.Store.ClientCreate
 	{
 		public override ClientCreateState Reduce(ClientCreateState state, Go action)
 		{
-			string uri = (action.NewUri ?? "").ToLowerInvariant();
+			string uri = new Uri(action.NewUri ?? "").AbsolutePath.ToLowerInvariant();
 			if (uri.StartsWith("/clients/create"))
 				return state;
 			return new ClientCreateState(
