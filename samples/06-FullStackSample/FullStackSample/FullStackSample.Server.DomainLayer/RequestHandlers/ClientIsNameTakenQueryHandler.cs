@@ -19,12 +19,14 @@ namespace FullStackSample.Server.DomainLayer.RequestHandlers
 
 		public async Task<ClientIsNameTakenResponse> Handle(ClientIsNameTakenQuery query, CancellationToken cancellationToken)
 		{
+			System.Diagnostics.Debug.WriteLine("Server validate name: Start");
 			IQueryable<Entities.Client> dbQuery = DbContext.Clients
 				.Where(x => x.Name == query.Name);
 			if (query.ClientIdToIgnore.HasValue)
 				dbQuery = dbQuery.Where(x => x.Id != query.ClientIdToIgnore.Value);
 
 			bool found = await dbQuery.AnyAsync();
+			System.Diagnostics.Debug.WriteLine("Server validate name: End");
 			return new ClientIsNameTakenResponse(isTaken: found);
 		}
 	}
