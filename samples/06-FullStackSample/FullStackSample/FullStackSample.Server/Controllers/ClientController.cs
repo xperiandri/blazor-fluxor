@@ -21,5 +21,9 @@ namespace FullStackSample.Server.Controllers
 		[HttpPost]
 		public Task<ClientCreateResponse> Create([FromBody]ClientCreateCommand command) =>
 			Mediator.Send(command);
+
+		[HttpPost]
+		public Task<ClientIsNameTakenResponse> IsNameTaken([FromBody]ClientIsNameTakenQuery query) =>
+			Mediator.Send(query);
 	}
 }

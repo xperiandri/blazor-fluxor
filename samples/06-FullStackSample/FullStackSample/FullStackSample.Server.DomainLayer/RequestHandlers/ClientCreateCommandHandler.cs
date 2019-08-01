@@ -5,11 +5,6 @@ using FullStackSample.Api.Requests;
 using FullStackSample.Server.DomainLayer.Extensions;
 using FullStackSample.Server.DomainLayer.Services;
 using MediatR;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 
