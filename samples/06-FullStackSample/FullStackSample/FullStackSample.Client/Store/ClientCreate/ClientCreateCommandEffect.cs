@@ -41,6 +41,7 @@ namespace FullStackSample.Client.Store.ClientCreate
 		private void NotifyStateChanged(IDispatcher dispatcher, ClientCreateOrUpdate client)
 		{
 			var clientStateChangeNotification = new ClientStateNotification(
+				stateUpdateKind: StateUpdateKind.Created,
 				id: client.Id,
 				name: client.Name);
 			dispatcher.Dispatch(clientStateChangeNotification);

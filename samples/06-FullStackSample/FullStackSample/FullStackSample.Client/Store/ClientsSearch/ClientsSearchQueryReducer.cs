@@ -7,6 +7,7 @@ namespace FullStackSample.Client.Store.ClientsSearch
 		public override ClientsSearchState Reduce(ClientsSearchState state, Api.Requests.ClientsSearchQuery query) =>
 			new ClientsSearchState(
 				isSearching: true,
+				name: query.Name,
 				errorMessage: null,
 				clients: null
 			);
