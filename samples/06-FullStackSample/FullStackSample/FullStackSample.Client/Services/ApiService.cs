@@ -86,8 +86,9 @@ namespace FullStackSample.Client.Services
 		private class ClientUrls
 		{
 			const string Base = ServerApiVersion + "client/";
-			public const string Search = Base + "search/";
 			public const string Create = Base + "create/";
+			public const string IsNameTaken = Base + "isNameTaken/";
+			public const string Search = Base + "search/";
 		}
 
 		private ReadOnlyDictionary<Type, Uri> CreateUrlsByRequestTypeLookup()
@@ -95,8 +96,9 @@ namespace FullStackSample.Client.Services
 			string baseUrl = UriHelper.GetBaseUri();
 			var lookup = new Dictionary<Type, Uri>
 			{
-				[typeof(ClientsSearchQuery)] = new Uri(baseUrl + ClientUrls.Search),
-				[typeof(ClientCreateCommand)] = new Uri(baseUrl + ClientUrls.Create)
+				[typeof(ClientCreateCommand)] = new Uri(baseUrl + ClientUrls.Create),
+				[typeof(ClientIsNameTakenQuery)] = new Uri(baseUrl + ClientUrls.IsNameTaken),
+				[typeof(ClientsSearchQuery)] = new Uri(baseUrl + ClientUrls.Search)
 			};
 			return new ReadOnlyDictionary<Type, Uri>(lookup);
 		}

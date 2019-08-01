@@ -20,7 +20,10 @@ namespace FullStackSample.Client
 					.AddMiddleware<ReduxDevToolsMiddleware>()
 			);
 			services.AddFormValidation(config =>
-				config.AddFluentValidation(typeof(Api.Models.ClientSummary).Assembly)
+				config.AddFluentValidation(
+					typeof(Api.Models.ClientSummary).Assembly,
+					typeof(Startup).Assembly
+				)
 			);
 		}
 

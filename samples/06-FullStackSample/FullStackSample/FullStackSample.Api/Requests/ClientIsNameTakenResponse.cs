@@ -1,6 +1,6 @@
 ﻿namespace FullStackSample.Api.Requests
 {
-	public class ClientIsNameTakenResponse
+	public class ClientIsNameTakenResponse : ApiResponse
 	{
 		public bool IsTaken { get; set; }
 
