@@ -2,28 +2,27 @@
 using Blazor.Fluxor;
 using Blazor.Fluxor.Routing;
 using FullStackSample.Api.Models;
-using FullStackSample.Api.Requests;
 using FullStackSample.Client.Services;
 using FullStackSample.Client.Store.EntityStateEvents;
 using FullStackSample.Client.Store.Main;
 
 namespace FullStackSample.Client.Store.ClientCreate
 {
-	public class ClientCreateEffect : Effect<ClientCreateCommand>
+	public class ClientCreateCommandEffect : Effect<Api.Requests.ClientCreateCommand>
 	{
 		private readonly IApiService ApiService;
 
-		public ClientCreateEffect(IApiService apiService)
+		public ClientCreateCommandEffect(IApiService apiService)
 		{
 			ApiService = apiService;
 		}
 
-		protected async override Task HandleAsync(ClientCreateCommand action, IDispatcher dispatcher)
+		protected async override Task HandleAsync(Api.Requests.ClientCreateCommand action, IDispatcher dispatcher)
 		{
 			try
 			{
 				var response = 
-					await ApiService.Execute<ClientCreateCommand, ClientCreateResponse>(action);
+					await ApiService.Execute<Api.Requests.ClientCreateCommand, Api.Requests.ClientCreateResponse>(action);
 
 				dispatcher.Dispatch(response);
 				if (response.Successful)
@@ -34,7 +33,7 @@ namespace FullStackSample.Client.Store.ClientCreate
 			}
 			catch
 			{
-				dispatcher.Dispatch(new ClientCreateResponse());
+				dispatcher.Dispatch(new Api.Requests.ClientCreateResponse());
 				dispatcher.Dispatch(new NotifyUnexpectedServerErrorStatusChanged(true));
 			}
 		}
