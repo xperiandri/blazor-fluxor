@@ -1,11 +1,10 @@
 ﻿using Blazor.Fluxor;
-using FullStackSample.Api.Requests;
 
 namespace FullStackSample.Client.Store.ClientsSearch
 {
-	public class ClientsSearchResponseReducer : Reducer<ClientsSearchState, ClientsSearchResponse>
+	public class ClientsSearchResponseReducer : Reducer<ClientsSearchState, Api.Requests.ClientsSearchResponse>
 	{
-		public override ClientsSearchState Reduce(ClientsSearchState state, ClientsSearchResponse response) =>
+		public override ClientsSearchState Reduce(ClientsSearchState state, Api.Requests.ClientsSearchResponse response) =>
 				new ClientsSearchState(
 					isSearching: false,
 					errorMessage: response.ErrorMessage,
