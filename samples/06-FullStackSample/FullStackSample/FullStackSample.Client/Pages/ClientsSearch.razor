@@ -55,6 +55,12 @@ else
 		Dispatcher.Dispatch(action);
 	}
 
+	protected override void OnInit()
+	{
+		base.OnInit();
+		SearchName = State.Value.Name;
+	}
+
 	void Create()
 	{
 		Dispatcher.Dispatch(new Blazor.Fluxor.Routing.Go("/clients/create/"));
