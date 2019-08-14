@@ -30,9 +30,9 @@ To ensure your component is re-rendered when state is changed in another compone
 If you do not wish to descend from a specific base class you can instruct Fluxor to call your component's `StateHasChanged` method whenever its state changes, like this:
 
 ```
-protected override void OnInit()
+protected override void OnInitialized()
 {
-	base.OnInit();
+	base.OnInitialized();
 	NameOfYourState.Subscribe(this)
 }
 ```

@@ -104,12 +104,12 @@ We now need to change the rest of the page in the following ways
 6. Look for the `@foreach` statement and change it to `@foreach (var forecast in FetchDataState.Value.Forecasts)`
 
 ## Dispatching the action when the page loads
-The code at the bottom of the `FetchData.razor` page calls out to a server. We want to move this code out to an effect that is triggered by the `GetForecastDataAction`. So we need to change the code in the `OnInitAsync` method to the following
+The code at the bottom of the `FetchData.razor` page calls out to a server. We want to move this code out to an effect that is triggered by the `GetForecastDataAction`. So we need to change the code in the `OnInitializedAsync` method to the following
 ```c#
 @functions {
-    protected override void OnInit()
+    protected override void OnInitialized()
     {
-        base.OnInit();
+        base.OnInitialized();
         Dispatcher.Dispatch(new GetForecastDataAction());
     }
 }
@@ -166,9 +166,9 @@ The entirety of the `FetchData.razor` file should look like this
 
 
 @functions {
-    protected override void OnInit()
+    protected override void OnInitialized()
     {
-        base.OnInit();
+        base.OnInitialized();
         Dispatcher.Dispatch(new GetForecastDataAction());
     }
 }
@@ -319,9 +319,9 @@ In more complex applications you may need to descend your page from another comp
 
 ```c#
 @functions {
-    protected override void OnInit()
+    protected override void OnInitialized()
     {
-        base.OnInit();
+        base.OnInitialized();
         FetchDataState.Subscribe(this);
     }
 }
