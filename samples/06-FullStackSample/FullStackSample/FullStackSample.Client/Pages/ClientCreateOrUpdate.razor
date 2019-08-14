@@ -38,7 +38,7 @@
 </EditForm>
 
 @code {
-	[Parameter] int? ClientId { get; set; }
+	[Parameter] public int? ClientId { get; set; }
 	bool IsNew => !ClientId.HasValue;
 	string ActionText => IsNew ? "Create" : "Edit";
 	string SubmitText => IsNew ? "Create" : "Save";
