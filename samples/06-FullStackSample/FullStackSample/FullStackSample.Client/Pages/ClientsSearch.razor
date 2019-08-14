@@ -55,9 +55,9 @@ else
 		Dispatcher.Dispatch(action);
 	}
 
-	protected override void OnInit()
+	protected override void OnInitialized()
 	{
-		base.OnInit();
+		base.OnInitialized();
 		SearchName = State.Value.Name;
 	}
 
