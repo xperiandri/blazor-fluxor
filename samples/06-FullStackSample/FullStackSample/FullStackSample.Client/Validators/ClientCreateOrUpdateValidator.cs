@@ -3,9 +3,6 @@ using FluentValidation.Validators;
 using FullStackSample.Api.Models;
 using FullStackSample.Api.Requests;
 using FullStackSample.Client.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,6 +14,8 @@ namespace FullStackSample.Client.Validators
 
 		public ClientCreateOrUpdateValidator(IApiService apiService)
 		{
+			ApiService = apiService;
+
 			When(x => !string.IsNullOrEmpty(x.Name), () =>
 			{
 				RuleFor(x => x.Name)
@@ -30,7 +29,6 @@ namespace FullStackSample.Client.Validators
 					.MustAsync(HaveUniqueRegistrationNumber)
 					.WithMessage("Registration number must be unique");
 			});
-			ApiService = apiService;
 		}
 
 		private async Task<bool> HaveUniqueName(
