@@ -1,6 +1,7 @@
 ﻿@page "/clients/{ClientId:int}/edit/"
 @page "/clients/create/"
 @inherits Blazor.Fluxor.Components.FluxorComponent
+@implements IDisposable
 @inject IDispatcher Dispatcher
 @inject IState<FullStackSample.Client.Store.ClientCreate.ClientCreateState> State
 
@@ -20,17 +21,17 @@
 		@State.Value.ErrorMessage
 	</div>
 }
-<EditForm Model="@State.Value.Client" OnValidSubmit=@Submit>
+<EditForm Model=@FormData OnValidSubmit=@Submit>
 	<PeterLeslieMorris.Blazor.Validation.Validate />
 	<div class="form-group">
 		<label for="Name">Name</label>
-		<InputText @bind-Value=@State.Value.Client.Name Class="form-control" aria-describedby="Name" @attributes=GetElementDisabled() />
-		<ValidationMessage For=@(() => State.Value.Client.Name) />
+		<InputText @bind-Value=FormData.Name Class="form-control" aria-describedby="Name" @attributes=GetElementDisabled() />
+		<ValidationMessage For=@(() => FormData.Name) />
 	</div>
 	<div class="form-group">
 		<label for="RegistrationNumber">Registration number</label>
-		<InputNumber @bind-Value=@State.Value.Client.RegistrationNumber Class="form-control" aria-describedby="Registration number" @attributes=GetElementDisabled() />
-		<ValidationMessage For=@(() => State.Value.Client.RegistrationNumber) />
+		<InputNumber @bind-Value=FormData.RegistrationNumber Class="form-control" aria-describedby="Registration number" @attributes=GetElementDisabled() />
+		<ValidationMessage For=@(() => FormData.RegistrationNumber) />
 	</div>
 	<button type="submit" class="btn btn-primary" @attributes=@GetElementDisabled()>
 		@(State.Value.IsExecutingApi ? ActionInProgressText : SubmitText)
@@ -44,10 +45,21 @@
 	string SubmitText => IsNew ? "Create" : "Save";
 	string ActionInProgressText => IsNew ? "Creating..." : "Saving...";
 
+	FullStackSample.Api.Models.ClientCreateOrUpdate FormData;
+
 	void Submit()
 	{
-		var command = new Api.Requests.ClientCreateCommand(State.Value.Client);
+		var command = new Api.Requests.ClientCreateCommand(FormData);
 		Dispatcher.Dispatch(command);
+	}
+
+	void UpdateFormState(object feature, FullStackSample.Client.Store.ClientCreate.ClientCreateState state)
+	{
+		System.Diagnostics.Debug.WriteLine("FormData updated");
+		FormData = new FullStackSample.Api.Models.ClientCreateOrUpdate(
+			id: state.Client.Id,
+			name: state.Client.Name,
+			registrationNumber: state.Client.RegistrationNumber);
 	}
 
 	Dictionary<string, object> GetElementDisabled()
@@ -55,5 +67,23 @@
 		if (State.Value.IsExecutingApi)
 			return new Dictionary<string, object> { ["disabled"] = "disabled" };
 		return new Dictionary<string, object>();
+	}
+
+	protected override void OnInitialized()
+	{
+		FormData = new Api.Models.ClientCreateOrUpdate();
+		this.State.StateChanged += UpdateFormState;
+	}
+
+	public async override Task SetParametersAsync(ParameterView parameters)
+	{
+		await base.SetParametersAsync(parameters);
+		if (ClientId.HasValue)
+			System.Diagnostics.Debug.WriteLine("Editing " + ClientId);
+	}
+
+	void IDisposable.Dispose()
+	{
+		this.State.StateChanged -= UpdateFormState;
 	}
 }
