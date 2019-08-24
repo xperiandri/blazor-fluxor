@@ -24,6 +24,7 @@ namespace FullStackSample.Client.Extensions
 				name: modifiedState.Name.UpdatedValue(clientSummary.Name));
 		}
 
+		//TODO: PeteM - Make modifiedState an IEnumerable
 		public static IEnumerable<ClientSummaryDto> UpdateState(
 			this IEnumerable<ClientSummaryDto> source,
 			ClientStateNotification modifiedState)

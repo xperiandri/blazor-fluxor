@@ -35,7 +35,8 @@ else
 		{
 			<li class="row mb-3">
 				<button class="col-sm-1 btn btn-info" @onclick=@(() => Edit(client.Id))>Edit</button>
-				<span class="col-sm-11">@client.Name</span>
+				<span class="col-sm-1">@client.Id</span>
+				<span class="col-sm-10">@client.Name</span>
 			</li>
 		}
 	</ul>
