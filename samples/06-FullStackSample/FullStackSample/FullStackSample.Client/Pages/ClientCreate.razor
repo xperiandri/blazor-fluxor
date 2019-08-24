@@ -1,7 +1,5 @@
-﻿@page "/clients/{ClientId:int}/edit/"
-@page "/clients/create/"
+﻿@page "/clients/create/"
 @inherits Blazor.Fluxor.Components.FluxorComponent
-@implements IDisposable
 @inject IDispatcher Dispatcher
 @inject IState<FullStackSample.Client.Store.ClientCreate.ClientCreateState> State
 
@@ -11,7 +9,7 @@
 			<a href="/clients/search/">Clients</a>
 		</li>
 		<li class="breadcrumb-item active">
-			@ActionText
+			Create
 		</li>
 	</ol>
 </nav>
@@ -34,32 +32,17 @@
 		<ValidationMessage For=@(() => FormData.RegistrationNumber) />
 	</div>
 	<button type="submit" class="btn btn-primary" @attributes=@GetElementDisabled()>
-		@(State.Value.IsExecutingApi ? ActionInProgressText : SubmitText)
+		@(State.Value.IsExecutingApi ? "Creating..." : "Create")
 	</button>
 </EditForm>
 
 @code {
-	[Parameter] public int? ClientId { get; set; }
-	bool IsNew => !ClientId.HasValue;
-	string ActionText => IsNew ? "Create" : "Edit";
-	string SubmitText => IsNew ? "Create" : "Save";
-	string ActionInProgressText => IsNew ? "Creating..." : "Saving...";
-
-	FullStackSample.Api.Models.ClientCreateOrUpdate FormData;
+	FullStackSample.Api.Models.ClientCreateDto FormData;
 
 	void Submit()
 	{
 		var command = new Api.Requests.ClientCreateCommand(FormData);
 		Dispatcher.Dispatch(command);
-	}
-
-	void UpdateFormState(object feature, FullStackSample.Client.Store.ClientCreate.ClientCreateState state)
-	{
-		System.Diagnostics.Debug.WriteLine("FormData updated");
-		FormData = new FullStackSample.Api.Models.ClientCreateOrUpdate(
-			id: state.Client.Id,
-			name: state.Client.Name,
-			registrationNumber: state.Client.RegistrationNumber);
 	}
 
 	Dictionary<string, object> GetElementDisabled()
@@ -71,19 +54,7 @@
 
 	protected override void OnInitialized()
 	{
-		FormData = new Api.Models.ClientCreateOrUpdate();
-		this.State.StateChanged += UpdateFormState;
+		FormData = new Api.Models.ClientCreateDto();
 	}
 
-	public async override Task SetParametersAsync(ParameterView parameters)
-	{
-		await base.SetParametersAsync(parameters);
-		if (ClientId.HasValue)
-			System.Diagnostics.Debug.WriteLine("Editing " + ClientId);
-	}
-
-	void IDisposable.Dispose()
-	{
-		this.State.StateChanged -= UpdateFormState;
-	}
 }

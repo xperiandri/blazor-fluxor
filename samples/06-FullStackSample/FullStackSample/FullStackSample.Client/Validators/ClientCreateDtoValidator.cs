@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace FullStackSample.Client.Validators
 {
-	public class ClientCreateOrUpdateValidator : AbstractValidator<ClientCreateOrUpdate>
+	public class ClientCreateDtoValidator : AbstractValidator<ClientCreateDto>
 	{
 		private readonly IApiService ApiService;
 
-		public ClientCreateOrUpdateValidator(IApiService apiService)
+		public ClientCreateDtoValidator(IApiService apiService)
 		{
 			ApiService = apiService;
 
@@ -32,7 +32,7 @@ namespace FullStackSample.Client.Validators
 		}
 
 		private async Task<bool> HaveUniqueName(
-			ClientCreateOrUpdate client,
+			ClientCreateDto client,
 			string name,
 			PropertyValidatorContext context,
 			CancellationToken cancellationToken)
@@ -51,7 +51,7 @@ namespace FullStackSample.Client.Validators
 		}
 
 		private async Task<bool> HaveUniqueRegistrationNumber(
-			ClientCreateOrUpdate client,
+			ClientCreateDto client,
 			int registrationNumber,
 			PropertyValidatorContext context,
 			CancellationToken cancellationToken)

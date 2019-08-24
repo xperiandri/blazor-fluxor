@@ -6,10 +6,12 @@ namespace FullStackSample.Api.Requests
 {
 	public class ClientCreateResponse : ApiResponse
 	{
-		public ClientCreateOrUpdate Client { get; set; }
+		public int ClientId { get; set; }
+		public ClientCreateDto Client { get; set; }
 
-		public ClientCreateResponse(ClientCreateOrUpdate client)
+		public ClientCreateResponse(int clientId, ClientCreateDto client)
 		{
+			ClientId = clientId;
 			Client = client;
 		}
 

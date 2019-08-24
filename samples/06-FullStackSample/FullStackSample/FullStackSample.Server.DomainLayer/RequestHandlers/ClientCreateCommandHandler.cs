@@ -14,13 +14,13 @@ namespace FullStackSample.Server.DomainLayer.RequestHandlers
 	{
 		private readonly FullStackDbContext DbContext;
 		private readonly IMapper Mapper;
-		private readonly IValidator<Api.Models.ClientCreateOrUpdate> Validator;
+		private readonly IValidator<Api.Models.ClientCreateDto> Validator;
 		private readonly IUnitOfWork UnitOfWork;
 
 		public ClientCreateCommandHandler(
 			FullStackDbContext dbContext,
 			IMapper mapper,
-			IValidator<Api.Models.ClientCreateOrUpdate> validator,
+			IValidator<Api.Models.ClientCreateDto> validator,
 			IUnitOfWork unitOfWork)
 		{
 			DbContext = dbContext;
@@ -46,8 +46,8 @@ namespace FullStackSample.Server.DomainLayer.RequestHandlers
 					errorMessage: updateResult.Error,
 					validationErrors: null);
 
-			var apiClient = Mapper.Map<Api.Models.ClientCreateOrUpdate>(clientEntity);
-			return new ClientCreateResponse(apiClient);
+			var apiClient = Mapper.Map<Api.Models.ClientCreateDto>(clientEntity);
+			return new ClientCreateResponse(clientEntity.Id, apiClient);
 		}
 	}
 }

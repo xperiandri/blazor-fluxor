@@ -8,19 +8,19 @@ namespace FullStackSample.Client.Store.ClientsSearch
 		public bool IsSearching { get; private set; }
 		public string ErrorMessage { get; private set; }
 		public string Name { get; set; }
-		public IEnumerable<Api.Models.ClientSummary> Clients { get; private set; }
+		public IEnumerable<Api.Models.ClientSummaryDto> Clients { get; private set; }
 		public bool HasError => !string.IsNullOrEmpty(ErrorMessage);
 
 		public ClientsSearchState(
 			bool isSearching,
 			string errorMessage,
 			string name,
-			IEnumerable<Api.Models.ClientSummary> clients)
+			IEnumerable<Api.Models.ClientSummaryDto> clients)
 		{
 			IsSearching = isSearching;
 			ErrorMessage = errorMessage;
 			Name = name;
-			Clients = clients ?? Array.Empty<Api.Models.ClientSummary>();
+			Clients = clients ?? Array.Empty<Api.Models.ClientSummaryDto>();
 		}
 
 		public static readonly ClientsSearchState Default = new ClientsSearchState(

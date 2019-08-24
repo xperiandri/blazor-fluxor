@@ -1,13 +1,13 @@
 ﻿namespace FullStackSample.Api.Models
 {
-	public class ClientSummary
+	public class ClientSummaryDto
 	{
 		public int Id { get; set; }
 		public string Name { get; set; }
 
-		public ClientSummary() { }
+		public ClientSummaryDto() { }
 
-		public ClientSummary(int id, string name) : this()
+		public ClientSummaryDto(int id, string name) : this()
 		{
 			Id = id;
 			Name = name;

@@ -6,16 +6,16 @@ namespace FullStackSample.Api.Requests
 {
 	public class ClientsSearchResponse : ApiResponse
 	{
-		public IEnumerable<ClientSummary> Clients { get; set; }
+		public IEnumerable<ClientSummaryDto> Clients { get; set; }
 
-		public ClientsSearchResponse(IEnumerable<ClientSummary> clients)
+		public ClientsSearchResponse(IEnumerable<ClientSummaryDto> clients)
 		{
 			Clients = clients;
 		}
 
 		public ClientsSearchResponse()
 		{
-			Clients = Array.Empty<ClientSummary>();
+			Clients = Array.Empty<ClientSummaryDto>();
 		}
 
 		public ClientsSearchResponse(

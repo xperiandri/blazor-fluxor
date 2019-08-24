@@ -2,15 +2,15 @@
 
 namespace FullStackSample.Api.Models
 {
-	public class ClientCreateOrUpdate
+	public class ClientCreateDto
 	{
 		public int Id { get; set; }
 		public string Name { get; set; }
 		public int RegistrationNumber { get; set; }
 
-		public ClientCreateOrUpdate() { }
+		public ClientCreateDto() { }
 
-		public ClientCreateOrUpdate(int id, string name, int registrationNumber) : this()
+		public ClientCreateDto(int id, string name, int registrationNumber) : this()
 		{
 			Id = id;
 			Name = name;
@@ -18,9 +18,9 @@ namespace FullStackSample.Api.Models
 		}
 	}
 
-	public class ClientCreateOrUpdateValidator : AbstractValidator<ClientCreateOrUpdate>
+	public class ClientCreateDtoValidator : AbstractValidator<ClientCreateDto>
 	{
-		public ClientCreateOrUpdateValidator()
+		public ClientCreateDtoValidator()
 		{
 			RuleFor(x => x.Name)
 				.NotEmpty()

@@ -21,7 +21,7 @@ namespace FullStackSample.Client
 			);
 			services.AddFormValidation(config =>
 				config.AddFluentValidation(
-					typeof(Api.Models.ClientSummary).Assembly,
+					typeof(Api.Models.ClientSummaryDto).Assembly,
 					typeof(Startup).Assembly
 				)
 			);

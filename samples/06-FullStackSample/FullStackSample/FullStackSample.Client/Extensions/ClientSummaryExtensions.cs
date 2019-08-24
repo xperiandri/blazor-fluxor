@@ -8,8 +8,8 @@ namespace FullStackSample.Client.Extensions
 {
 	public static class ClientSummaryExtensions
 	{
-		public static ClientSummary UpdateState(
-			this ClientSummary clientSummary,
+		public static ClientSummaryDto UpdateState(
+			this ClientSummaryDto clientSummary,
 			ClientStateNotification modifiedState)
 		{
 			if (clientSummary.Id != modifiedState.Id)
@@ -19,13 +19,13 @@ namespace FullStackSample.Client.Extensions
 			if (modifiedState.StateUpdateKind == StateUpdateKind.Deleted)
 				return null;
 
-			return new ClientSummary(
+			return new ClientSummaryDto(
 				id: clientSummary.Id,
 				name: modifiedState.Name.UpdatedValue(clientSummary.Name));
 		}
 
-		public static IEnumerable<ClientSummary> UpdateState(
-			this IEnumerable<ClientSummary> source,
+		public static IEnumerable<ClientSummaryDto> UpdateState(
+			this IEnumerable<ClientSummaryDto> source,
 			ClientStateNotification modifiedState)
 		{
 			if (source == null)
@@ -34,7 +34,7 @@ namespace FullStackSample.Client.Extensions
 			switch (modifiedState.StateUpdateKind)
 			{
 				case StateUpdateKind.Created:
-					source = source.Append(new ClientSummary(
+					source = source.Append(new ClientSummaryDto(
 						id: modifiedState.Id,
 						name: modifiedState.Name.GetValueOrDefault()));
 					break;

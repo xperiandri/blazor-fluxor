@@ -6,11 +6,11 @@ namespace FullStackSample.Api.Requests
 {
 	public class ClientCreateCommand : IRequest<ClientCreateResponse>
 	{
-		public ClientCreateOrUpdate Client { get; set; }
+		public ClientCreateDto Client { get; set; }
 
 		public ClientCreateCommand() { }
 
-		public ClientCreateCommand(ClientCreateOrUpdate client)
+		public ClientCreateCommand(ClientCreateDto client)
 		{
 			if (client == null)
 				throw new ArgumentNullException(nameof(client));
