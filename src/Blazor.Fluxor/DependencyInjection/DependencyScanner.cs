@@ -19,6 +19,7 @@ namespace Blazor.Fluxor.DependencyInjection
 
 			IEnumerable<Type> allCandidateTypes = assembliesToScan.SelectMany(x => x.Assembly.GetTypes())
 				.Union(scanWhitelist.SelectMany(x => x.Assembly.GetTypes()))
+				.Where(t => !t.IsAbstract)
 				.Distinct();
 			IEnumerable<Assembly> allCandidateAssemblies = assembliesToScan.Select(x => x.Assembly)
 				.Union(scanWhitelist.Select(x => x.Assembly))
