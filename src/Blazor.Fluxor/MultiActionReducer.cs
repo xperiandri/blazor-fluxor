@@ -13,7 +13,7 @@ namespace Blazor.Fluxor
 		}
 
 		public void AddActionReducer<TAction>(Func<TState, TAction, TState> reducer)
-			=> AddActionReducer(typeof(TAction), reducer);
+			=> AddActionReducer(typeof(TAction), (TState state, object action) => reducer(state, (TAction)action));
 
 		public void AddActionReducer(Type actionType, Func<TState, object, TState> reducer)
 			=> ReducersByActionType.Add(actionType, reducer);
