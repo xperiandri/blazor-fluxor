@@ -1,4 +1,4 @@
-# 06-MultiActionReducer sample (Effects)
+# 06-MultiActionReducer sample
 This sample shows how to have multiple reducer actions in a single reducer class.
 This sample is based on [Tutorial 2].
 
