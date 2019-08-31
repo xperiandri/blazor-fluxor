@@ -64,6 +64,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultiActionReducerSample.Cl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultiActionReducerSample.Server", "..\samples\06-MultiActionReducerSample\MultiActionReducerSample\MultiActionReducerSample.Server\MultiActionReducerSample.Server.csproj", "{79D482F7-1195-4E46-AF72-62C788ECB531}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "07-Full stack sample", "07-Full stack sample", "{7517F240-951C-4A6B-9DEF-598F7D3AE4DF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FullStackSample.Api", "..\samples\07-FullStackSample\FullStackSample\FullStackSample.Api\FullStackSample.Api.csproj", "{889A9948-D3A8-4799-8167-62077247CF4C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FullStackSample.Server.DomainLayer", "..\samples\07-FullStackSample\FullStackSample\FullStackSample.Server.DomainLayer\FullStackSample.Server.DomainLayer.csproj", "{51D7EAD0-956E-4C27-9CC9-0B23E19E654E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FullStackSample.Client", "..\samples\07-FullStackSample\FullStackSample\FullStackSample.Client\FullStackSample.Client.csproj", "{39B365CF-36BE-4B78-8F2B-89431F733345}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FullStackSample.Server", "..\samples\07-FullStackSample\FullStackSample\FullStackSample.Server\FullStackSample.Server.csproj", "{EDFF3F7F-DA2C-4AA6-B26B-09E5602F802C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -150,6 +160,22 @@ Global
 		{79D482F7-1195-4E46-AF72-62C788ECB531}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79D482F7-1195-4E46-AF72-62C788ECB531}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79D482F7-1195-4E46-AF72-62C788ECB531}.Release|Any CPU.Build.0 = Release|Any CPU
+		{889A9948-D3A8-4799-8167-62077247CF4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{889A9948-D3A8-4799-8167-62077247CF4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{889A9948-D3A8-4799-8167-62077247CF4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{889A9948-D3A8-4799-8167-62077247CF4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51D7EAD0-956E-4C27-9CC9-0B23E19E654E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51D7EAD0-956E-4C27-9CC9-0B23E19E654E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51D7EAD0-956E-4C27-9CC9-0B23E19E654E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51D7EAD0-956E-4C27-9CC9-0B23E19E654E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39B365CF-36BE-4B78-8F2B-89431F733345}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39B365CF-36BE-4B78-8F2B-89431F733345}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39B365CF-36BE-4B78-8F2B-89431F733345}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39B365CF-36BE-4B78-8F2B-89431F733345}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDFF3F7F-DA2C-4AA6-B26B-09E5602F802C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDFF3F7F-DA2C-4AA6-B26B-09E5602F802C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDFF3F7F-DA2C-4AA6-B26B-09E5602F802C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDFF3F7F-DA2C-4AA6-B26B-09E5602F802C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -180,6 +206,11 @@ Global
 		{73FC7173-865F-4DF6-BCFC-CC0D690B8041} = {736A049B-EBC2-4555-BC22-233B6272FEC6}
 		{EA7E076D-2387-41AA-B1EF-8EE1F2C78465} = {736A049B-EBC2-4555-BC22-233B6272FEC6}
 		{79D482F7-1195-4E46-AF72-62C788ECB531} = {736A049B-EBC2-4555-BC22-233B6272FEC6}
+		{7517F240-951C-4A6B-9DEF-598F7D3AE4DF} = {1A6663AC-4F1F-40AD-8D03-0B0977ED466D}
+		{889A9948-D3A8-4799-8167-62077247CF4C} = {7517F240-951C-4A6B-9DEF-598F7D3AE4DF}
+		{51D7EAD0-956E-4C27-9CC9-0B23E19E654E} = {7517F240-951C-4A6B-9DEF-598F7D3AE4DF}
+		{39B365CF-36BE-4B78-8F2B-89431F733345} = {7517F240-951C-4A6B-9DEF-598F7D3AE4DF}
+		{EDFF3F7F-DA2C-4AA6-B26B-09E5602F802C} = {7517F240-951C-4A6B-9DEF-598F7D3AE4DF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B1F2E0DF-C651-48A3-83E3-3B77D34EC3A2}
