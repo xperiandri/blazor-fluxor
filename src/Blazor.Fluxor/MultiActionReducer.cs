@@ -30,6 +30,10 @@ namespace Blazor.Fluxor
 	{
 		Dictionary<Type, Func<TState, object, TState>> ReducersByActionType;
 
+		///	<summary>
+		///		Creates a new instance. This is where <see cref="AddActionReducer{TAction}(Func{TState, TAction, TState})"/>
+		///		should be executed to register reducers.
+		///	</summary>
 		public MultiActionReducer()
 		{
 			ReducersByActionType = new Dictionary<Type, Func<TState, object, TState>>();
@@ -41,7 +45,7 @@ namespace Blazor.Fluxor
 		/// </summary>
 		/// <typeparam name="TAction">The action type the <paramref name="reducer"/> code responds to</typeparam>
 		/// <param name="reducer">
-		///		A function or method that accepts <see cref="TState"/> and <see cref="TAction"/>
+		///		A function or method that accepts <typeparamref name="TState"/> and <typeparamref cref="TAction"/>
 		///		and returns a <see cref="TState"/>.
 		///	</param>
 		protected void AddActionReducer<TAction>(Func<TState, TAction, TState> reducer)
