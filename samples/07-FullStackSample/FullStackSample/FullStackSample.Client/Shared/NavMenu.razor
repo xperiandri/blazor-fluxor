@@ -1,11 +1,11 @@
 ﻿<div class="top-row pl-4 navbar navbar-dark">
 	<a class="navbar-brand" href="">FullStackSample</a>
-	<button class="navbar-toggler" @onclick="@ToggleNavMenu">
+	<button class="navbar-toggler" @onclick=ToggleNavMenu>
 		<span class="navbar-toggler-icon"></span>
 	</button>
 </div>
 
-<div class="@NavMenuCssClass" @onclick="@ToggleNavMenu">
+<div class="@NavMenuCssClass" @onclick=ToggleNavMenu>
 	<ul class="nav flex-column">
 		<MainMenuItem Css="oi-home" Url="/" LinkText="Home" MatchWholeUrl="@true" />
 		<MainMenuItem Css="oi-person" Url="/clients/search/" LinkText="Clients" />

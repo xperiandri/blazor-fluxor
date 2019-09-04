@@ -1,7 +1,5 @@
-﻿using Blazor.Fluxor;
-using FullStackSample.Api.Requests;
+﻿using FullStackSample.Api.Requests;
 using FullStackSample.Client.Exceptions;
-using FullStackSample.Client.Store.Main;
 using MediatR;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
@@ -9,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Http;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Json = Newtonsoft.Json.JsonConvert;
@@ -19,14 +16,14 @@ namespace FullStackSample.Client.Services
 	public class ApiService : IApiService
 	{
 		private readonly HttpClient HttpClient;
-		private readonly IUriHelper UriHelper;
+		private readonly NavigationManager NavigationManager;
 		private readonly ReadOnlyDictionary<Type, Uri> UriByRequestType;
 		private readonly JsonSerializerSettings JsonOptions;
 
-		public ApiService(HttpClient httpClient, IUriHelper uriHelper)
+		public ApiService(HttpClient httpClient, NavigationManager navigationManager)
 		{
 			HttpClient = httpClient;
-			UriHelper = uriHelper;
+			NavigationManager = navigationManager;
 			UriByRequestType = CreateUrlsByRequestTypeLookup();
 			JsonOptions = new JsonSerializerSettings
 			{
@@ -94,7 +91,7 @@ namespace FullStackSample.Client.Services
 
 		private ReadOnlyDictionary<Type, Uri> CreateUrlsByRequestTypeLookup()
 		{
-			string baseUrl = UriHelper.GetBaseUri();
+			string baseUrl = NavigationManager.BaseUri;
 			var lookup = new Dictionary<Type, Uri>
 			{
 				[typeof(ClientCreateCommand)] = new Uri(baseUrl + ClientUrls.Create),
