@@ -33,11 +33,12 @@ else
 	<ul>
 		@foreach (Api.Models.ClientSummaryDto client in State.Value.Clients)
 		{
-			<li class="row mb-3">
-				<button class="col-sm-1 btn btn-info" @onclick="() => Edit(client.Id)">Edit</button>
-				<span class="col-sm-1">@client.Id</span>
-				<span class="col-sm-10">@client.Name</span>
-			</li>
+		<li class="row mb-3">
+			Buggy
+			<button class="col-sm-1 btn btn-info" @onclick=@(() => Edit(client.Id))>Edit</button>
+			<span class="col-sm-1">@client.Id</span>
+			<span class="col-sm-10">@client.Name</span>
+		</li>
 		}
 	</ul>
 }
@@ -52,6 +53,8 @@ else
 	string SearchName { get; set; }
 	void Search()
 	{
+		//Buggy
+		System.Diagnostics.Debug.WriteLine("Searching");
 		var action = new Api.Requests.ClientsSearchQuery(SearchName);
 		Dispatcher.Dispatch(action);
 	}
@@ -64,6 +67,8 @@ else
 
 	void Create()
 	{
+		//Buggy
+		System.Diagnostics.Debug.WriteLine("Creating");
 		Dispatcher.Dispatch(new Blazor.Fluxor.Routing.Go("/clients/create/"));
 	}
 
