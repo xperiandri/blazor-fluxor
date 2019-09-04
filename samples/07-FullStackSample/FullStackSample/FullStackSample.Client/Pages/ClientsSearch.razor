@@ -34,7 +34,7 @@ else
 		@foreach (Api.Models.ClientSummaryDto client in State.Value.Clients)
 		{
 			<li class="row mb-3">
-				<button class="col-sm-1 btn btn-info" @onclick=@(() => Edit(client.Id))>Edit</button>
+				<button class="col-sm-1 btn btn-info" @onclick="() => Edit(client.Id)">Edit</button>
 				<span class="col-sm-1">@client.Id</span>
 				<span class="col-sm-10">@client.Name</span>
 			</li>
