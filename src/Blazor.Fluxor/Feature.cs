@@ -57,7 +57,6 @@ namespace Blazor.Fluxor
 				typeof(ComponentBase).GetMethod(
 					name: "StateHasChanged",
 					bindingAttr: BindingFlags.NonPublic | BindingFlags.Instance);
-
 			ComponentBaseStateHasChanged = (Action<ComponentBase>)Delegate.CreateDelegate(typeof(Action<ComponentBase>), stateHasChangedMethodInfo);
 		}
 

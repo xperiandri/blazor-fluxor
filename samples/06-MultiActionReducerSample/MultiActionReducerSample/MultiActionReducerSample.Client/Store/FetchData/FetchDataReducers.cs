@@ -2,27 +2,27 @@
 
 namespace MultiActionReducerSample.Client.Store.FetchData
 {
-	public class FetchDataReducers : MultiActionReducer<FetchDataState>
+	public class FetchDataReducers
 	{
-		public FetchDataReducers()
-		{
-			AddActionReducer<GetForecastDataAction>((state, action) =>
+		[ReducerMethod]
+		public FetchDataState Reduce(FetchDataState state, GetForecastDataAction action) =>
 				new FetchDataState(
 				isLoading: true,
 				errorMessage: null,
-				forecasts: null));
+				forecasts: null);
 
-			AddActionReducer<GetForecastDataFailedAction>((state, action) =>
+		[ReducerMethod]
+		public FetchDataState Reduce(FetchDataState state, GetForecastDataFailedAction action) =>
 				new FetchDataState(
 					isLoading: false,
 					errorMessage: action.ErrorMessage,
-					forecasts: null));
+					forecasts: null);
 
-			AddActionReducer<GetForecastDataSuccessAction>((state, action) =>
+		[ReducerMethod]
+		public FetchDataState Reduce(FetchDataState state, GetForecastDataSuccessAction action) =>
 				new FetchDataState(
 					isLoading: false,
 					errorMessage: null,
-					forecasts: action.WeatherForecasts));
-		}
+					forecasts: action.WeatherForecasts);
 	}
 }
