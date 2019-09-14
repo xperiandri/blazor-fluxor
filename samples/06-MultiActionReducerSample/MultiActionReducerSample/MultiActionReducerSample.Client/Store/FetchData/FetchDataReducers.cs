@@ -1,4 +1,5 @@
 ﻿using Blazor.Fluxor;
+using Blazor.Fluxor.DependencyInjection;
 
 namespace MultiActionReducerSample.Client.Store.FetchData
 {

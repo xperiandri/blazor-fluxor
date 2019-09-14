@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 {
@@ -23,17 +24,39 @@ namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 				.ToList();
 
 			foreach (DiscoveredReducerInfo discoveredReducerInfo in discoveredReducerInfos)
-			{
-				RegisterReducer(serviceCollection, discoveredReducerInfo);
-			}
+				serviceCollection.AddScoped(discoveredReducerInfo.ImplementingType);
 
 			return discoveredReducerInfos;
 		}
 
-		private static void RegisterReducer(IServiceCollection serviceCollection, DiscoveredReducerInfo discoveredReducerInfo)
+		internal static IEnumerable<DiscoveredReducerMethodInfo> DiscoverReducerMethods(
+			IServiceCollection serviceCollection, IEnumerable<Type> allCandidateTypes)
 		{
-			// Register the feature class
-			serviceCollection.AddScoped(serviceType: discoveredReducerInfo.ImplementingType);
+			IEnumerable<DiscoveredReducerMethodInfo> discoveredReducerMethods = allCandidateTypes
+				.SelectMany(t =>
+					t.GetMethods(BindingFlags.Public | BindingFlags.Instance)
+					.Select(m => new
+					{
+						ImplementingType = t,
+						Method = m,
+						Attribute = m.GetCustomAttribute<ReducerMethodAttribute>()
+					})
+				)
+				.Where(x => x.Attribute != null)
+				.Select(x => new DiscoveredReducerMethodInfo(
+					implementingType: x.ImplementingType,
+					reducerMethodInfo: x.Method,
+					options: x.Attribute.Options));
+
+			var implementingTypes = discoveredReducerMethods
+				.Select(x => x.ImplementingType)
+				.Distinct();
+
+			foreach (Type implementingType in implementingTypes)
+				serviceCollection.AddScoped(implementingType);
+
+			return discoveredReducerMethods;
 		}
+
 	}
 }

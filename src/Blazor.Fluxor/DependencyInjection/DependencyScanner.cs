@@ -20,6 +20,8 @@ namespace Blazor.Fluxor.DependencyInjection
 			IEnumerable<Type> allCandidateTypes = assembliesToScan.SelectMany(x => x.Assembly.GetTypes())
 				.Union(scanIncludeList.SelectMany(x => x.Assembly.GetTypes()))
 				.Where(t => !t.IsAbstract)
+				.Where(t => t.IsClass)
+				.Where(t => !t.IsGenericType)
 				.Distinct();
 			IEnumerable<Assembly> allCandidateAssemblies = assembliesToScan.Select(x => x.Assembly)
 				.Union(scanIncludeList.Select(x => x.Assembly))
@@ -32,22 +34,33 @@ namespace Blazor.Fluxor.DependencyInjection
 				scanExcludeList: scanExcludeList,
 				scanIncludeList: scanIncludeList);
 
-
 			IEnumerable<DiscoveredReducerInfo> discoveredReducerInfos =
 				ReducersRegistration.DiscoverReducers(serviceCollection, allCandidateTypes);
+
+			IEnumerable<DiscoveredReducerMethodInfo> discoveredReducerMethodInfos =
+				ReducersRegistration.DiscoverReducerMethods(serviceCollection, allCandidateTypes);
 
 			IEnumerable<DiscoveredEffectInfo> discoveredEffectInfos =
 				EffectsRegistration.DiscoverEffects(serviceCollection, allCandidateTypes);
 
 			IEnumerable<DiscoveredFeatureInfo> discoveredFeatureInfos =
-				FeaturesRegistration.DiscoverFeatures(serviceCollection, allCandidateTypes, discoveredReducerInfos);
+				FeaturesRegistration.DiscoverFeatures(
+					serviceCollection,
+					allCandidateTypes,
+					discoveredReducerInfos,
+					discoveredReducerMethodInfos);
 
-			RegisterStore(serviceCollection, discoveredFeatureInfos, discoveredEffectInfos);
+			RegisterStore(
+				serviceCollection,
+				discoveredFeatureInfos,
+				discoveredEffectInfos,
+				discoveredReducerMethodInfos);
 		}
 
 		private static void RegisterStore(IServiceCollection serviceCollection, 
 			IEnumerable<DiscoveredFeatureInfo> discoveredFeatureInfos,
-			IEnumerable<DiscoveredEffectInfo> discoveredEffectInfos)
+			IEnumerable<DiscoveredEffectInfo> discoveredEffectInfos,
+			IEnumerable<DiscoveredReducerMethodInfo> discoveredReducerMethodInfos)
 		{
 			// Register IDispatcher as an alias to IStore
 			serviceCollection.AddScoped<IDispatcher>(sp => sp.GetService<IStore>());
@@ -73,6 +86,11 @@ namespace Blazor.Fluxor.DependencyInjection
 				{
 					IMiddleware middleware = (IMiddleware)serviceProvider.GetService(middlewareType);
 					store.AddMiddleware(middleware);
+				}
+
+				foreach(DiscoveredReducerMethodInfo discoveredReducerMethodInfo in discoveredReducerMethodInfos)
+				{
+
 				}
 
 				return store;
