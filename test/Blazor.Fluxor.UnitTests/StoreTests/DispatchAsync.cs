@@ -96,7 +96,7 @@ namespace Blazor.Fluxor.UnitTests.StoreTests
 				var actionsToEmit = new object[] { actionToEmit1, actionToEmit2 };
 				var subject = new Store(BrowserInteropStub);
 				subject.AddFeature(mockFeature.Object);
-				subject.AddEffect(new EffectThatEmitsActions<TestAction>(actionsToEmit));
+				subject.AddEffect(new EffectThatEmitsActions<TestAction>(actionsToEmit).ToEffectFuncs());
 
 				BrowserInteropStub._TriggerPageLoaded();
 				subject.Dispatch(new TestAction());
@@ -120,8 +120,8 @@ namespace Blazor.Fluxor.UnitTests.StoreTests
 					.Returns(true);
 
 				var subject = new Store(BrowserInteropStub);
-				subject.AddEffect(mockIncompatibleEffect.Object);
-				subject.AddEffect(mockCompatibleEffect.Object);
+				subject.AddEffect(mockIncompatibleEffect.Object.ToEffectFuncs());
+				subject.AddEffect(mockCompatibleEffect.Object.ToEffectFuncs());
 				BrowserInteropStub._TriggerPageLoaded();
 
 				var action = new TestAction();

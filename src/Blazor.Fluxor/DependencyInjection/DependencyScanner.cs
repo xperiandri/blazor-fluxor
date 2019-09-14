@@ -59,19 +59,22 @@ namespace Blazor.Fluxor.DependencyInjection
 				var store = new Store(browserInteropService);
 				foreach(DiscoveredFeatureInfo discoveredFeatureInfo in discoveredFeatureInfos)
 				{
-					IFeature feature = (IFeature)serviceProvider.GetService(discoveredFeatureInfo.FeatureInterfaceGenericType);
+					var feature = (IFeature)serviceProvider.GetService(discoveredFeatureInfo.FeatureInterfaceGenericType);
 					store.AddFeature(feature);
 				}
 
 				foreach(DiscoveredEffectInfo discoveredEffectInfo in discoveredEffectInfos)
 				{
-					IEffect effect = (IEffect)serviceProvider.GetService(discoveredEffectInfo.ImplementingType);
-					store.AddEffect(effect);
+					var effect = (IEffect)serviceProvider.GetService(discoveredEffectInfo.ImplementingType);
+					var effectFuncs = new EffectFuncs(
+						shouldReactToAction: effect.ShouldReactToAction,
+						handleAsync: effect.HandleAsync);
+					store.AddEffect(effectFuncs);
 				}
 
 				foreach (Type middlewareType in Options.MiddlewareTypes)
 				{
-					IMiddleware middleware = (IMiddleware)serviceProvider.GetService(middlewareType);
+					var middleware = (IMiddleware)serviceProvider.GetService(middlewareType);
 					store.AddMiddleware(middleware);
 				}
 

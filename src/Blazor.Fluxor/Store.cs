@@ -20,7 +20,7 @@ namespace Blazor.Fluxor
 
 		private IBrowserInteropService BrowserInteropService;
 		private readonly Dictionary<string, IFeature> FeaturesByName = new Dictionary<string, IFeature>(StringComparer.InvariantCultureIgnoreCase);
-		private readonly List<IEffect> Effects = new List<IEffect>();
+		private readonly List<EffectFuncs> EffectFuncs = new List<EffectFuncs>();
 		private readonly List<IMiddleware> Middlewares = new List<IMiddleware>();
 		private readonly List<IMiddleware> ReversedMiddlewares = new List<IMiddleware>();
 		private readonly Queue<object> QueuedActions = new Queue<object>();
@@ -92,11 +92,11 @@ namespace Blazor.Fluxor
 		}
 
 		/// <see cref="IStore.AddEffect(IEffect)"/>
-		public void AddEffect(IEffect effect)
+		public void AddEffect(EffectFuncs effectFuncs)
 		{
-			if (effect == null)
-				throw new ArgumentNullException(nameof(effect));
-			Effects.Add(effect);
+			if (effectFuncs == null)
+				throw new ArgumentNullException(nameof(effectFuncs));
+			EffectFuncs.Add(effectFuncs);
 		}
 
 		/// <see cref="IStore.AddMiddleware(IMiddleware)"/>
@@ -160,9 +160,10 @@ namespace Blazor.Fluxor
 			};
 		}
 
+		//TODO: PeteM - Should this await?
 		private void TriggerEffects(object action)
 		{
-			var effectsToTrigger = Effects.Where(x => x.ShouldReactToAction(action));
+			var effectsToTrigger = EffectFuncs.Where(x => x.ShouldReactToAction(action));
 			foreach (var effect in effectsToTrigger)
 				effect.HandleAsync(action, this);
 		}

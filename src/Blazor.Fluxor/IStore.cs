@@ -12,12 +12,12 @@ namespace Blazor.Fluxor
 	public interface IStore : IDispatcher
 	{
 		/// <summary>
-		/// This method will register an effect so that it
+		/// This method will register an effect handler so that it
 		/// is executed whenever an action dispatched via the store.
 		/// </summary>
-		/// <param name="effect">The instance of the effect to call back</param>
+		/// <param name="effectFuncs">The functions required to handle effect handling</param>
 		/// <seealso cref="IEffect.HandleAsync(object, IDispatcher)"/>
-		void AddEffect(IEffect effect);
+		void AddEffect(EffectFuncs effectFuncs);
 
 		/// <summary>
 		/// Adds a feature to the store. Once added, the feature will be notified of all actions dispatched

@@ -42,7 +42,6 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
-    <None Include="ReducerMethodAttribute.cs" />
   </ItemGroup>
 
 </Project>
