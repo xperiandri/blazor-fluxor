@@ -65,11 +65,12 @@ namespace Blazor.Fluxor.DependencyInjection
 
 				foreach(DiscoveredEffectInfo discoveredEffectInfo in discoveredEffectInfos)
 				{
-					var effect = (IEffect)serviceProvider.GetService(discoveredEffectInfo.ImplementingType);
-					var effectFuncs = new EffectFuncs(
-						shouldReactToAction: effect.ShouldReactToAction,
-						handleAsync: effect.HandleAsync);
-					store.AddEffect(effectFuncs);
+					//TODO: PeteM - Implement
+					//var effect = (IEffect)serviceProvider.GetService(discoveredEffectInfo.ImplementingType);
+					//var effectFuncs = new EffectFuncs(
+					//	shouldReactToAction: effect.ShouldReactToAction,
+					//	handleAsync: effect.HandleAsync);
+					//store.AddEffect(effectFuncs);
 				}
 
 				foreach (Type middlewareType in Options.MiddlewareTypes)

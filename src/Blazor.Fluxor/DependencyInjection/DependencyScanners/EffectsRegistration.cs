@@ -10,15 +10,17 @@ namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 		internal static IEnumerable<DiscoveredEffectInfo> DiscoverEffects(
 			IServiceCollection serviceCollection, IEnumerable<Type> allCandidateTypes)
 		{
-			IEnumerable<DiscoveredEffectInfo> discoveredEffectInfos = allCandidateTypes
-				.Where(t => typeof(IEffect).IsAssignableFrom(t))
-				.Select(t => new DiscoveredEffectInfo(implementingType: t))
-				.ToList();
+			//TODO: PeteM - Discover effects
+			IEnumerable<DiscoveredEffectInfo> discoveredEffectInfos = Array.Empty<DiscoveredEffectInfo>();
+			//IEnumerable<DiscoveredEffectInfo> discoveredEffectInfos = allCandidateTypes
+			//	.Where(t => typeof(IEffect).IsAssignableFrom(t))
+			//	.Select(t => new DiscoveredEffectInfo(implementingType: t))
+			//	.ToList();
 
-			foreach (DiscoveredEffectInfo discoveredEffectInfo in discoveredEffectInfos)
-			{
-				RegisterEffect(serviceCollection, discoveredEffectInfo);
-			}
+			//foreach (DiscoveredEffectInfo discoveredEffectInfo in discoveredEffectInfos)
+			//{
+			//	RegisterEffect(serviceCollection, discoveredEffectInfo);
+			//}
 
 			return discoveredEffectInfos;
 		}
