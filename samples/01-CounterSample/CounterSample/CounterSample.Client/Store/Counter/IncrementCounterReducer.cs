@@ -1,12 +1,11 @@
-﻿using Blazor.Fluxor;
+﻿using Blazor.Fluxor.AutoDiscovery;
 
 namespace CounterSample.Client.Store.Counter
 {
-	public class IncrementCounterReducer: Reducer<CounterState, IncrementCounterAction>
+	public static class IncrementCounterReducer
 	{
-		public override CounterState Reduce(CounterState state, IncrementCounterAction action)
-		{
-			return new CounterState(state.ClickCount + 1);
-		}
+		[Reducer]
+		public static CounterState Reduce(CounterState state, IncrementCounterAction action) =>
+			new CounterState(state.ClickCount + 1);
 	}
 }

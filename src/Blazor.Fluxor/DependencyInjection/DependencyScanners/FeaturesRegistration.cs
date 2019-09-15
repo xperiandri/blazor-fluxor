@@ -9,9 +9,10 @@ namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 	internal static class FeaturesRegistration
 	{
 		internal static IEnumerable<DiscoveredFeatureInfo> DiscoverFeatures(IServiceCollection serviceCollection, 
-			IEnumerable<Type> allCandidateTypes, IEnumerable<DiscoveredReducerInfo> discoveredReducerInfos)
+			IEnumerable<Type> allCandidateTypes, IEnumerable<DiscoveredReducer> discoveredReducers)
 		{
-			Dictionary<Type, IGrouping<Type, DiscoveredReducerInfo>> discoveredReducerInfosByStateType = discoveredReducerInfos
+			Dictionary<Type, IGrouping<Type, DiscoveredReducer>> discoveredReducerInfosByStateType =
+				discoveredReducers
 				.GroupBy(x => x.StateType)
 				.ToDictionary(x => x.Key);
 
@@ -33,19 +34,20 @@ namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 			{
 				discoveredReducerInfosByStateType.TryGetValue(
 					discoveredFeatureInfo.StateType,
-					out IGrouping<Type, DiscoveredReducerInfo> discoveredFeatureInfosForFeatureState);
+					out IGrouping<Type, DiscoveredReducer> discoveredFeaturesForFeatureState);
 
 				RegisterFeature(
 					serviceCollection,
 					discoveredFeatureInfo: discoveredFeatureInfo,
-					discoveredReducerInfosForFeatureState: discoveredFeatureInfosForFeatureState);
+					discoveredReducersForFeatureState: discoveredFeaturesForFeatureState);
 			}
 
 			return discoveredFeatureInfos;
 		}
 
 		private static void RegisterFeature(IServiceCollection serviceCollection,
-			DiscoveredFeatureInfo discoveredFeatureInfo, IEnumerable<DiscoveredReducerInfo> discoveredReducerInfosForFeatureState)
+			DiscoveredFeatureInfo discoveredFeatureInfo,
+			IEnumerable<DiscoveredReducer> discoveredReducersForFeatureState)
 		{
 			string addReducerMethodName = nameof(IFeature<object>.AddReducer);
 
@@ -56,17 +58,22 @@ namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 			serviceCollection.AddScoped(discoveredFeatureInfo.FeatureInterfaceGenericType, serviceProvider =>
 			{
 				// Create an instance of the implementing type
-				IFeature featureInstance = (IFeature)serviceProvider.GetService(discoveredFeatureInfo.ImplementingType);
+				var featureInstance = (IFeature)serviceProvider.GetService(discoveredFeatureInfo.ImplementingType);
 
-				if (discoveredReducerInfosForFeatureState != null)
+				//TODO: PeteM - Make this a delegate
+				MethodInfo featureAddReducerMethod =
+					discoveredFeatureInfo.ImplementingType.GetMethod(addReducerMethodName);
+
+				if (discoveredReducersForFeatureState != null)
 				{
-					foreach (DiscoveredReducerInfo reducerInfo in discoveredReducerInfosForFeatureState)
+					foreach (DiscoveredReducer discoveredReducer in discoveredReducersForFeatureState)
 					{
-						MethodInfo featureAddReducerMethod = 
-							discoveredFeatureInfo.ImplementingType.GetMethod(addReducerMethodName);
-
-						object reducerInstance = serviceProvider.GetService(reducerInfo.ImplementingType);
-						featureAddReducerMethod.Invoke(featureInstance, new object[] { reducerInstance });
+						System.Diagnostics.Debug.WriteLine("Reducer name: " + discoveredReducer.MethodInfo.Name);
+						IReducerFuncs reducerFuncs = ReflectedReducerFuncs<object, object>.Create(
+							serviceProvider,
+							discoveredReducer.MethodInfo,
+							discoveredReducer.Options);
+						featureAddReducerMethod.Invoke(featureInstance, new object[] { reducerFuncs });
 					}
 				}
 				return featureInstance;

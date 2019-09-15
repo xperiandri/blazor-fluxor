@@ -64,6 +64,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultiActionReducerSample.Cl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultiActionReducerSample.Server", "..\samples\06-MultiActionReducerSample\MultiActionReducerSample\MultiActionReducerSample.Server\MultiActionReducerSample.Server.csproj", "{79D482F7-1195-4E46-AF72-62C788ECB531}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorApp1", "d:\temp\BlazorApp1\BlazorApp1.csproj", "{9249A9B8-5D66-4517-81F2-6A51CBDF13BD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -150,6 +152,10 @@ Global
 		{79D482F7-1195-4E46-AF72-62C788ECB531}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79D482F7-1195-4E46-AF72-62C788ECB531}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79D482F7-1195-4E46-AF72-62C788ECB531}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9249A9B8-5D66-4517-81F2-6A51CBDF13BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9249A9B8-5D66-4517-81F2-6A51CBDF13BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9249A9B8-5D66-4517-81F2-6A51CBDF13BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9249A9B8-5D66-4517-81F2-6A51CBDF13BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -31,7 +31,7 @@ namespace Blazor.Fluxor
 		/// <summary>
 		/// A list of reducers registered with this feature
 		/// </summary>
-		protected readonly List<IReducer<TState>> Reducers = new List<IReducer<TState>>();
+		protected readonly List<IReducerFuncs> Reducers = new List<IReducerFuncs>();
 
 		private Func<ComponentBase, Action, Task> ComponentBaseInvokeAsync;
 		private Action<ComponentBase> ComponentBaseStateHasChanged;
@@ -81,12 +81,12 @@ namespace Blazor.Fluxor
 			}
 		}
 
-		/// <see cref="IFeature{TState}.AddReducer(IReducer{TState})"/>
-		public virtual void AddReducer(IReducer<TState> reducer)
+		/// <see cref="IFeature{TState}.AddReducer(IReducerFuncs)"/>
+		public virtual void AddReducer(IReducerFuncs reducerFuncs)
 		{
-			if (reducer == null)
-				throw new ArgumentNullException(nameof(reducer));
-			Reducers.Add(reducer);
+			if (reducerFuncs == null)
+				throw new ArgumentNullException(nameof(reducerFuncs));
+			Reducers.Add(reducerFuncs);
 		}
 
 		/// <see cref="IFeature.ReceiveDispatchNotificationFromStore(object)"/>
@@ -95,11 +95,11 @@ namespace Blazor.Fluxor
 			if (action == null)
 				throw new ArgumentNullException(nameof(action));
 
-			IEnumerable<IReducer<TState>> applicableReducers = Reducers.Where(x => x.ShouldReduceStateForAction(action));
+			IEnumerable<IReducerFuncs> applicableReducers = Reducers.Where(x => x.ShouldReduceStateForAction(action));
 			TState newState = State;
-			foreach (IReducer<TState> currentReducer in applicableReducers)
+			foreach (IReducerFuncs currentReducer in applicableReducers)
 			{
-				newState = currentReducer.Reduce(newState, action);
+				newState = (TState)currentReducer.Reduce(newState, action);
 			}
 			State = newState;
 		}

@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace Blazor.Fluxor.Routing
 {
-	public class GoEffect
+	public class RoutingEffects
 	{
 		private readonly NavigationManager NavigationManager;
 
-		public GoEffect(NavigationManager navigationManager)
+		public RoutingEffects(NavigationManager navigationManager)
 		{
 			NavigationManager = navigationManager;
 		}

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 {
@@ -26,11 +27,15 @@ namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 					actionType: x.MethodInfo.GetParameters()[0].ParameterType,
 					options: x.EffectAttribute.Options));
 
-			foreach (DiscoveredEffect discoveredEffect in discoveredEffects)
-				serviceCollection.AddScoped(discoveredEffect.HostClassType);
+			IEnumerable<Type> hostClassTypes = discoveredEffects
+				.Select(x => x.HostClassType)
+				.Where(t => !t.IsAbstract)
+				.Distinct();
+
+			foreach (Type hostClassType in hostClassTypes)
+				serviceCollection.AddScoped(hostClassType);
 
 			return discoveredEffects;
 		}
-
 	}
 }

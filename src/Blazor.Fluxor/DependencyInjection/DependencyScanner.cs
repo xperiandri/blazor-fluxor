@@ -14,7 +14,8 @@ namespace Blazor.Fluxor.DependencyInjection
 	internal static class DependencyScanner
 	{
 		internal static void Scan(this IServiceCollection serviceCollection,
-			IEnumerable<AssemblyScanSettings> assembliesToScan, IEnumerable<AssemblyScanSettings> scanIncludeList)
+			IEnumerable<AssemblyScanSettings> assembliesToScan,
+			IEnumerable<AssemblyScanSettings> scanIncludeList)
 		{
 			if (assembliesToScan == null || assembliesToScan.Count() == 0)
 				throw new ArgumentNullException(nameof(assembliesToScan));
@@ -29,6 +30,7 @@ namespace Blazor.Fluxor.DependencyInjection
 
 			IEnumerable<AssemblyScanSettings> scanExcludeList =
 				MiddlewareScanner.FindMiddlewareLocations(allCandidateAssemblies);
+
 			allCandidateTypes = AssemblyScanSettings.Filter(
 				types: allCandidateTypes,
 				scanExcludeList: scanExcludeList,
@@ -37,11 +39,11 @@ namespace Blazor.Fluxor.DependencyInjection
 			IEnumerable<DiscoveredEffect> discoveredEffects =
 				EffectsRegistration.DiscoverEffects(serviceCollection, allCandidateTypes);
 
-			IEnumerable<DiscoveredReducerInfo> discoveredReducerInfos =
+			IEnumerable<DiscoveredReducer> discoveredReducers =
 				ReducersRegistration.DiscoverReducers(serviceCollection, allCandidateTypes);
 
 			IEnumerable<DiscoveredFeatureInfo> discoveredFeatureInfos =
-				FeaturesRegistration.DiscoverFeatures(serviceCollection, allCandidateTypes, discoveredReducerInfos);
+				FeaturesRegistration.DiscoverFeatures(serviceCollection, allCandidateTypes, discoveredReducers);
 
 			RegisterStore(serviceCollection, discoveredFeatureInfos, discoveredEffects);
 		}
@@ -51,7 +53,7 @@ namespace Blazor.Fluxor.DependencyInjection
 			IEnumerable<DiscoveredEffect> discoveredEffects)
 		{
 			// Register IDispatcher as an alias to IStore
-			serviceCollection.AddScoped<IDispatcher>(sp => sp.GetService<IStore>());
+			serviceCollection.AddScoped<IDispatcher>(serviceProvider => serviceProvider.GetService<IStore>());
 
 			// Register a custom factory for building IStore that will inject all effects
 			serviceCollection.AddScoped(typeof(IStore), serviceProvider =>
@@ -66,7 +68,7 @@ namespace Blazor.Fluxor.DependencyInjection
 
 				foreach (DiscoveredEffect discoveredEffect in discoveredEffects)
 				{
-					IEffectFuncs effectFuncs = ReflectedEffectFuncs<bool>.Create(
+					IEffectFuncs effectFuncs = ReflectedEffectFuncs<object>.Create(
 						serviceProvider,
 						discoveredEffect.MethodInfo,
 						discoveredEffect.Options);

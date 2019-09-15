@@ -1,39 +1,41 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Blazor.Fluxor.AutoDiscovery;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 {
-	internal static class ReducersRegistration
+	internal class ReducersRegistration
 	{
-		internal static IEnumerable<DiscoveredReducerInfo> DiscoverReducers(
-			IServiceCollection serviceCollection, IEnumerable<Type> allCandidateTypes)
+		internal static IEnumerable<DiscoveredReducer> DiscoverReducers(IServiceCollection serviceCollection,
+			IEnumerable<Type> allCandidateTypes)
 		{
-			IEnumerable<DiscoveredReducerInfo> discoveredReducerInfos = allCandidateTypes
-				.Select(t => new
+			var discoveredReducers = allCandidateTypes
+				.SelectMany(t => t.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static))
+				.Select(m => new
 				{
-					ImplementingType = t,
-					GenericParameterTypes = TypeHelper.GetGenericParametersForImplementedInterface(t, typeof(IReducer<>))
+					MethodInfo = m,
+					ReducerAttribute = m.GetCustomAttribute<ReducerAttribute>(false)
 				})
-				.Where(x => x.GenericParameterTypes != null)
-				.Select(x => new DiscoveredReducerInfo(
-					implementingType: x.ImplementingType,
-					stateType: x.GenericParameterTypes[0]))
-				.ToList();
+				.Where(x => x.ReducerAttribute != null)
+				.Select(x => new DiscoveredReducer(
+					hostClassType: x.MethodInfo.DeclaringType,
+					methodInfo: x.MethodInfo,
+					stateType: x.MethodInfo.GetParameters()[0].ParameterType,
+					actionType: x.MethodInfo.GetParameters()[1].ParameterType,
+					options: x.ReducerAttribute.Options));
 
-			foreach (DiscoveredReducerInfo discoveredReducerInfo in discoveredReducerInfos)
-			{
-				RegisterReducer(serviceCollection, discoveredReducerInfo);
-			}
+			IEnumerable<Type> hostClassTypes = discoveredReducers
+				.Select(x => x.HostClassType)
+				.Where(t => !t.IsAbstract)
+				.Distinct();
 
-			return discoveredReducerInfos;
-		}
+			foreach (Type hostClassType in hostClassTypes)
+				serviceCollection.AddScoped(hostClassType);
 
-		private static void RegisterReducer(IServiceCollection serviceCollection, DiscoveredReducerInfo discoveredReducerInfo)
-		{
-			// Register the feature class
-			serviceCollection.AddScoped(serviceType: discoveredReducerInfo.ImplementingType);
+			return discoveredReducers;
 		}
 	}
 }
