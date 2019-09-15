@@ -1,13 +1,10 @@
-﻿using Blazor.Fluxor.AutoDiscovery;
-using Blazor.Fluxor.DependencyInjection.DependencyScanners;
+﻿using Blazor.Fluxor.DependencyInjection.DependencyScanners;
 using Blazor.Fluxor.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace Blazor.Fluxor.DependencyInjection
 {

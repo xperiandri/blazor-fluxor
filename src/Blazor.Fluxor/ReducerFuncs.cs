@@ -1,5 +1,4 @@
-﻿using Blazor.Fluxor.AutoDiscovery;
-using System;
+﻿using System;
 using System.Reflection;
 using System.Threading.Tasks;
 

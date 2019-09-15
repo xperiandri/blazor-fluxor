@@ -1,5 +1,4 @@
 ﻿using Blazor.Fluxor;
-using Blazor.Fluxor.AutoDiscovery;
 using Microsoft.AspNetCore.Components;
 using MiddlewareSample.Shared;
 using System;

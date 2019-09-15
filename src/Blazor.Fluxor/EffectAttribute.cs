@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Blazor.Fluxor.AutoDiscovery
+namespace Blazor.Fluxor
 {
 	[AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
 	public sealed class EffectAttribute : Attribute

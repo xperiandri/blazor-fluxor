@@ -1,10 +1,8 @@
-﻿using Blazor.Fluxor.AutoDiscovery;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 {

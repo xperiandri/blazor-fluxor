@@ -1,4 +1,4 @@
-﻿using Blazor.Fluxor.AutoDiscovery;
+﻿using Blazor.Fluxor;
 
 namespace WeatherForecastSample.Client.Store.FetchData
 {
@@ -19,7 +19,7 @@ namespace WeatherForecastSample.Client.Store.FetchData
 				forecasts: action.WeatherForecasts);
 
 		[Reducer]
-		public static FetchDataState Reduce(FetchDataState state, GetForecastDataFailedAction action) =>
+		public static FetchDataState ReduceGetForecastDataFailedAction(FetchDataState state, GetForecastDataFailedAction action) =>
 			new FetchDataState(
 				isLoading: false,
 				errorMessage: action.ErrorMessage,

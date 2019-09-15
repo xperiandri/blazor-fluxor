@@ -1,5 +1,4 @@
 ﻿using Blazor.Fluxor;
-using Blazor.Fluxor.AutoDiscovery;
 using Microsoft.AspNetCore.Components;
 using ReduxDevToolsIntegration.Shared;
 using System;
@@ -18,7 +17,7 @@ namespace ReduxDevToolsIntegration.Client.Store.FetchData
 		}
 
 		[Effect]
-		public async Task HandleAsync(GetForecastDataAction action, IDispatcher dispatcher)
+		public async Task HandleGetForecastDataActionAsync(GetForecastDataAction action, IDispatcher dispatcher)
 		{
 			try
 			{

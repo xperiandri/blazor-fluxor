@@ -1,5 +1,4 @@
 ﻿using Blazor.Fluxor;
-using Blazor.Fluxor.AutoDiscovery;
 using FlightFinder.Shared;
 using Microsoft.AspNetCore.Components;
 using System;

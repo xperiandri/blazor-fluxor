@@ -1,4 +1,4 @@
-﻿using Blazor.Fluxor.AutoDiscovery;
+﻿using Blazor.Fluxor;
 
 namespace MiddlewareSample.Client.Store.FetchData
 {

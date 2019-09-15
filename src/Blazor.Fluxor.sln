@@ -56,8 +56,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiddlewareSample.Client", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiddlewareSample.Shared", "..\samples\04-MiddlewareSample\MiddlewareSample\MiddlewareSample.Shared\MiddlewareSample.Shared.csproj", "{B3D11A9E-AD0C-4FE3-81EA-9AD4389737E6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApp1", "d:\temp\BlazorApp1\BlazorApp1.csproj", "{9249A9B8-5D66-4517-81F2-6A51CBDF13BD}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -132,10 +130,6 @@ Global
 		{B3D11A9E-AD0C-4FE3-81EA-9AD4389737E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3D11A9E-AD0C-4FE3-81EA-9AD4389737E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B3D11A9E-AD0C-4FE3-81EA-9AD4389737E6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9249A9B8-5D66-4517-81F2-6A51CBDF13BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9249A9B8-5D66-4517-81F2-6A51CBDF13BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9249A9B8-5D66-4517-81F2-6A51CBDF13BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9249A9B8-5D66-4517-81F2-6A51CBDF13BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

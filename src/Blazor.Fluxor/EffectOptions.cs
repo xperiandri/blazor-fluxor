@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Blazor.Fluxor.AutoDiscovery
+namespace Blazor.Fluxor
 {
 	[Flags]
 	public enum EffectOptions

@@ -1,4 +1,4 @@
-﻿using Blazor.Fluxor.AutoDiscovery;
+﻿using Blazor.Fluxor;
 using FlightFinder.Shared;
 using System.Collections.Generic;
 

@@ -1,4 +1,4 @@
-﻿using Blazor.Fluxor.AutoDiscovery;
+﻿using Blazor.Fluxor;
 
 namespace ReduxDevToolsIntegration.Client.Store.FetchData
 {

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reflection;
-using Blazor.Fluxor.AutoDiscovery;
 
 namespace Blazor.Fluxor.DependencyInjection
 {
