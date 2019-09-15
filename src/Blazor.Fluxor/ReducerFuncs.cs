@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace Blazor.Fluxor
 {
@@ -34,7 +33,7 @@ namespace Blazor.Fluxor
 			return result;
 		}
 
-		public ReflectedReducerFuncs(object effectHostInstance, MethodInfo methodInfo, EffectOptions options)
+		public ReflectedReducerFuncs(object effectHostInstance, MethodInfo methodInfo, ReducerOptions options)
 		{
 			if (effectHostInstance == null)
 			{
