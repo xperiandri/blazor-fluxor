@@ -2,7 +2,7 @@
 
 namespace ReduxDevToolsIntegration.Client.Store.Counter
 {
-	public class Reducers
+	public static class Reducers
 	{
 		[Reducer]
 		public static CounterState Reduce(CounterState state, IncrementCounterAction action) =>
