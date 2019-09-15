@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace ReduxDevToolsIntegration.Client.Store.FetchData
 {
-	public class GetForecastDataEffect
+	public class Effects
 	{
 		private readonly HttpClient HttpClient;
 
-		public GetForecastDataEffect(HttpClient httpClient)
+		public Effects(HttpClient httpClient)
 		{
 			HttpClient = httpClient;
 		}

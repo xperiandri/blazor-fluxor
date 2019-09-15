@@ -8,17 +8,24 @@ using System.Threading.Tasks;
 
 namespace FlightFinder.Client.Store
 {
-	public class FetchAirportsEffect
+	public class Effects
 	{
 		private readonly HttpClient HttpClient;
 
-		public FetchAirportsEffect(HttpClient httpClient)
+		public Effects(HttpClient httpClient)
 		{
 			HttpClient = httpClient;
 		}
 
 		[Effect]
-		public async Task HandleAsync(FetchAirportsAction action, IDispatcher dispatcher)
+		public Task HandleStoreInitializedActionAsync(StoreInitializedAction action, IDispatcher dispatcher)
+		{
+			dispatcher.Dispatch(new FetchAirportsAction());
+			return Task.CompletedTask;
+		}
+
+		[Effect]
+		public async Task HandleFetchAirportsActionAsync(FetchAirportsAction action, IDispatcher dispatcher)
 		{
 			Airport[] airports = Array.Empty<Airport>();
 			try

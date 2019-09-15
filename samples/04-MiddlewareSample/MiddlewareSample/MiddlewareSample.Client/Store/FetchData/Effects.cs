@@ -1,24 +1,24 @@
 ﻿using Blazor.Fluxor;
 using Blazor.Fluxor.AutoDiscovery;
 using Microsoft.AspNetCore.Components;
+using MiddlewareSample.Shared;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using WeatherForecastSample.Shared;
 
-namespace WeatherForecastSample.Client.Store.FetchData
+namespace MiddlewareSample.Client.Store.FetchData
 {
-	public class GetForecastDataEffect
+	public class Effects
 	{
 		private readonly HttpClient HttpClient;
 
-		public GetForecastDataEffect(HttpClient httpClient)
+		public Effects(HttpClient httpClient)
 		{
 			HttpClient = httpClient;
 		}
 
 		[Effect]
-		public async Task HandleAsync(GetForecastDataAction action, IDispatcher dispatcher)
+		public async Task HandleGetForecastDataActionAsync(GetForecastDataAction action, IDispatcher dispatcher)
 		{
 			try
 			{

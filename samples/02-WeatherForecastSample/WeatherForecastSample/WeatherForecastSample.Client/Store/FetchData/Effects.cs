@@ -1,18 +1,18 @@
 ﻿using Blazor.Fluxor;
 using Blazor.Fluxor.AutoDiscovery;
 using Microsoft.AspNetCore.Components;
-using MiddlewareSample.Shared;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using WeatherForecastSample.Shared;
 
-namespace MiddlewareSample.Client.Store.FetchData
+namespace WeatherForecastSample.Client.Store.FetchData
 {
-	public class GetForecastDataEffect
+	public class Effects
 	{
 		private readonly HttpClient HttpClient;
 
-		public GetForecastDataEffect(HttpClient httpClient)
+		public Effects(HttpClient httpClient)
 		{
 			HttpClient = httpClient;
 		}
