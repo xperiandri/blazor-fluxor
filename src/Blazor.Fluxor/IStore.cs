@@ -16,8 +16,8 @@ namespace Blazor.Fluxor
 		/// is executed whenever an action dispatched via the store.
 		/// </summary>
 		/// <param name="effectFuncs">The functions required to handle effect handling</param>
-		/// <seealso cref="IEffect.HandleAsync(object, IDispatcher)"/>
-		void AddEffect(EffectFuncs effectFuncs);
+		/// <seealso cref="IEffectFuncs.HandleAsync(object, IDispatcher)"/>
+		void AddEffect(IEffectFuncs effectFuncs);
 
 		/// <summary>
 		/// Adds a feature to the store. Once added, the feature will be notified of all actions dispatched

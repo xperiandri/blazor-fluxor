@@ -1,28 +1,29 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazor.Fluxor.AutoDiscovery;
+using Microsoft.AspNetCore.Components;
 using System;
 using System.Threading.Tasks;
 
 namespace Blazor.Fluxor.Routing
 {
-	//TODO: PeteM - Reimplement
-	//internal class GoEffect : Effect<Go>
-	//{
-	//	private readonly NavigationManager NavigationManager;
+	public class GoEffect
+	{
+		private readonly NavigationManager NavigationManager;
 
-	//	public GoEffect(NavigationManager navigationManager)
-	//	{
-	//		NavigationManager = navigationManager;
-	//	}
+		public GoEffect(NavigationManager navigationManager)
+		{
+			NavigationManager = navigationManager;
+		}
 
-	//	protected override Task HandleAsync(Go action, IDispatcher dispatcher)
-	//	{
-	//		Uri fullUri = NavigationManager.ToAbsoluteUri(action.NewUri);
-	//		if (fullUri.ToString() != NavigationManager.Uri)
-	//		{
-	//			// Only navigate if we are not already at the URI specified
-	//			NavigationManager.NavigateTo(action.NewUri);
-	//		}
-	//		return Task.CompletedTask;
-	//	}
-	//}
+		[Effect]
+		public Task HandleAsync(Go action, IDispatcher dispatcher)
+		{
+			Uri fullUri = NavigationManager.ToAbsoluteUri(action.NewUri);
+			if (fullUri.ToString() != NavigationManager.Uri)
+			{
+				// Only navigate if we are not already at the URI specified
+				NavigationManager.NavigateTo(action.NewUri);
+			}
+			return Task.CompletedTask;
+		}
+	}
 }

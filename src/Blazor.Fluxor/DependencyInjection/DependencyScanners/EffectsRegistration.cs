@@ -1,34 +1,36 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Blazor.Fluxor.AutoDiscovery;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 {
 	internal class EffectsRegistration
 	{
-		internal static IEnumerable<DiscoveredEffectInfo> DiscoverEffects(
-			IServiceCollection serviceCollection, IEnumerable<Type> allCandidateTypes)
+		internal static IEnumerable<DiscoveredEffect> DiscoverEffects(IServiceCollection serviceCollection,
+			IEnumerable<Type> allCandidateTypes)
 		{
-			//TODO: PeteM - Discover effects
-			IEnumerable<DiscoveredEffectInfo> discoveredEffectInfos = Array.Empty<DiscoveredEffectInfo>();
-			//IEnumerable<DiscoveredEffectInfo> discoveredEffectInfos = allCandidateTypes
-			//	.Where(t => typeof(IEffect).IsAssignableFrom(t))
-			//	.Select(t => new DiscoveredEffectInfo(implementingType: t))
-			//	.ToList();
+			var discoveredEffects = allCandidateTypes
+				.SelectMany(t => t.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static))
+				.Select(m => new
+				{
+					MethodInfo = m,
+					EffectAttribute = m.GetCustomAttribute<EffectAttribute>(false)
+				})
+				.Where(x => x.EffectAttribute != null)
+				.Select(x => new DiscoveredEffect(
+					hostClassType: x.MethodInfo.DeclaringType,
+					methodInfo: x.MethodInfo,
+					actionType: x.MethodInfo.GetParameters()[0].ParameterType,
+					options: x.EffectAttribute.Options));
 
-			//foreach (DiscoveredEffectInfo discoveredEffectInfo in discoveredEffectInfos)
-			//{
-			//	RegisterEffect(serviceCollection, discoveredEffectInfo);
-			//}
+			foreach (DiscoveredEffect discoveredEffect in discoveredEffects)
+				serviceCollection.AddScoped(discoveredEffect.HostClassType);
 
-			return discoveredEffectInfos;
+			return discoveredEffects;
 		}
 
-		private static void RegisterEffect(IServiceCollection serviceCollection, DiscoveredEffectInfo discoveredEffectInfo)
-		{
-			// Register the effect class
-			serviceCollection.AddScoped(discoveredEffectInfo.ImplementingType);
-		}
 	}
 }

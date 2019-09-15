@@ -1,5 +1,5 @@
 ﻿using Blazor.Fluxor;
-using Microsoft.AspNetCore.Blazor;
+using Blazor.Fluxor.AutoDiscovery;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Net.Http;
@@ -8,7 +8,7 @@ using WeatherForecastSample.Shared;
 
 namespace WeatherForecastSample.Client.Store.FetchData
 {
-	public class GetForecastDataEffect : Effect<GetForecastDataAction>
+	public class GetForecastDataEffect
 	{
 		private readonly HttpClient HttpClient;
 
@@ -17,7 +17,8 @@ namespace WeatherForecastSample.Client.Store.FetchData
 			HttpClient = httpClient;
 		}
 
-		protected async override Task HandleAsync(GetForecastDataAction action, IDispatcher dispatcher)
+		[Effect]
+		public async Task HandleAsync(GetForecastDataAction action, IDispatcher dispatcher)
 		{
 			try
 			{

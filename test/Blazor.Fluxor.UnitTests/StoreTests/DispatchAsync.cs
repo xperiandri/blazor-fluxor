@@ -91,6 +91,8 @@ namespace Blazor.Fluxor.UnitTests.StoreTests
 			public void DispatchesTasksFromEffect()
 			{
 				var mockFeature = MockFeatureFactory.Create();
+				mockFeature
+					.Setup(x => x.ReceiveDispatchNotificationFromStore(It.IsAny<object>()));
 				var actionToEmit1 = new TestActionFromEffect1();
 				var actionToEmit2 = new TestActionFromEffect2();
 				var testAction = new TestAction();
@@ -98,15 +100,19 @@ namespace Blazor.Fluxor.UnitTests.StoreTests
 				var subject = new Store(BrowserInteropStub);
 				subject.AddFeature(mockFeature.Object);
 
-				var effectFuncs = new EffectFuncs(
-					shouldReactToAction: action => action == testAction,
-					handleAsync: (action, dispatcher) =>
+				var mockIEffectFuncs = new Mock<IEffectFuncs>();
+				mockIEffectFuncs
+					.Setup(x => x.ShouldReactToAction(testAction))
+					.Returns(true);
+				mockIEffectFuncs
+					.Setup(x => x.HandleAsync(testAction, It.IsAny<IDispatcher>()))
+					.Callback<object, IDispatcher>((action, dispatcher) =>
 					{
 						dispatcher.Dispatch(actionToEmit1);
 						dispatcher.Dispatch(actionToEmit2);
-						return Task.CompletedTask;
-					});
-				subject.AddEffect(effectFuncs);
+					})
+					.Returns(Task.CompletedTask);
+				subject.AddEffect(mockIEffectFuncs.Object);
 
 				BrowserInteropStub._TriggerPageLoaded();
 				subject.Dispatch(testAction);
@@ -120,29 +126,29 @@ namespace Blazor.Fluxor.UnitTests.StoreTests
 			[Fact]
 			public void TriggersOnlyEffectsThatHandleTheDispatchedAction()
 			{
-				var mockIncompatibleHandler = new Mock<EffectFuncs.HandleAsyncHandler>();
-				var incompatibleEffect = new EffectFuncs(
-					shouldReactToAction: _ => false,
-					handleAsync: mockIncompatibleHandler.Object);
+				var mockIncompatibleEffectHandler = new Mock<IEffectFuncs>();
+				mockIncompatibleEffectHandler
+					.Setup(x => x.ShouldReactToAction(It.IsAny<object>()))
+					.Returns(false);
 
-				var mockCompatibleHandler = new Mock<EffectFuncs.HandleAsyncHandler>();
-				var compatibleEffect = new EffectFuncs(
-					shouldReactToAction: _ => true,
-					handleAsync: mockCompatibleHandler.Object);
+				var mockCompatibleEffectHandler = new Mock<IEffectFuncs>();
+				mockCompatibleEffectHandler
+					.Setup(x => x.ShouldReactToAction(It.IsAny<object>()))
+					.Returns(true);
 
 				var subject = new Store(BrowserInteropStub);
-				subject.AddEffect(incompatibleEffect);
-				subject.AddEffect(compatibleEffect);
+				subject.AddEffect(mockIncompatibleEffectHandler.Object);
+				subject.AddEffect(mockCompatibleEffectHandler.Object);
 				BrowserInteropStub._TriggerPageLoaded();
 
 				var action = new TestAction();
 				subject.Dispatch(action);
 
-				mockIncompatibleHandler.Verify(x => x.Invoke(action, It.IsAny<IDispatcher>()), Times.Never);
-				mockCompatibleHandler.Verify(x => x.Invoke(action, It.IsAny<IDispatcher>()), Times.Once);
+				mockIncompatibleEffectHandler
+					.Verify(x => x.HandleAsync(It.IsAny<object>(), It.IsAny<IDispatcher>()), Times.Never);
+				mockCompatibleEffectHandler
+					.Verify(x => x.HandleAsync(action, It.IsAny<IDispatcher>()), Times.Once);
 			}
 		}
-
-
 	}
 }
