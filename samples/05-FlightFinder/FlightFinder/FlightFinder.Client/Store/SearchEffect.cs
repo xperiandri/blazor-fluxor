@@ -1,4 +1,5 @@
 ﻿using Blazor.Fluxor;
+using Blazor.Fluxor.AutoDiscovery;
 using FlightFinder.Shared;
 using Microsoft.AspNetCore.Components;
 using System.Net.Http;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FlightFinder.Client.Store
 {
-	public class SearchEffect : Effect<SearchAction>
+	public class SearchEffect
 	{
 		private readonly HttpClient HttpClient;
 
@@ -15,7 +16,8 @@ namespace FlightFinder.Client.Store
 			HttpClient = httpClient;
 		}
 
-		protected async override Task HandleAsync(SearchAction action, IDispatcher dispatcher)
+		[Effect]
+		public async Task HandleAsync(SearchAction action, IDispatcher dispatcher)
 		{
 			try
 			{

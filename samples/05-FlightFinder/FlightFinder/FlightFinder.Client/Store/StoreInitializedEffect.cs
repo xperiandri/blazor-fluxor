@@ -1,19 +1,13 @@
 ﻿using Blazor.Fluxor;
-using System.Net.Http;
+using Blazor.Fluxor.AutoDiscovery;
 using System.Threading.Tasks;
 
 namespace FlightFinder.Client.Store
 {
-	public class StoreInitializedEffect : Effect<StoreInitializedAction>
+	public class StoreInitializedEffect
 	{
-		private readonly HttpClient HttpClient;
-
-		public StoreInitializedEffect(HttpClient httpClient)
-		{
-			HttpClient = httpClient;
-		}
-
-		protected override Task HandleAsync(StoreInitializedAction action, IDispatcher dispatcher)
+		[Effect]
+		public Task HandleAsync(StoreInitializedAction action, IDispatcher dispatcher)
 		{
 			dispatcher.Dispatch(new FetchAirportsAction());
 			return Task.CompletedTask;

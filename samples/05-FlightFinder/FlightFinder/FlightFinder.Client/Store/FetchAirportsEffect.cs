@@ -1,4 +1,5 @@
 ﻿using Blazor.Fluxor;
+using Blazor.Fluxor.AutoDiscovery;
 using FlightFinder.Shared;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FlightFinder.Client.Store
 {
-	public class FetchAirportsEffect : Effect<FetchAirportsAction>
+	public class FetchAirportsEffect
 	{
 		private readonly HttpClient HttpClient;
 
@@ -16,7 +17,8 @@ namespace FlightFinder.Client.Store
 			HttpClient = httpClient;
 		}
 
-		protected async override Task HandleAsync(FetchAirportsAction action, IDispatcher dispatcher)
+		[Effect]
+		public async Task HandleAsync(FetchAirportsAction action, IDispatcher dispatcher)
 		{
 			Airport[] airports = Array.Empty<Airport>();
 			try

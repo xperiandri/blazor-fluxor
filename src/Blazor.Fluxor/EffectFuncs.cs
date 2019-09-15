@@ -14,8 +14,9 @@ namespace Blazor.Fluxor
 	internal sealed class ReflectedEffectFuncs<TAction> : IEffectFuncs
 	{
 		private delegate Task HandleAsyncHandler(TAction action, IDispatcher dispatcher);
+		private delegate bool ShouldReactToActionHandler(object action);
 		private readonly HandleAsyncHandler HandleAsync;
-		Func<object, bool> ShouldReactToAction;
+		private readonly ShouldReactToActionHandler ShouldReactToAction;
 
 		public static IEffectFuncs Create(IServiceProvider serviceProvider, MethodInfo methodInfo, EffectOptions options)
 		{

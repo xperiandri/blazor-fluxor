@@ -1,14 +1,14 @@
 ﻿using Blazor.Fluxor;
-using Microsoft.AspNetCore.Blazor;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using MultiActionReducerSample.Shared;
+using Blazor.Fluxor.AutoDiscovery;
 
 namespace MultiActionReducerSample.Client.Store.FetchData
 {
-	public class GetForecastDataEffect : Effect<GetForecastDataAction>
+	public class GetForecastDataEffect
 	{
 		private readonly HttpClient HttpClient;
 
@@ -17,7 +17,8 @@ namespace MultiActionReducerSample.Client.Store.FetchData
 			HttpClient = httpClient;
 		}
 
-		protected async override Task HandleAsync(GetForecastDataAction action, IDispatcher dispatcher)
+		[Effect]
+		public async Task HandleAsync(GetForecastDataAction action, IDispatcher dispatcher)
 		{
 			try
 			{

@@ -1,5 +1,5 @@
 ﻿using Blazor.Fluxor;
-using Microsoft.AspNetCore.Blazor;
+using Blazor.Fluxor.AutoDiscovery;
 using Microsoft.AspNetCore.Components;
 using MiddlewareSample.Shared;
 using System;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MiddlewareSample.Client.Store.FetchData
 {
-	public class GetForecastDataEffect : Effect<GetForecastDataAction>
+	public class GetForecastDataEffect
 	{
 		private readonly HttpClient HttpClient;
 
@@ -17,7 +17,8 @@ namespace MiddlewareSample.Client.Store.FetchData
 			HttpClient = httpClient;
 		}
 
-		protected async override Task HandleAsync(GetForecastDataAction action, IDispatcher dispatcher)
+		[Effect]
+		public async Task HandleAsync(GetForecastDataAction action, IDispatcher dispatcher)
 		{
 			try
 			{
