@@ -79,10 +79,6 @@ namespace Blazor.Fluxor
 			//	3: The effect immediately dispatches a new action
 			// The Queue ensures it is processed after its triggering action has completed rather than immediately
 			bool wasAlreadyDispatching = QueuedActions.Any();
-			if (wasAlreadyDispatching)
-			{
-				System.Diagnostics.Debug.WriteLine(">" + QueuedActions.Peek().ToString());
-			}
 			QueuedActions.Enqueue(action);
 			if (wasAlreadyDispatching)
 				return;
@@ -167,9 +163,7 @@ namespace Blazor.Fluxor
 		//TODO: PeteM - Should this await?
 		private void TriggerEffects(object action)
 		{
-			System.Diagnostics.Debug.WriteLine("TriggerEffects: " + action.ToString());
 			var effectsToTrigger = EffectFuncs.Where(x => x.ShouldReactToAction(action));
-			System.Diagnostics.Debug.WriteLine("Found " + effectsToTrigger.Count());
 			foreach (var effect in effectsToTrigger)
 				effect.HandleAsync(action, this);
 		}
@@ -209,24 +203,18 @@ namespace Blazor.Fluxor
 				// We want the next action but we won't dequeue it because we use
 				// a non-empty queue as an indication that a Dispatch() loop is already in progress
 				object nextActionToDequeue = QueuedActions.Peek();
-				System.Diagnostics.Debug.WriteLine("1");
 				// Only process the action if no middleware vetos it
 				if (Middlewares.All(x => x.MayDispatchAction(nextActionToDequeue)))
 				{
-					System.Diagnostics.Debug.WriteLine("2");
 					ExecuteMiddlewareBeforeDispatch(nextActionToDequeue);
 
-					System.Diagnostics.Debug.WriteLine("3");
 					// Notify all features of this action
 					foreach (var featureInstance in FeaturesByName.Values)
 						NotifyFeatureOfDispatch(featureInstance, nextActionToDequeue);
 
-					System.Diagnostics.Debug.WriteLine("4");
 					ExecuteMiddlewareAfterDispatch(nextActionToDequeue);
 
-					System.Diagnostics.Debug.WriteLine("5");
 					TriggerEffects(nextActionToDequeue);
-					System.Diagnostics.Debug.WriteLine("6");
 				}
 				// Now remove the processed action from the queue so we can move on to the next (if any)
 				QueuedActions.Dequeue();

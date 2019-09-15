@@ -66,7 +66,7 @@ namespace Blazor.Fluxor.DependencyInjection
 
 				foreach (DiscoveredEffect discoveredEffect in discoveredEffects)
 				{
-					IEffectFuncs effectFuncs = TypedEffectFuncs<bool>.Create(
+					IEffectFuncs effectFuncs = ReflectedEffectFuncs<bool>.Create(
 						serviceProvider,
 						discoveredEffect.MethodInfo,
 						discoveredEffect.Options);

@@ -11,13 +11,11 @@ namespace Blazor.Fluxor
 		Task HandleAsync(object action, IDispatcher dispatcher);
 	}
 
-	internal sealed class TypedEffectFuncs<TAction> : IEffectFuncs
+	internal sealed class ReflectedEffectFuncs<TAction> : IEffectFuncs
 	{
-		internal delegate Task HandleAsyncHandler(TAction action, IDispatcher dispatcher);
-		internal delegate bool ShouldReactToActionHandler(object action);
-
+		private delegate Task HandleAsyncHandler(TAction action, IDispatcher dispatcher);
 		private readonly HandleAsyncHandler HandleAsync;
-		private readonly ShouldReactToActionHandler ShouldReactToAction;
+		Func<object, bool> ShouldReactToAction;
 
 		public static IEffectFuncs Create(IServiceProvider serviceProvider, MethodInfo methodInfo, EffectOptions options)
 		{
@@ -25,36 +23,47 @@ namespace Blazor.Fluxor
 			Type actionType = methodInfo.GetParameters()[0].ParameterType;
 
 			Type hostClassType = methodInfo.DeclaringType;
-			object effectHostInstance = methodInfo.IsAbstract
+			object effectHostInstance = methodInfo.IsStatic
 				? null
 				: serviceProvider.GetService(hostClassType);
 
-			Type classGenericType = typeof(TypedEffectFuncs<>).MakeGenericType(actionType);
+			Type classGenericType = typeof(ReflectedEffectFuncs<>).MakeGenericType(actionType);
 			var result = (IEffectFuncs)Activator.CreateInstance(classGenericType, effectHostInstance, methodInfo, options);
 			return result;
 		}
 
-		public TypedEffectFuncs(object effectHostInstance, MethodInfo methodInfo, EffectOptions options)
+		public ReflectedEffectFuncs(object effectHostInstance, MethodInfo methodInfo, EffectOptions options)
 		{
-			if ((options & EffectOptions.HandleDescendants) == 0)
-				ShouldReactToAction = (action) =>
-				{
-					System.Diagnostics.Debug.WriteLine("1");
-					return action.GetType() == typeof(TAction);
-				};
+			if (effectHostInstance == null)
+			{
+				// Static method
+				HandleAsync = (HandleAsyncHandler)
+					Delegate.CreateDelegate(
+						type: typeof(HandleAsyncHandler),
+						method: methodInfo);
+			}
 			else
-				ShouldReactToAction = (action) =>
-				{
-					System.Diagnostics.Debug.WriteLine("1");
-					return typeof(TAction).IsAssignableFrom(action.GetType());
-				};
+			{
+				// Instance method
+				HandleAsync = (HandleAsyncHandler)
+					Delegate.CreateDelegate(
+						type: typeof(HandleAsyncHandler),
+						firstArgument: effectHostInstance,
+						method: methodInfo);
+			}
 
-			HandleAsync = (HandleAsyncHandler)
-				Delegate.CreateDelegate(
-					type: typeof(HandleAsyncHandler),
-					firstArgument: effectHostInstance,
-					method: methodInfo);
+			if (!options.HasFlag(EffectOptions.HandleDescendants))
+				ShouldReactToAction = (action) => action.GetType() == typeof(TAction);
+			else
+				ShouldReactToAction = (action) => typeof(TAction).IsAssignableFrom(action.GetType());
 		}
+
+		bool IEffectFuncs.ShouldReactToAction(object action) =>
+			ShouldReactToAction(action);
+
+		Task IEffectFuncs.HandleAsync(object action, IDispatcher dispatcher) =>
+			HandleAsync((TAction)action, dispatcher);
+
 
 		private static bool ValidateMethod(MethodInfo methodInfo)
 		{
@@ -73,10 +82,5 @@ namespace Blazor.Fluxor
 			return true;
 		}
 
-		bool IEffectFuncs.ShouldReactToAction(object action) =>
-			ShouldReactToAction((TAction)action);
-
-		Task IEffectFuncs.HandleAsync(object action, IDispatcher dispatcher) =>
-			HandleAsync((TAction)action, dispatcher);
 	}
 }
