@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 {
-	internal class MiddlewareScanner
+	internal class MiddlewareClassesDiscovery
 	{
 		internal static IEnumerable<AssemblyScanSettings> FindMiddlewareLocations(IEnumerable<Assembly> assembliesToScan)
 		{

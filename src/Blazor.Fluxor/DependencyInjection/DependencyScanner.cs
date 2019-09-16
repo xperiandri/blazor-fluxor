@@ -26,7 +26,7 @@ namespace Blazor.Fluxor.DependencyInjection
 				.Distinct();
 
 			IEnumerable<AssemblyScanSettings> scanExcludeList =
-				MiddlewareScanner.FindMiddlewareLocations(allCandidateAssemblies);
+				MiddlewareClassesDiscovery.FindMiddlewareLocations(allCandidateAssemblies);
 			allCandidateTypes = AssemblyScanSettings.Filter(
 				types: allCandidateTypes,
 				scanExcludeList: scanExcludeList,
@@ -34,13 +34,13 @@ namespace Blazor.Fluxor.DependencyInjection
 
 
 			IEnumerable<DiscoveredReducerClass> discoveredReducerClasses =
-				ReducersRegistration.DiscoverReducers(serviceCollection, allNonAbstractCandidateTypes);
+				ReducerClassessDiscovery.DiscoverReducerClasses(serviceCollection, allNonAbstractCandidateTypes);
 
 			IEnumerable<DiscoveredEffectClass> discoveredEffectClasses =
-				EffectsRegistration.DiscoverEffects(serviceCollection, allNonAbstractCandidateTypes);
+				EffectClassessDiscovery.DiscoverEffectClasses(serviceCollection, allNonAbstractCandidateTypes);
 
 			IEnumerable<DiscoveredFeatureClass> discoveredFeatureClasses =
-				FeaturesRegistration.DiscoverFeatures(serviceCollection, allNonAbstractCandidateTypes, discoveredReducerClasses);
+				FeatureClassesDiscovery.DiscoverFeatureClasses(serviceCollection, allNonAbstractCandidateTypes, discoveredReducerClasses);
 
 			RegisterStore(serviceCollection, discoveredFeatureClasses, discoveredEffectClasses);
 		}

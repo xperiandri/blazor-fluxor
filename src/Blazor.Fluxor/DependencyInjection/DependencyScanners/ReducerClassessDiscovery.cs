@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 {
-	internal static class ReducersRegistration
+	internal static class ReducerClassessDiscovery
 	{
-		internal static IEnumerable<DiscoveredReducerClass> DiscoverReducers(
+		internal static IEnumerable<DiscoveredReducerClass> DiscoverReducerClasses(
 			IServiceCollection serviceCollection, IEnumerable<Type> allCandidateTypes)
 		{
 			IEnumerable<DiscoveredReducerClass> discoveredReducerInfos = allCandidateTypes
@@ -23,17 +23,9 @@ namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 				.ToList();
 
 			foreach (DiscoveredReducerClass discoveredReducerInfo in discoveredReducerInfos)
-			{
-				RegisterReducer(serviceCollection, discoveredReducerInfo);
-			}
+				serviceCollection.AddScoped(serviceType: discoveredReducerInfo.ImplementingType);
 
 			return discoveredReducerInfos;
-		}
-
-		private static void RegisterReducer(IServiceCollection serviceCollection, DiscoveredReducerClass discoveredReducerInfo)
-		{
-			// Register the feature class
-			serviceCollection.AddScoped(serviceType: discoveredReducerInfo.ImplementingType);
 		}
 	}
 }

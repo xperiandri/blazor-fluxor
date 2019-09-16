@@ -6,12 +6,13 @@ using System.Reflection;
 
 namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 {
-	internal static class FeaturesRegistration
+	internal static class FeatureClassesDiscovery
 	{
-		internal static IEnumerable<DiscoveredFeatureClass> DiscoverFeatures(IServiceCollection serviceCollection, 
+		internal static IEnumerable<DiscoveredFeatureClass> DiscoverFeatureClasses(IServiceCollection serviceCollection, 
 			IEnumerable<Type> allCandidateTypes, IEnumerable<DiscoveredReducerClass> discoveredReducerInfos)
 		{
-			Dictionary<Type, IGrouping<Type, DiscoveredReducerClass>> discoveredReducerInfosByStateType = discoveredReducerInfos
+			Dictionary<Type, IGrouping<Type, DiscoveredReducerClass>> discoveredReducerInfosByStateType = 
+				discoveredReducerInfos
 				.GroupBy(x => x.StateType)
 				.ToDictionary(x => x.Key);
 
@@ -60,11 +61,11 @@ namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 
 				if (discoveredReducerInfosForFeatureState != null)
 				{
+					MethodInfo featureAddReducerMethod =
+						discoveredFeatureInfo.ImplementingType.GetMethod(addReducerMethodName);
+
 					foreach (DiscoveredReducerClass reducerInfo in discoveredReducerInfosForFeatureState)
 					{
-						MethodInfo featureAddReducerMethod = 
-							discoveredFeatureInfo.ImplementingType.GetMethod(addReducerMethodName);
-
 						object reducerInstance = serviceProvider.GetService(reducerInfo.ImplementingType);
 						featureAddReducerMethod.Invoke(featureInstance, new object[] { reducerInstance });
 					}

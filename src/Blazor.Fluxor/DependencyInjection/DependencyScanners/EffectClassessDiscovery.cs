@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 {
-	internal class EffectsRegistration
+	internal class EffectClassessDiscovery
 	{
-		internal static IEnumerable<DiscoveredEffectClass> DiscoverEffects(
+		internal static IEnumerable<DiscoveredEffectClass> DiscoverEffectClasses(
 			IServiceCollection serviceCollection, IEnumerable<Type> allCandidateTypes)
 		{
 			IEnumerable<DiscoveredEffectClass> discoveredEffectInfos = allCandidateTypes
@@ -16,17 +16,9 @@ namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 				.ToList();
 
 			foreach (DiscoveredEffectClass discoveredEffectInfo in discoveredEffectInfos)
-			{
-				RegisterEffect(serviceCollection, discoveredEffectInfo);
-			}
+				serviceCollection.AddScoped(discoveredEffectInfo.ImplementingType);
 
 			return discoveredEffectInfos;
-		}
-
-		private static void RegisterEffect(IServiceCollection serviceCollection, DiscoveredEffectClass discoveredEffectInfo)
-		{
-			// Register the effect class
-			serviceCollection.AddScoped(discoveredEffectInfo.ImplementingType);
 		}
 	}
 }
