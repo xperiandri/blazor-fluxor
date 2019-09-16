@@ -39,15 +39,23 @@ namespace Blazor.Fluxor.DependencyInjection
 			IEnumerable<DiscoveredEffectClass> discoveredEffectClasses =
 				EffectClassessDiscovery.DiscoverEffectClasses(serviceCollection, allNonAbstractCandidateTypes);
 
+			IEnumerable<DiscoveredEffectMethod> discoveredEffectMethods =
+				EffectMethodsDiscovery.DiscoverEffectMethods(serviceCollection, allCandidateTypes);
+
 			IEnumerable<DiscoveredFeatureClass> discoveredFeatureClasses =
 				FeatureClassesDiscovery.DiscoverFeatureClasses(serviceCollection, allNonAbstractCandidateTypes, discoveredReducerClasses);
 
-			RegisterStore(serviceCollection, discoveredFeatureClasses, discoveredEffectClasses);
+			RegisterStore(
+				serviceCollection,
+				discoveredFeatureClasses,
+				discoveredEffectClasses,
+				discoveredEffectMethods);
 		}
 
 		private static void RegisterStore(IServiceCollection serviceCollection, 
-			IEnumerable<DiscoveredFeatureClass> discoveredFeatureInfos,
-			IEnumerable<DiscoveredEffectClass> discoveredEffectInfos)
+			IEnumerable<DiscoveredFeatureClass> discoveredFeatureClasses,
+			IEnumerable<DiscoveredEffectClass> discoveredEffectClasses,
+			IEnumerable<DiscoveredEffectMethod> discoveredEffectMethods)
 		{
 			// Register IDispatcher as an alias to IStore
 			serviceCollection.AddScoped<IDispatcher>(sp => sp.GetService<IStore>());
@@ -57,21 +65,27 @@ namespace Blazor.Fluxor.DependencyInjection
 			{
 				var browserInteropService = serviceProvider.GetService<IBrowserInteropService>();
 				var store = new Store(browserInteropService);
-				foreach(DiscoveredFeatureClass discoveredFeatureInfo in discoveredFeatureInfos)
+				foreach(DiscoveredFeatureClass discoveredFeatureInfo in discoveredFeatureClasses)
 				{
-					IFeature feature = (IFeature)serviceProvider.GetService(discoveredFeatureInfo.FeatureInterfaceGenericType);
+					var feature = (IFeature)serviceProvider.GetService(discoveredFeatureInfo.FeatureInterfaceGenericType);
 					store.AddFeature(feature);
 				}
 
-				foreach(DiscoveredEffectClass discoveredEffectInfo in discoveredEffectInfos)
+				foreach(DiscoveredEffectClass discoveredEffectInfo in discoveredEffectClasses)
 				{
-					IEffect effect = (IEffect)serviceProvider.GetService(discoveredEffectInfo.ImplementingType);
+					var effect = (IEffect)serviceProvider.GetService(discoveredEffectInfo.ImplementingType);
+					store.AddEffect(effect);
+				}
+
+				foreach(DiscoveredEffectMethod discoveredEffectMethod in discoveredEffectMethods)
+				{
+					IEffect effect = EffectWrapper<object>.Create(serviceProvider, discoveredEffectMethod.MethodInfo);
 					store.AddEffect(effect);
 				}
 
 				foreach (Type middlewareType in Options.MiddlewareTypes)
 				{
-					IMiddleware middleware = (IMiddleware)serviceProvider.GetService(middlewareType);
+					var middleware = (IMiddleware)serviceProvider.GetService(middlewareType);
 					store.AddMiddleware(middleware);
 				}
 
