@@ -12,18 +12,21 @@ namespace Blazor.Fluxor.DependencyInjection
 		Task IEffect.HandleAsync(object action, IDispatcher dispatcher) => HandleAsync((TAction)action, dispatcher);
 		bool IEffect.ShouldReactToAction(object action) => action is TAction;
 
-		public static IEffect Create(IServiceProvider serviceProvider, MethodInfo methodInfo)
+		public static IEffect Create(IServiceProvider serviceProvider, DiscoveredEffectMethod discoveredEffectMethod)
 		{
-			ValidateMethod(methodInfo);
-			Type actionType = methodInfo.GetParameters()[0].ParameterType;
+			ValidateMethod(discoveredEffectMethod.MethodInfo);
+			Type actionType = discoveredEffectMethod.ActionType;
 
-			Type hostClassType = methodInfo.DeclaringType;
-			object effectHostInstance = methodInfo.IsStatic
+			Type hostClassType = discoveredEffectMethod.HostClassType;
+			object effectHostInstance = discoveredEffectMethod.MethodInfo.IsStatic
 				? null
 				: serviceProvider.GetService(hostClassType);
 
 			Type classGenericType = typeof(EffectWrapper<>).MakeGenericType(actionType);
-			var result = (IEffect)Activator.CreateInstance(classGenericType, effectHostInstance, methodInfo);
+			var result = (IEffect)Activator.CreateInstance(
+				classGenericType,
+				effectHostInstance,
+				discoveredEffectMethod.MethodInfo);
 			return result;
 		}
 

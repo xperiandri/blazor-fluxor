@@ -79,7 +79,7 @@ namespace Blazor.Fluxor.DependencyInjection
 
 				foreach(DiscoveredEffectMethod discoveredEffectMethod in discoveredEffectMethods)
 				{
-					IEffect effect = EffectWrapper<object>.Create(serviceProvider, discoveredEffectMethod.MethodInfo);
+					IEffect effect = EffectWrapper<object>.Create(serviceProvider, discoveredEffectMethod);
 					store.AddEffect(effect);
 				}
 
