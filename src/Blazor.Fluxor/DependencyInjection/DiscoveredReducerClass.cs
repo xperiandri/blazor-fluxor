@@ -2,12 +2,12 @@
 
 namespace Blazor.Fluxor.DependencyInjection
 {
-	internal class DiscoveredReducerInfo
+	internal class DiscoveredReducerClass
 	{
 		public readonly Type ImplementingType;
 		public readonly Type StateType;
 
-		public DiscoveredReducerInfo(Type implementingType, Type stateType)
+		public DiscoveredReducerClass(Type implementingType, Type stateType)
 		{
 			ImplementingType = implementingType;
 			StateType = stateType;

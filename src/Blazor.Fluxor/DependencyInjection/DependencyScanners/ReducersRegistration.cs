@@ -7,22 +7,22 @@ namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 {
 	internal static class ReducersRegistration
 	{
-		internal static IEnumerable<DiscoveredReducerInfo> DiscoverReducers(
+		internal static IEnumerable<DiscoveredReducerClass> DiscoverReducers(
 			IServiceCollection serviceCollection, IEnumerable<Type> allCandidateTypes)
 		{
-			IEnumerable<DiscoveredReducerInfo> discoveredReducerInfos = allCandidateTypes
+			IEnumerable<DiscoveredReducerClass> discoveredReducerInfos = allCandidateTypes
 				.Select(t => new
 				{
 					ImplementingType = t,
 					GenericParameterTypes = TypeHelper.GetGenericParametersForImplementedInterface(t, typeof(IReducer<>))
 				})
 				.Where(x => x.GenericParameterTypes != null)
-				.Select(x => new DiscoveredReducerInfo(
+				.Select(x => new DiscoveredReducerClass(
 					implementingType: x.ImplementingType,
 					stateType: x.GenericParameterTypes[0]))
 				.ToList();
 
-			foreach (DiscoveredReducerInfo discoveredReducerInfo in discoveredReducerInfos)
+			foreach (DiscoveredReducerClass discoveredReducerInfo in discoveredReducerInfos)
 			{
 				RegisterReducer(serviceCollection, discoveredReducerInfo);
 			}
@@ -30,7 +30,7 @@ namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 			return discoveredReducerInfos;
 		}
 
-		private static void RegisterReducer(IServiceCollection serviceCollection, DiscoveredReducerInfo discoveredReducerInfo)
+		private static void RegisterReducer(IServiceCollection serviceCollection, DiscoveredReducerClass discoveredReducerInfo)
 		{
 			// Register the feature class
 			serviceCollection.AddScoped(serviceType: discoveredReducerInfo.ImplementingType);

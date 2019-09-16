@@ -19,8 +19,8 @@ namespace Blazor.Fluxor.DependencyInjection
 
 			IEnumerable<Type> allCandidateTypes = assembliesToScan.SelectMany(x => x.Assembly.GetTypes())
 				.Union(scanIncludeList.SelectMany(x => x.Assembly.GetTypes()))
-				.Where(t => !t.IsAbstract)
 				.Distinct();
+			IEnumerable<Type> allNonAbstractCandidateTypes = allCandidateTypes.Where(t => !t.IsAbstract);
 			IEnumerable<Assembly> allCandidateAssemblies = assembliesToScan.Select(x => x.Assembly)
 				.Union(scanIncludeList.Select(x => x.Assembly))
 				.Distinct();
@@ -33,21 +33,21 @@ namespace Blazor.Fluxor.DependencyInjection
 				scanIncludeList: scanIncludeList);
 
 
-			IEnumerable<DiscoveredReducerInfo> discoveredReducerInfos =
-				ReducersRegistration.DiscoverReducers(serviceCollection, allCandidateTypes);
+			IEnumerable<DiscoveredReducerClass> discoveredReducerClasses =
+				ReducersRegistration.DiscoverReducers(serviceCollection, allNonAbstractCandidateTypes);
 
-			IEnumerable<DiscoveredEffectInfo> discoveredEffectInfos =
-				EffectsRegistration.DiscoverEffects(serviceCollection, allCandidateTypes);
+			IEnumerable<DiscoveredEffectClass> discoveredEffectClasses =
+				EffectsRegistration.DiscoverEffects(serviceCollection, allNonAbstractCandidateTypes);
 
-			IEnumerable<DiscoveredFeatureInfo> discoveredFeatureInfos =
-				FeaturesRegistration.DiscoverFeatures(serviceCollection, allCandidateTypes, discoveredReducerInfos);
+			IEnumerable<DiscoveredFeatureClass> discoveredFeatureClasses =
+				FeaturesRegistration.DiscoverFeatures(serviceCollection, allNonAbstractCandidateTypes, discoveredReducerClasses);
 
-			RegisterStore(serviceCollection, discoveredFeatureInfos, discoveredEffectInfos);
+			RegisterStore(serviceCollection, discoveredFeatureClasses, discoveredEffectClasses);
 		}
 
 		private static void RegisterStore(IServiceCollection serviceCollection, 
-			IEnumerable<DiscoveredFeatureInfo> discoveredFeatureInfos,
-			IEnumerable<DiscoveredEffectInfo> discoveredEffectInfos)
+			IEnumerable<DiscoveredFeatureClass> discoveredFeatureInfos,
+			IEnumerable<DiscoveredEffectClass> discoveredEffectInfos)
 		{
 			// Register IDispatcher as an alias to IStore
 			serviceCollection.AddScoped<IDispatcher>(sp => sp.GetService<IStore>());
@@ -57,13 +57,13 @@ namespace Blazor.Fluxor.DependencyInjection
 			{
 				var browserInteropService = serviceProvider.GetService<IBrowserInteropService>();
 				var store = new Store(browserInteropService);
-				foreach(DiscoveredFeatureInfo discoveredFeatureInfo in discoveredFeatureInfos)
+				foreach(DiscoveredFeatureClass discoveredFeatureInfo in discoveredFeatureInfos)
 				{
 					IFeature feature = (IFeature)serviceProvider.GetService(discoveredFeatureInfo.FeatureInterfaceGenericType);
 					store.AddFeature(feature);
 				}
 
-				foreach(DiscoveredEffectInfo discoveredEffectInfo in discoveredEffectInfos)
+				foreach(DiscoveredEffectClass discoveredEffectInfo in discoveredEffectInfos)
 				{
 					IEffect effect = (IEffect)serviceProvider.GetService(discoveredEffectInfo.ImplementingType);
 					store.AddEffect(effect);

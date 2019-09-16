@@ -2,11 +2,11 @@
 
 namespace Blazor.Fluxor.DependencyInjection
 {
-	internal class DiscoveredEffectInfo
+	internal class DiscoveredEffectClass
 	{
 		public readonly Type ImplementingType;
 
-		public DiscoveredEffectInfo(Type implementingType)
+		public DiscoveredEffectClass(Type implementingType)
 		{
 			ImplementingType = implementingType;
 		}

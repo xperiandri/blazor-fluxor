@@ -8,32 +8,32 @@ namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 {
 	internal static class FeaturesRegistration
 	{
-		internal static IEnumerable<DiscoveredFeatureInfo> DiscoverFeatures(IServiceCollection serviceCollection, 
-			IEnumerable<Type> allCandidateTypes, IEnumerable<DiscoveredReducerInfo> discoveredReducerInfos)
+		internal static IEnumerable<DiscoveredFeatureClass> DiscoverFeatures(IServiceCollection serviceCollection, 
+			IEnumerable<Type> allCandidateTypes, IEnumerable<DiscoveredReducerClass> discoveredReducerInfos)
 		{
-			Dictionary<Type, IGrouping<Type, DiscoveredReducerInfo>> discoveredReducerInfosByStateType = discoveredReducerInfos
+			Dictionary<Type, IGrouping<Type, DiscoveredReducerClass>> discoveredReducerInfosByStateType = discoveredReducerInfos
 				.GroupBy(x => x.StateType)
 				.ToDictionary(x => x.Key);
 
-			IEnumerable<DiscoveredFeatureInfo> discoveredFeatureInfos = allCandidateTypes
+			IEnumerable<DiscoveredFeatureClass> discoveredFeatureInfos = allCandidateTypes
 				.Select(t => new
 				{
 					ImplementingType = t,
 					GenericParameterTypes = TypeHelper.GetGenericParametersForImplementedInterface(t, typeof(IFeature<>))
 				})
 				.Where(x => x.GenericParameterTypes != null)
-				.Select(x => new DiscoveredFeatureInfo(
+				.Select(x => new DiscoveredFeatureClass(
 					implementingType: x.ImplementingType,
 					stateType: x.GenericParameterTypes[0]
 					)
 				)
 				.ToList();
 
-			foreach (DiscoveredFeatureInfo discoveredFeatureInfo in discoveredFeatureInfos)
+			foreach (DiscoveredFeatureClass discoveredFeatureInfo in discoveredFeatureInfos)
 			{
 				discoveredReducerInfosByStateType.TryGetValue(
 					discoveredFeatureInfo.StateType,
-					out IGrouping<Type, DiscoveredReducerInfo> discoveredFeatureInfosForFeatureState);
+					out IGrouping<Type, DiscoveredReducerClass> discoveredFeatureInfosForFeatureState);
 
 				RegisterFeature(
 					serviceCollection,
@@ -45,7 +45,7 @@ namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 		}
 
 		private static void RegisterFeature(IServiceCollection serviceCollection,
-			DiscoveredFeatureInfo discoveredFeatureInfo, IEnumerable<DiscoveredReducerInfo> discoveredReducerInfosForFeatureState)
+			DiscoveredFeatureClass discoveredFeatureInfo, IEnumerable<DiscoveredReducerClass> discoveredReducerInfosForFeatureState)
 		{
 			string addReducerMethodName = nameof(IFeature<object>.AddReducer);
 
@@ -60,7 +60,7 @@ namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 
 				if (discoveredReducerInfosForFeatureState != null)
 				{
-					foreach (DiscoveredReducerInfo reducerInfo in discoveredReducerInfosForFeatureState)
+					foreach (DiscoveredReducerClass reducerInfo in discoveredReducerInfosForFeatureState)
 					{
 						MethodInfo featureAddReducerMethod = 
 							discoveredFeatureInfo.ImplementingType.GetMethod(addReducerMethodName);

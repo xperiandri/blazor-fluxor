@@ -7,15 +7,15 @@ namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 {
 	internal class EffectsRegistration
 	{
-		internal static IEnumerable<DiscoveredEffectInfo> DiscoverEffects(
+		internal static IEnumerable<DiscoveredEffectClass> DiscoverEffects(
 			IServiceCollection serviceCollection, IEnumerable<Type> allCandidateTypes)
 		{
-			IEnumerable<DiscoveredEffectInfo> discoveredEffectInfos = allCandidateTypes
+			IEnumerable<DiscoveredEffectClass> discoveredEffectInfos = allCandidateTypes
 				.Where(t => typeof(IEffect).IsAssignableFrom(t))
-				.Select(t => new DiscoveredEffectInfo(implementingType: t))
+				.Select(t => new DiscoveredEffectClass(implementingType: t))
 				.ToList();
 
-			foreach (DiscoveredEffectInfo discoveredEffectInfo in discoveredEffectInfos)
+			foreach (DiscoveredEffectClass discoveredEffectInfo in discoveredEffectInfos)
 			{
 				RegisterEffect(serviceCollection, discoveredEffectInfo);
 			}
@@ -23,7 +23,7 @@ namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 			return discoveredEffectInfos;
 		}
 
-		private static void RegisterEffect(IServiceCollection serviceCollection, DiscoveredEffectInfo discoveredEffectInfo)
+		private static void RegisterEffect(IServiceCollection serviceCollection, DiscoveredEffectClass discoveredEffectInfo)
 		{
 			// Register the effect class
 			serviceCollection.AddScoped(discoveredEffectInfo.ImplementingType);
