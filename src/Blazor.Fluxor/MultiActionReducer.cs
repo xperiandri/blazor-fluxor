@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Blazor.Fluxor
 {
@@ -17,7 +18,7 @@ namespace Blazor.Fluxor
 	///		{
 	///			public SearchReducers()
 	///			{
-	///				AddActionReducer&lt;Search&gt;((state, action) =&gt; 
+	///				AddActionReducer&lt;Search&gt;((state, action) =&gt;
 	///					new StateState(isSearching: true, searchItems: null));
 	///
 	///				AddActionReduer&lt;SearchResponse&gt;((state, response) =&gt;
@@ -85,8 +86,15 @@ namespace Blazor.Fluxor
 			if (action == null)
 				return state;
 
-			if (!ReducersByActionType.TryGetValue(action.GetType(), out Func<TState, object, TState> reducer))
-				throw new InvalidOperationException($"Reducer {GetType().Name} cannot reduce action {action.GetType().Name} into state {typeof(TState).Name}.");
+			var actionType = action.GetType();
+			if (!ReducersByActionType.TryGetValue(actionType, out Func<TState, object, TState> reducer))
+			{
+				var baseType = ReducersByActionType.Keys.FirstOrDefault(k => k.IsAssignableFrom(actionType));
+				if (baseType == null)
+					throw new InvalidOperationException($"Reducer {GetType().Name} cannot reduce action {action.GetType().Name} into state {typeof(TState).Name}.");
+
+				reducer = ReducersByActionType[baseType];
+			}
 
 			return reducer(state, action);
 		}
