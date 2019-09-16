@@ -14,5 +14,8 @@
 			Updated = true;
 			Value = value;
 		}
+
+		public override string ToString() =>
+			Updated ? null : Value?.ToString();
 	}
 }
