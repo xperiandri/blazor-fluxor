@@ -13,12 +13,11 @@ The easiest way to get started is to look at the [Sample projects]. They are num
 
 ### Sample projects
 More sample projects will be added as the framework develops.
-  - [Counter sample] - Fluxorizes `Counter` page in the standard Visual Studio Blazor sample in order to show how to switch to a Redux/Flux pattern application using Fluxor.
-  - [Effects sample] - Fluxorizes `FetchData` page in the standard Visual Studio Blazor sample in order to demonstrate asynchronous reactions to actions that are dispatched.
-  - [Redux dev tools integration] - Demonstrates how to enable debugger integration for the [Redux dev tools] Chrome plugin.
-  - [Custom Middleware] - Demonstrates how to create custom Middleware to intercept actions etc.
-  - [Blazor Flight Finder] - A conversion of the official Blazor `Flight Finder` demo.
-  - [MultiActionReducer sample] - A sample demonstrating how to implement multiple reducers in a single reducer class.
+- [Counter sample] - Fluxorizes `Counter` page in the standard Visual Studio Blazor sample in order to show how to switch to a Redux/Flux pattern application using Fluxor.
+- [Effects sample] - Fluxorizes `FetchData` page in the standard Visual Studio Blazor sample in order to demonstrate asynchronous reactions to actions that are dispatched.
+- [Redux dev tools integration] - Demonstrates how to enable debugger integration for the [Redux dev tools] Chrome plugin.
+- [Custom Middleware] - Demonstrates how to create custom Middleware to intercept actions etc.
+- [Blazor Flight Finder] - A conversion of the official Blazor `Flight Finder` demo.
 
 ## What's new
 
@@ -179,4 +178,3 @@ MIT
    [Custom Middleware]: <https://github.com/mrpmorris/blazor-fluxor/tree/master/samples/04-MiddlewareSample>
    [Sample projects]: <https://github.com/mrpmorris/blazor-fluxor/tree/master/samples>
    [Blazor Flight Finder]: <https://github.com/mrpmorris/blazor-fluxor/tree/master/samples/05-FlightFinder>
-   [MultiActionReducer sample]: <https://github.com/mrpmorris/blazor-fluxor/tree/master/samples/06-MultiActionReducerSample>
