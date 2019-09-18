@@ -22,7 +22,7 @@ namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 				let actionType = effectAttribute.ActionType
 					?? method.GetParameters().First(
 						p => p.ParameterType.FullName.LastIndexOf("Action") > -1).ParameterType
-					?? throw new InvalidOperationException($"Reducer decorated with {nameof(EffectMethodAttribute)} must either specify action type within attribute property or has parameter with full type name containing \"Action\" string.")
+					//?? throw new InvalidOperationException($"Reducer decorated with {nameof(EffectMethodAttribute)} must either specify action type within attribute property or has parameter with full type name containing \"Action\" string.")
 				select new DiscoveredEffectMethod(
 					hostClassType: method.DeclaringType,
 					methodInfo: method,

@@ -7,7 +7,7 @@ namespace Blazor.Fluxor.DependencyInjection
 	{
 		internal static object Create(IServiceProvider serviceProvider, DiscoveredReducerMethod discoveredReducerMethod)
 		{
-			ValidateMethod(discoveredReducerMethod.MethodInfo);
+			//ValidateMethod(discoveredReducerMethod.MethodInfo);
 			Type stateType = discoveredReducerMethod.StateType;
 			Type actionType = discoveredReducerMethod.ActionType;
 

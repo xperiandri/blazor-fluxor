@@ -22,7 +22,7 @@ namespace Blazor.Fluxor.DependencyInjection
 			Namespace = @namespace;
 		}
 
-		public static IEnumerable<Type> Filter(IEnumerable<Type> types, IEnumerable<AssemblyScanSettings> scanExcludeList, 
+		public static IEnumerable<Type> Filter(IEnumerable<Type> types, IEnumerable<AssemblyScanSettings> scanExcludeList,
 			IEnumerable<AssemblyScanSettings> scanIncludeList)
 		{
 			return types

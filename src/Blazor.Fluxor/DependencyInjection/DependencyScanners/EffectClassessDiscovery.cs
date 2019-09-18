@@ -11,7 +11,8 @@ namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 			IServiceCollection serviceCollection, IEnumerable<Type> allCandidateTypes)
 		{
 			IEnumerable<DiscoveredEffectClass> discoveredEffectInfos = allCandidateTypes
-				.Where(t => typeof(IEffect).IsAssignableFrom(t))
+				.Where(t => typeof(IEffect).IsAssignableFrom(t)
+						 && !typeof(EffectWrapper<>).IsAssignableFrom(t))
 				.Select(t => new DiscoveredEffectClass(implementingType: t))
 				.ToList();
 

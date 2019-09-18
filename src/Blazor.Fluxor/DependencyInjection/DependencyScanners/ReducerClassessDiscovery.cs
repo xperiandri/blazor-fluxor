@@ -11,6 +11,7 @@ namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 			IServiceCollection serviceCollection, IEnumerable<Type> allCandidateTypes)
 		{
 			IEnumerable<DiscoveredReducerClass> discoveredReducerInfos = allCandidateTypes
+				.Where(t => !typeof(ReducerWrapper<,>).IsAssignableFrom(t))
 				.Select(t => new
 				{
 					ImplementingType = t,

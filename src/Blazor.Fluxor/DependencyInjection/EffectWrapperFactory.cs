@@ -10,7 +10,7 @@ namespace Blazor.Fluxor.DependencyInjection
 		internal static IEffect Create(IServiceProvider serviceProvider, DiscoveredEffectMethod discoveredEffectMethod)
 		{
 			Type actionType = discoveredEffectMethod.ActionType;
-			ValidateMethod(actionType, discoveredEffectMethod.MethodInfo);
+			//ValidateMethod(actionType, discoveredEffectMethod.MethodInfo);
 
 			Type hostClassType = discoveredEffectMethod.HostClassType;
 			Type classGenericType = typeof(EffectWrapper<>).MakeGenericType(actionType);
