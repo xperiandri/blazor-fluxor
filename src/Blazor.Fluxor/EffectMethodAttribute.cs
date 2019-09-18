@@ -18,7 +18,7 @@ namespace Blazor.Fluxor
 	///			{
 	///				... do something ...
 	///			}
-	///			
+	///
 	///			[EffectMethod]
 	///			public static Task HandleSomeOtherAction(MyAction2 action, IDispatcher dispatcher)
 	///			{
@@ -29,5 +29,6 @@ namespace Blazor.Fluxor
 	[AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
 	public class EffectMethodAttribute : Attribute
 	{
+		public Type ActionType { get; set; }
 	}
 }

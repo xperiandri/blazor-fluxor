@@ -11,18 +11,22 @@ namespace Blazor.Fluxor.DependencyInjection.DependencyScanners
 		internal static IEnumerable<DiscoveredEffectMethod> DiscoverEffectMethods(IServiceCollection serviceCollection,
 			IEnumerable<Type> allCandidateTypes)
 		{
-			var discoveredEffects = allCandidateTypes
-				.SelectMany(t => t.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static))
-				.Select(m => new
-				{
-					MethodInfo = m,
-					EffectAttribute = m.GetCustomAttribute<EffectMethodAttribute>(false)
-				})
-				.Where(x => x.EffectAttribute != null)
-				.Select(x => new DiscoveredEffectMethod(
-					hostClassType: x.MethodInfo.DeclaringType,
-					methodInfo: x.MethodInfo,
-					actionType: x.MethodInfo.GetParameters()[0].ParameterType));
+			var discoveredEffects =
+				from method in allCandidateTypes
+				.SelectMany(t => t.GetMethods(BindingFlags.Public
+				                            | BindingFlags.NonPublic
+											| BindingFlags.Instance
+											| BindingFlags.Static))
+				let effectAttribute = method.GetCustomAttribute<EffectMethodAttribute>(false)
+				where effectAttribute != null
+				let actionType = effectAttribute.ActionType
+					?? method.GetParameters().First(
+						p => p.ParameterType.FullName.LastIndexOf("Action") > -1).ParameterType
+					?? throw new InvalidOperationException($"Reducer decorated with {nameof(EffectMethodAttribute)} must either specify action type within attribute property or has parameter with full type name containing \"Action\" string.")
+				select new DiscoveredEffectMethod(
+					hostClassType: method.DeclaringType,
+					methodInfo: method,
+					actionType: actionType);
 
 			IEnumerable<Type> hostClassTypes = discoveredEffects
 				.Select(x => x.HostClassType)

@@ -9,9 +9,9 @@ namespace Blazor.Fluxor
 	public abstract class Effect<TTriggerAction> : IEffect
 	{
 		/// <summary>
-		/// <see cref="IEffect.HandleAsync(object, IDispatcher)"/>
+		/// <see cref="IEffect.HandleAsync(object)"/>
 		/// </summary>
-		protected abstract Task HandleAsync(TTriggerAction action, IDispatcher dispatcher);
+		protected abstract Task HandleAsync(TTriggerAction action);
 
 		/// <summary>
 		/// <see cref="IEffect.ShouldReactToAction(object)"/>
@@ -21,9 +21,9 @@ namespace Blazor.Fluxor
 			return action is TTriggerAction;
 		}
 
-		Task IEffect.HandleAsync(object action, IDispatcher dispatcher)
+		Task IEffect.HandleAsync(object action)
 		{
-			return HandleAsync((TTriggerAction)action, dispatcher);
+			return HandleAsync((TTriggerAction)action);
 		}
 	}
 }

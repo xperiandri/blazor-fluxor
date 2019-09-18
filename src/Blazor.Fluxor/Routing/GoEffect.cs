@@ -13,7 +13,7 @@ namespace Blazor.Fluxor.Routing
 			NavigationManager = navigationManager;
 		}
 
-		protected override Task HandleAsync(Go action, IDispatcher dispatcher)
+		protected override Task HandleAsync(Go action)
 		{
 			Uri fullUri = NavigationManager.ToAbsoluteUri(action.NewUri);
 			if (fullUri.ToString() != NavigationManager.Uri)

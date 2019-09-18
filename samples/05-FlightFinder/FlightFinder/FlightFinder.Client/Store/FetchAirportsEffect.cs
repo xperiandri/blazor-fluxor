@@ -7,28 +7,30 @@ using System.Threading.Tasks;
 
 namespace FlightFinder.Client.Store
 {
-	public class FetchAirportsEffect : Effect<FetchAirportsAction>
-	{
-		private readonly HttpClient HttpClient;
+    public class FetchAirportsEffect : Effect<FetchAirportsAction>
+    {
+        private readonly HttpClient httpClient;
+        private readonly IDispatcher dispatcher;
 
-		public FetchAirportsEffect(HttpClient httpClient)
-		{
-			HttpClient = httpClient;
-		}
+        public FetchAirportsEffect(HttpClient httpClient, IDispatcher dispatcher)
+        {
+            this.httpClient = httpClient;
+            this.dispatcher = dispatcher;
+        }
 
-		protected async override Task HandleAsync(FetchAirportsAction action, IDispatcher dispatcher)
-		{
-			Airport[] airports = Array.Empty<Airport>();
-			try
-			{
-				airports = await HttpClient.GetJsonAsync<Airport[]>("api/airports");
-			}
-			catch
-			{
-				// Should really dispatch an error action
-			}
-			var completeAction = new FetchAirportsCompleteAction(airports);
-			dispatcher.Dispatch(completeAction);
-		}
-	}
+        protected async override Task HandleAsync(FetchAirportsAction action)
+        {
+            Airport[] airports = Array.Empty<Airport>();
+            try
+            {
+                airports = await httpClient.GetJsonAsync<Airport[]>("api/airports");
+            }
+            catch
+            {
+                // Should really dispatch an error action
+            }
+            var completeAction = new FetchAirportsCompleteAction(airports);
+            dispatcher.Dispatch(completeAction);
+        }
+    }
 }

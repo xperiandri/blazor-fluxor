@@ -15,7 +15,7 @@ namespace Blazor.Fluxor
 	///			[ReducerMethod]
 	///			public CounterState ReduceIncrementCounterAction(CounterState state, IncrementCounterAction action) =>
 	///				new CounterState(state.ClickCount + 1);
-	///			
+	///
 	///			[ReducerMethod]
 	///			public CounterState ReduceDecrementCounterAction(CounterState state, DecrementCounterAction action) =>
 	///				new CounterState(state.ClickCount - 1);
@@ -24,5 +24,7 @@ namespace Blazor.Fluxor
 	///	[AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
 	public class ReducerMethodAttribute : Attribute
 	{
+		public Type StateType { get; set; }
+		public Type ActionType { get; set; }
 	}
 }

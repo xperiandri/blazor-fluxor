@@ -164,7 +164,7 @@ namespace Blazor.Fluxor
 		{
 			var effectsToTrigger = Effects.Where(x => x.ShouldReactToAction(action));
 			foreach (var effect in effectsToTrigger)
-				effect.HandleAsync(action, this);
+				effect.HandleAsync(action);
 		}
 
 		private void InitializeMiddlewares()

@@ -12,16 +12,13 @@ namespace Blazor.Fluxor.DependencyInjection
 			Type actionType = discoveredReducerMethod.ActionType;
 
 			Type hostClassType = discoveredReducerMethod.HostClassType;
-			object reducerHostInstance = discoveredReducerMethod.MethodInfo.IsStatic
-				? null
-				: serviceProvider.GetService(hostClassType);
-
 			Type classGenericType = typeof(ReducerWrapper<,>).MakeGenericType(stateType, actionType);
-			var result = Activator.CreateInstance(
-				classGenericType,
-				reducerHostInstance,
-				discoveredReducerMethod.MethodInfo);
-			return result;
+			object reducerHostInstance = discoveredReducerMethod.MethodInfo.IsStatic
+									   ? null
+									   : serviceProvider.GetService(hostClassType);
+			return Activator.CreateInstance(
+								classGenericType,
+								serviceProvider, reducerHostInstance, discoveredReducerMethod.MethodInfo);
 		}
 
 		private static bool ValidateMethod(MethodInfo methodInfo)
