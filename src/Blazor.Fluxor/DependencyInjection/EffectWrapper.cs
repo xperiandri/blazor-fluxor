@@ -16,20 +16,18 @@ namespace Blazor.Fluxor.DependencyInjection
 		public EffectWrapper(IServiceProvider serviceProvider, object effectHostInstance, MethodInfo methodInfo)
 		{
 			var parametersInfos = methodInfo.GetParameters();
-			var commonParameters = new object[parametersInfos.Length];
-			for (var i = 0; i < parametersInfos.Length; i++)
-			{
-				Type parameterType = parametersInfos[i].ParameterType;
-				if (parameterType != typeof(TAction))
-					commonParameters[i] = serviceProvider.GetService(parameterType);
-			}
 
 			Task Handle(TAction action)
 			{
 				var parameters = new object[parametersInfos.Length];
-				commonParameters.CopyTo(parameters, 0);
-				var actionParamerIndex = Array.FindIndex(parametersInfos, t => t.ParameterType == typeof(TAction));
-				parameters[actionParamerIndex] = action;
+				for (var i = 0; i < parametersInfos.Length; i++)
+				{
+					Type parameterType = parametersInfos[i].ParameterType;
+					if (parameterType == typeof(TAction))
+						parameters[i] = action;
+					else
+						parameters[i] = serviceProvider.GetService(parameterType);
+				}
 				return (Task)methodInfo.Invoke(effectHostInstance, parameters);
 			}
 
