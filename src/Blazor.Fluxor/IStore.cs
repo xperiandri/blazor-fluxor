@@ -16,7 +16,7 @@ namespace Blazor.Fluxor
 		/// is executed whenever an action dispatched via the store.
 		/// </summary>
 		/// <param name="effect">The instance of the effect to call back</param>
-		/// <seealso cref="IEffect.HandleAsync(object, IDispatcher)"/>
+		/// <seealso cref="IEffect.HandleAsync(object)"/>
 		void AddEffect(IEffect effect);
 
 		/// <summary>
@@ -53,9 +53,9 @@ namespace Blazor.Fluxor
 		/// </para>
 		/// </remarks>
 		/// <example>
-		/// using(Store.BeginInternalMiddlewareChange()) 
+		/// using(Store.BeginInternalMiddlewareChange())
 		/// {
-		///		// Do some stuff that other Middlewares should know was not triggered by a 
+		///		// Do some stuff that other Middlewares should know was not triggered by a
 		///		// normal user event.
 		/// }
 		/// </example>
@@ -71,7 +71,7 @@ namespace Blazor.Fluxor
 		IReadOnlyDictionary<string, IFeature> Features { get; }
 
 		/// <summary>
-		/// This should be executed within a cshtml page such as Shared/MainLayout to ensure all 
+		/// This should be executed within a cshtml page such as Shared/MainLayout to ensure all
 		/// Middleware Javascripts are inserted into the web page
 		/// </summary>
 		/// <returns></returns>

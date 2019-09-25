@@ -24,7 +24,17 @@ namespace Blazor.Fluxor
 	///	[AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
 	public class ReducerMethodAttribute : Attribute
 	{
+		/// <summary>
+		/// Type of state parameter to look for in method signature.
+		/// If not specified then parameter with type containing State
+		/// in its full name is used.
+		/// </summary>
 		public Type StateType { get; set; }
+		/// <summary>
+		/// Type of action parameter to look for in method signature.
+		/// If not specified then parameter with type containing Action
+		/// in its full name is used.
+		/// </summary>
 		public Type ActionType { get; set; }
 	}
 }

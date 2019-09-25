@@ -29,6 +29,11 @@ namespace Blazor.Fluxor
 	[AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
 	public class EffectMethodAttribute : Attribute
 	{
+		/// <summary>
+		/// Type of action parameter to look for in method signature.
+		/// If not specified parameter with type containing Action
+		/// in its full name is used.
+		/// </summary>
 		public Type ActionType { get; set; }
 	}
 }
