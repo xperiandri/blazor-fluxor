@@ -7,7 +7,7 @@ namespace Blazor.Fluxor.DependencyInjection
 {
 	internal static class EffectWrapperFactory
 	{
-		internal static IEffect Create(IServiceProvider serviceProvider, DiscoveredEffectMethod discoveredEffectMethod)
+		internal static IEffect Create(Store store, IServiceProvider serviceProvider, DiscoveredEffectMethod discoveredEffectMethod)
 		{
 			Type actionType = discoveredEffectMethod.ActionType;
 			//ValidateMethod(actionType, discoveredEffectMethod.MethodInfo);
@@ -15,11 +15,11 @@ namespace Blazor.Fluxor.DependencyInjection
 			Type hostClassType = discoveredEffectMethod.HostClassType;
 			Type classGenericType = typeof(EffectWrapper<>).MakeGenericType(actionType);
 			object effectHostInstance = discoveredEffectMethod.MethodInfo.IsStatic
-									? null
-									: serviceProvider.GetService(hostClassType);
+									  ? null
+									  : serviceProvider.GetService(hostClassType);
 			return (IEffect)Activator.CreateInstance(
 							classGenericType,
-							serviceProvider, effectHostInstance, discoveredEffectMethod.MethodInfo);
+							store, serviceProvider, effectHostInstance, discoveredEffectMethod.MethodInfo);
 		}
 
 		private static bool ValidateMethod(Type actionType, MethodInfo methodInfo)
